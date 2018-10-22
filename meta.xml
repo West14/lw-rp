@@ -1,0 +1,4 @@
+<meta>
+	<info author="Jabka Dev" type="gamemode" />
+	<script src="server/main.lua" type="server" />
+</meta>
