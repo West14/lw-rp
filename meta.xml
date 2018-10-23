@@ -1,5 +1,5 @@
 <meta>
-	<info author="Jabka Dev" author="DimDey and West" type="gamemode" />
+	<info author="Jabka Dev"	type="gamemode" />
 	<script src="Client/main_auth.lua" type="client" />
 	<script src="Client/global_variables.lua" type="client" />
 </meta>
