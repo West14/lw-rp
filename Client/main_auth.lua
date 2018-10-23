@@ -1,9 +1,11 @@
 function onStart( )
 	showCursor(true)
 	DGS:dgsSetProperty(pass,"masked",true) -- Маскируем эдит для пароля под ******
-	addEventHandler ( "onDgsMouseClick", root, onGuiClicked ) -- хадлер клика на логин
+	addEventHandler ( "onDgsMouseClick", root, onGuiClicked ) -- хадлер клика на меню
 	addEventHandler ( "onDgsEditSwitched", login, onClickToEdit ) -- хадлер клика на логин
-	addEventHandler ( "onDgsEditSwitched", pass, onClickToEdit ) -- хадлер клика на логин
+	addEventHandler ( "onDgsEditSwitched", pass, onClickToEdit ) -- хадлер клика на пароль
+	addEventHandler ( "onDgsEditSwitched", login, guiTextClear ) -- хадлер клика на логин
+	addEventHandler ( "onDgsEditSwitched", pass, guiTextClear ) -- хадлер клика на логин
 end
 addEventHandler("onClientResourceStart",root,onStart)
 
@@ -16,6 +18,15 @@ function onGuiClicked( btn,state )
 		logIn(btn,state)
 	elseif source == register then
 		signIn(btn,state)
+	end
+end
+
+function guiTextClear( )
+	local text = DGS:dgsGetText( source )
+	if text == "Логин" then
+		DGS:dgsSetText(source, "")
+	elseif text == "Пароль" then
+		DGS:dgsSetText(source, "")
 	end
 end
 
