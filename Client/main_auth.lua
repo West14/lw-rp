@@ -4,8 +4,8 @@ function onStart( )
 	addEventHandler ( "onDgsMouseClick", root, onGuiClicked ) -- хадлер клика на меню
 	addEventHandler ( "onDgsEditSwitched", login, onClickToEdit ) -- хадлер клика на логин
 	addEventHandler ( "onDgsEditSwitched", pass, onClickToEdit ) -- хадлер клика на пароль
-	addEventHandler ( "onDgsEditSwitched", login, guiTextClear ) -- хадлер клика на логин
-	addEventHandler ( "onDgsEditSwitched", pass, guiTextClear ) -- хадлер клика на логин
+	addEventHandler ( "onDgsEditSwitched", login, guiTextClear ) -- хадлер таба на логин
+	addEventHandler ( "onDgsEditSwitched", pass, guiTextClear ) -- хадлер таба на пароль
 end
 addEventHandler("onClientResourceStart",root,onStart)
 
