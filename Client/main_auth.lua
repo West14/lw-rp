@@ -6,6 +6,8 @@ function onStart( )
 	addEventHandler ( "onDgsEditSwitched", pass, onClickToEdit ) -- хадлер клика на пароль
 	addEventHandler ( "onDgsEditSwitched", login, guiTextClear ) -- хадлер таба на логин
 	addEventHandler ( "onDgsEditSwitched", pass, guiTextClear ) -- хадлер таба на пароль
+	setCameraMatrix(1677.4501, -1493.8395, 123.0782, 1527.5341,-1778.5883,71.1633)
+    fadeCamera(true)
 end
 addEventHandler("onClientResourceStart",root,onStart)
 
@@ -36,7 +38,7 @@ function logIn( button, state ) -- когда игрок жмет на кноп�
 		local pass = DGS:dgsGetText( pass ) 
 		if #nick > 1 and #pass > 1 then
 			if string.find(nick,"_") then
-				 triggerServerEvent ( "onPlayerLogIn", resourceRoot, lp, nick, pass )
+				 triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, pass )
 				 setElementData(lp,"logged", true)
 			else
 				outputError("Неверные данные!")
@@ -51,7 +53,7 @@ function signIn( button, state ) -- когда игрок жмет на кноп
 		local pass = DGS:dgsGetText( pass ) 
 		if #nick > 1 and #pass > 1 then
 			if string.find(nick,"_") then
-				triggerServerEvent ( "onPlayerSignIn", resourceRoot, lp, nick, pass )
+				triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, pass )
 			else
 				outputError("Неверный никнейм!")
 			end
