@@ -8,6 +8,9 @@ function onStart( )
 	addEventHandler ( "onDgsEditSwitched", pass, guiTextClear ) -- хадлер таба на пароль
 	setCameraMatrix(1677.4501, -1493.8395, 123.0782, 1527.5341,-1778.5883,71.1633)
     fadeCamera(true)
+    setBlurLevel(0)
+    setPlayerHudComponentVisible("area_name", false)
+    setPlayerHudComponentVisible("radar", false)
 end
 addEventHandler("onClientResourceStart",root,onStart)
 
@@ -38,10 +41,10 @@ function logIn( button, state ) -- когда игрок жмет на кноп�
 		local pass = DGS:dgsGetText( pass ) 
 		if #nick > 1 and #pass > 1 then
 			if string.find(nick,"_") then
-				 triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, pass )
-				 setElementData(lp,"logged", true)
+				triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, teaEncode(pass, encKey))
+				setElementData(lp,"logged", true)
 			else
-				outputError("Неверные данные!")
+				outputChatBox("Неверные данные!")
 			end
 		end
 	end
@@ -53,12 +56,12 @@ function signIn( button, state ) -- когда игрок жмет на кноп
 		local pass = DGS:dgsGetText( pass ) 
 		if #nick > 1 and #pass > 1 then
 			if string.find(nick,"_") then
-				triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, pass )
+				triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, teaEncode(pass, encKey))
 			else
-				outputError("Неверный никнейм!")
+				outputChatBox("Неверный никнейм!")
 			end
 		else
-			outputError("Неверные данные!")
+			outputChatBox("Неверные данные!")
 		end
 	end
 end
@@ -80,6 +83,8 @@ function onPlayerAuth( ) -- когда игрок авторизовываетс
 	DGS:dgsSetVisible ( pass, false )
 	DGS:dgsSetVisible ( submit, false )
 	DGS:dgsSetVisible ( register, false )
+	showCursor(false)
+	setPlayerHudComponentVisible("radar", true)
 end
 addEvent("onPlayerAuth",true)
 addEventHandler("onPlayerAuth", root, onPlayerAuth)

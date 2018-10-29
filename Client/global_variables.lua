@@ -2,6 +2,8 @@
 	ФАЙЛ СОЗДАН ДЛЯ ТОГО, ЧТОБЫ СКИДЫВАТЬ СЮДА ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ КЛИЕНТСКОЙ ЧАСТИ.
 --]]
 
+
+encKey = "c3CKcjgKDGiVfyN8"
 screenW, screenH = guiGetScreenSize() -- get player`s screen size
 DGS = exports.dgs -- exports from dgs
 lp = getLocalPlayer() -- локальный игрок
