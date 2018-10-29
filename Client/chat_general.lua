@@ -37,7 +37,7 @@ function onPlayerEnterMessage( ... )
 			-- LATER
 		else
 			--triggerServerEvent("sendMessage",lp, "msg", lp, "[..hours..:..minutes..:..seconds..] ".."nick".."[ "..'getElementData(lp,"id")'.." ]: "..text)	-- триггерим ивент с сервера, чтобы отправить сообщение
-			triggerServerEvent("sendMessage",lp, "msg",lp, getPlayerName(lp)..": "..text)
+			triggerServerEvent("sendMessage",lp, "msg",lp, getElementData(lp,"nick")..": "..text)
 		end
 		clearChatBox()
 	end

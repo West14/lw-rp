@@ -9,6 +9,7 @@ DGS = exports.dgs -- exports from dgs
 lp = getLocalPlayer() -- локальный игрок
 chat_messages = {} -- сообщения чата
 yposition = 225
+showChat(false)
 -- регистрация и авторизация
 editWidth = 400
 editHeight = 35
