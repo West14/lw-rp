@@ -26,7 +26,7 @@ function onSignIn(lp, nick, pass)
 	isRegistered(nick, 
 		function(state)
 			if state then
-				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password, gender) VALUES(?, ?, 1)", nick, pass)
+				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password, gender, skin) VALUES(?, ?, 1, 0)", nick, pass)
 				triggerClientEvent(lp,"outputChatMessage",lp,"#009900Добро пожаловать, " .. nick)
 				setElementData(lp, "logged", true)
 				setElementData(lp, "nick",  nick)
@@ -100,8 +100,8 @@ function isLogged(thePlayer)
 	return getElementData(thePlayer, "logged")
 end
 
-function addDataToDataBase( nick, data, key )
-	dbExec(dbHandle, "UPDATE `accounts` SET "..data.." = '"..key.."' WHERE nick = '"..nick.."';")
+function addDataToDataBase( nick, column, value )
+	dbExec(dbHandle, "UPDATE `accounts` SET ??=? WHERE nick=?", column, value, nick)
 end
 addEvent("addDataToDataBase",true)
 addEventHandler("addDataToDataBase",root,addDataToDataBase)
