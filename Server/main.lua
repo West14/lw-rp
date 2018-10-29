@@ -1,4 +1,5 @@
 encKey = "c3CKcjgKDGiVfyN8"
+ids = {} 
 
 function initScript()
 	dbSetup()
@@ -6,7 +7,7 @@ end
 
 addEventHandler("onResourceStart", getRootElement(), initScript)
 
-
+--  РЕГИСТРАЦИЯ
 
 function onLogIn(lp, nick, pass)
 	nick = removeHex(nick)
@@ -26,11 +27,8 @@ function onSignIn(lp, nick, pass)
 	isRegistered(nick, 
 		function(state)
 			if state then
-				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password, gender, skin) VALUES(?, ?, 1, 0)", nick, pass)
-				triggerClientEvent(lp,"outputChatMessage",lp,"#009900Добро пожаловать, " .. nick)
 				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password, gender) VALUES(?, ?, 1)", nick, pass)
 				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
-				setElementData(lp, "logged", true)
 				setElementData(lp, "nick",  nick)
 				fadeCamera(lp, true)
 				setCameraTarget(lp, lp)
@@ -53,8 +51,8 @@ function doLogIn(qh, lp, nick, pass)
 				triggerClientEvent(lp,"outputError",lp,"Неверные данные.")
 			else
 				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
-				setElementData(lp, "logged", true)
 				setElementData(lp, "nick",  nick)
+				setElementData(lp, "logged", true)
 				fadeCamera(lp, true)
 				setCameraTarget(lp, lp)
 				triggerClientEvent("onPlayerAuth", lp)
@@ -98,11 +96,11 @@ function dbSetup()
 	end
 end
 
-function isLogged(thePlayer)
+function isLogged(thePlayer) -- проверка на авторизацию
 	return getElementData(thePlayer, "logged")
 end
 
-function addDataToDataBase( nick, column, value )
+function addDataToDataBase( nick, column, value ) -- обновление данных в бд с клиента
 	dbExec(dbHandle, "UPDATE `accounts` SET ??=? WHERE nick=?", column, value, nick)
 end
 
@@ -118,3 +116,46 @@ function removeData()
 	end
 end
 addEventHandler("onResourceStop",root,removeData)
+
+-- ID SYSTEM
+
+function assignID() -- перебирает ид, когда игрок подключается, через цикл for, и если ids[i] пусто,то оно заполняется данными игрока.
+    for i=1,getMaxPlayers() do 
+        if not ids[i] then 
+            ids[i] = source 
+            setElementData(source,"id",i)
+            break 
+        end 
+    end 
+end 
+addEventHandler("onPlayerJoin",root,assignID) 
+  
+function startup() -- когда ресурс запускается, то сервер проверяет игроков на наличие данных ид в игроке.
+    for k, v in ipairs(getElementsByType("player")) do 
+        local id = getElementData(v,"id") 
+        if id then ids[id] = v end 
+    end 
+end 
+addEventHandler("onResourceStart",resourceRoot,startup) 
+
+function freeID() -- освобождение ид, когда игрок выходит.
+    local id = getElementData(source,"id") 
+    if not id then return end 
+    ids[id] = nil 
+end 
+addEventHandler("onPlayerQuit",root,freeID) 
+
+function getPlayerByID(id) -- взять игрока через ид.
+    local player = ids[id] 
+    return player or false 
+end
+addEventHandler("getPlayerByID",root,getPlayerByID)
+addEvent("getPlayerByID",true)
+
+function getPlayerID(player) -- функция взятия ид из игрока
+    for k, v in ipairs(ids) do 
+        if v == player then return 1 end 
+    end 
+end 
+addEventHandler("getPlayerID",root,getPlayerID)
+addEvent("getPlayerID",true)

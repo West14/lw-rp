@@ -1,5 +1,6 @@
 local chatBox = DGS:dgsCreateEdit(14,269,471,26,"",false,nil,tocolor(255,255,255),1,1,nil,tocolor(0, 0, 0, 255))
 DGS:dgsSetVisible(chatBox,false)
+DGS:dgsEditSetMaxLength ( chatBox, 62 )
 chat_opened = 0
 chat_focus = 0
 chat_entries = {} 
@@ -20,10 +21,12 @@ function onPlayerPressKey( btn,press )
 						DGS:dgsBringToFront( chatBox ) -- переместить на передний фон
 						DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
 						chat_focus = 1
+						showCursor(true)
 					elseif chat_opened == 1 then -- если чат открыт
 						removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
 						chat_opened = 0
 						DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
+						showCursor(false)
 					end
 				end
 			end
@@ -39,7 +42,7 @@ function onPlayerEnterMessage( ... )
 			-- LATER
 		else
 			--triggerServerEvent("sendMessage",lp, "msg", lp, "[..hours..:..minutes..:..seconds..] ".."nick".."[ "..'getElementData(lp,"id")'.." ]: "..text)	-- триггерим ивент с сервера, чтобы отправить сообщение
-			triggerServerEvent("sendMessage",lp, "msg",lp, getElementData(lp,"nick")..": "..text)
+			triggerServerEvent("sendMessage",lp, "msg",lp, getElementData(lp,"nick").."[ "..getElementData(lp,"id").." ]: "..text)
 		end
 		clearChatBox()
 	end

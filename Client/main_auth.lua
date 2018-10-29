@@ -94,7 +94,7 @@ function setSkin() -- смена скина при реге
 	setElementModel(lp, register_skins[selectedSkin])
 	bindKey("arrow_l","down",changeSkin,selectedSkin)
 	bindKey("arrow_r","down",changeSkin,selectedSkin)
-	bindKey("enter","down",selectSkin,selectedSkin)
+	bindKey("enter","down",selectSkin)
 	outputChatMessage("Выберите ваш будущий скин. Управление: стрелочка влево, стрелочка вправо.")
 	outputChatMessage("Чтобы выбрать скин нажмите Enter.")
 end
@@ -123,10 +123,11 @@ function setSkin( lp, skin ) -- функция сета скина
 	setElementModel(lp, register_skins[skin])
 end
 
-function selectSkin( btn, state,selectedSkin ) -- выбор скина
+function selectSkin( btn, state ) -- выбор скина
 	unbindKey("arrow_l","down",changeSkin)
 	unbindKey("arrow_r","down",changeSkin)
 	showCursor(false)
 	setElementData(lp,"skin",selectedSkin)
 	triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'skin',register_skins[selectedSkin])
+	setElementData(lp, "logged", true)
 end

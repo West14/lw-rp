@@ -33,10 +33,10 @@ function timestamp( )
 		hours = "0"..hours
 	end
 	if minutes <= 9 then -- такая же ситуация, как и с часами
-		hours = "0"..hours
+		minutes = "0"..minutes
 	end
 	if seconds <= 9 then -- такая же ситуация, как и с часами
-		hours = "0"..hours
+		seconds = "0"..seconds
 	end
 end
 addEventHandler("onClientRender",root,timestamp)
