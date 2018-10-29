@@ -56,13 +56,31 @@ function chat_onDGSBlur()
 end
 
 function outputChatMessage( msg ) -- написать сообщение
-	table.insert(chat_messages,msg) -- исёртим сообщение в таблицу
+	table.insert(chat_messages,"[ "..hours..":"..minutes..":"..seconds.." ] "..msg) -- исёртим сообщение в таблицу
 	TextFuel() -- отрисовываем чат
 	outputChatBox(msg)
 	outputConsole("Chat: "..msg)
 end
 addEvent("outputChatMessage",true) -- добавляем ивент для триггера с серверной части
 addEventHandler("outputChatMessage",root,outputChatMessage) -- добавляем хандлер ивента
+
+function outputError( msg )
+	table.insert(chat_messages,"#990000[ "..hours..":"..minutes..":"..seconds.." ] "..msg) -- исёртим сообщение в таблицу
+	TextFuel() -- отрисовываем чат
+	outputChatBox(msg)
+	outputConsole("Chat: "..msg)
+end
+addEvent("outputError",true) -- добавляем ивент для триггера с серверной части
+addEventHandler("outputError",root,outputError) -- добавляем хандлер ивента
+
+function outputSuccess( msg )
+	table.insert(chat_messages,"#009900[ "..hours..":"..minutes..":"..seconds.." ] "..msg) -- исёртим сообщение в таблицу
+	TextFuel() -- отрисовываем чат
+	outputChatBox(msg)
+	outputConsole("Chat: "..msg)
+end
+addEvent("outputSuccess",true) -- добавляем ивент для триггера с серверной части
+addEventHandler("outputSuccess",root,outputSuccess) -- добавляем хандлер ивента
 
 function clearChatBox( )
 	DGS:dgsSetText ( chatBox, "" ) -- обнуление текста

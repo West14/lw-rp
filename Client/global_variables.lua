@@ -23,3 +23,20 @@ register_skins = {
 	[3] = "46",
 	[4] = "60"
 }
+
+function timestamp( )
+	time = getRealTime()
+	hours = time.hour
+	minutes = time.minute
+	seconds = time.second
+	if hours <= 9 then -- если час меньше двухзначного числа, то автоматически добавляется ноль в начале
+		hours = "0"..hours
+	end
+	if minutes <= 9 then -- такая же ситуация, как и с часами
+		hours = "0"..hours
+	end
+	if seconds <= 9 then -- такая же ситуация, как и с часами
+		hours = "0"..hours
+	end
+end
+addEventHandler("onClientRender",root,timestamp)

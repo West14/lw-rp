@@ -13,7 +13,7 @@ function onLogIn(lp, nick, pass)
 	isRegistered(nick, 
 		function(state)
 			if state then
-				triggerClientEvent(lp,"outputChatMessage",lp,"#990000Аккаунт с таким никнеймом не найден, пожалуйста зарегистрируйтесь.")
+				triggerClientEvent(lp,"outputError",lp,"Аккаунт с таким никнеймом не найден, пожалуйста зарегистрируйтесь.")
 			else
 				local qh = dbQuery(doLogIn, {lp, nick, pass}, dbHandle, "SELECT * FROM `accounts` WHERE `nick` = ?", nick)
 			end
@@ -28,6 +28,8 @@ function onSignIn(lp, nick, pass)
 			if state then
 				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password, gender, skin) VALUES(?, ?, 1, 0)", nick, pass)
 				triggerClientEvent(lp,"outputChatMessage",lp,"#009900Добро пожаловать, " .. nick)
+				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password, gender) VALUES(?, ?, 1)", nick, pass)
+				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
 				setElementData(lp, "logged", true)
 				setElementData(lp, "nick",  nick)
 				fadeCamera(lp, true)
@@ -37,7 +39,7 @@ function onSignIn(lp, nick, pass)
 				--showCursor(lp,true)
 				triggerClientEvent(lp,"setSkin",lp)
 			else
-				triggerClientEvent(lp,"outputChatMessage",lp,"#990000Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.")
+				triggerClientEvent(lp,"outputError",lp,"Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.")
 			end
 		end
 	)
@@ -48,9 +50,9 @@ function doLogIn(qh, lp, nick, pass)
 	if result then
 		for _, row in ipairs(result) do
 			if pass ~= row["password"] then
-				triggerClientEvent(lp,"outputChatMessage",lp,"#990000Неверные данные.")
+				triggerClientEvent(lp,"outputError",lp,"Неверные данные.")
 			else
-				triggerClientEvent(lp,"outputChatMessage",lp,"#009900Добро пожаловать, " .. nick)
+				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
 				setElementData(lp, "logged", true)
 				setElementData(lp, "nick",  nick)
 				fadeCamera(lp, true)
@@ -61,7 +63,7 @@ function doLogIn(qh, lp, nick, pass)
 			end
 		end
 	else
-		triggerClientEvent(lp,"outputChatMessage",lp,"#990000Произошла непредвиденная ошибка. Попробуйте ещё раз.")
+		triggerClientEvent(lp,"outputError",lp,"Произошла непредвиденная ошибка. Попробуйте ещё раз.")
 	end
 end
 
@@ -102,7 +104,7 @@ end
 
 function addDataToDataBase( nick, column, value )
 	dbExec(dbHandle, "UPDATE `accounts` SET ??=? WHERE nick=?", column, value, nick)
-
+end
 
 addEvent("addDataToDataBase",true)
 addEventHandler("addDataToDataBase",root,addDataToDataBase)
