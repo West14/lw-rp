@@ -83,8 +83,50 @@ function onPlayerAuth( ) -- когда игрок авторизовываетс
 	DGS:dgsSetVisible ( pass, false )
 	DGS:dgsSetVisible ( submit, false )
 	DGS:dgsSetVisible ( register, false )
-	showCursor(false)
 	setPlayerHudComponentVisible("radar", true)
 end
 addEvent("onPlayerAuth",true)
 addEventHandler("onPlayerAuth", root, onPlayerAuth)
+
+
+function setPlayerSkin() -- смена скина при реге
+	selectedSkin = 1
+	setElementModel(lp, register_skins[selectedSkin])
+	bindKey("arrow_l","down",changeSkin,selectedSkin)
+	bindKey("arrow_r","down",changeSkin,selectedSkin)
+	bindKey("enter","down",selectSkin,selectedSkin)
+	outputChatMessage("Выберите ваш будущий скин. Управление: стрелочка влево, стрелочка вправо.")
+	outputChatMessage("Чтобы выбрать скин нажмите Enter.")
+end
+addEvent("setPlayerSkin",true)
+addEventHandler("setPlayerSkin", root, setPlayerSkin)
+
+function changeSkin( key,state ) -- выбор скина
+	if key ==  "arrow_l" then -- если нажал стрелочку влево
+		selectedSkin = selectedSkin -1 -- уменьшение выбор
+		if selectedSkin <= 0 then -- если выбранный скин равен или меньше нуля
+			selectedSkin = #register_skins -- выбранный скин = конец массива со скинами
+		end
+		--outputDebugString(selectedSkin) -- дебаг выбранного скина
+		setSkin( lp, selectedSkin ) -- функция смены скина персонажа
+	elseif key == "arrow_r" then -- если нажал стрелку вправо
+		selectedSkin = selectedSkin + 1 -- увеличение выбора
+		if selectedSkin >= #register_skins then -- если выбор равен или больше массива
+			selectedSkin = 1 -- выбранный скин = 1
+		end
+		setSkin( lp, selectedSkin ) -- сет скина
+		--outputDebugString(selectedSkin) --дебаг
+	end
+end
+
+function setSkin( lp, skin ) -- функция сета скина
+	setElementModel(lp, register_skins[skin])
+end
+
+function selectSkin( btn, state,selectedSkin ) -- выбор скина
+	unbindKey("arrow_l","down",changeSkin)
+	unbindKey("arrow_r","down",changeSkin)
+	showCursor(false)
+	setElementData(lp,"skin",selectedSkin)
+	triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'skin',register_skins[selectedSkin])
+end

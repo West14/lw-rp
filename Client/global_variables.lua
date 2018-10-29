@@ -17,3 +17,9 @@ login = DGS:dgsCreateEdit( (screenW - editWidth) / 2, (screenH - editHeight ) / 
 pass = DGS:dgsCreateEdit( (screenW - editWidth) / 2, (screenH - editHeight ) / 2 + 35, editWidth, editHeight, "Пароль", false, false, tocolor(0,0,0,255),1,1,false,tocolor(109, 118, 120) )
 submit = DGS:dgsCreateButton( (screenW - editWidth) / 2, (screenH - editHeight ) / 2 + 75, editWidth, editHeight, "Авторизация", false )
 register = DGS:dgsCreateButton( (screenW - editWidth) / 2, (screenH - editHeight ) / 2 + 115, editWidth, editHeight, "Регистрация", false )
+register_skins = {
+	[1] = "47",
+	[2] = "98",
+	[3] = "46",
+	[4] = "60"
+}

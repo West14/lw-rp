@@ -1,4 +1,4 @@
-local renderMainTarget = dxCreateRenderTarget(600,250,true) --рендертаргет
+local renderMainTarget = dxCreateRenderTarget(700,250,true) --рендертаргет
 
 function dxDrawBorderedText( text,xposit,yposit,zposit,top ) -- ИСПОЛЬЗОВАТЬ ТОЛЬКО С РЕНДЕРТАРГЕТОМ!!!!!!!!
     dxDrawText ( "#000000"..removeHex(text), xposit+1, yposit + 1, zposit+1, top+1, tocolor ( 0, 0, 0, 255 ), 1.00, "default-bold", "left", "top",false,false,false,true)
@@ -60,7 +60,7 @@ addEventHandler("onClientKey", root, chatKey)
 
 function RenderMainTarget()
     if isElement(renderMainTarget) then
-        dxDrawImage(0,0,600,250,renderMainTarget)
+        dxDrawImage(0,0,700,250,renderMainTarget)
     end
 end
 addEventHandler("onClientRender" , root, RenderMainTarget)

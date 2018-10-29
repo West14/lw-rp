@@ -33,7 +33,9 @@ function onSignIn(lp, nick, pass)
 				fadeCamera(lp, true)
 				setCameraTarget(lp, lp)
 				triggerClientEvent("onPlayerAuth", lp)
-				spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50)
+				spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, -50)
+				--showCursor(lp,true)
+				triggerClientEvent(lp,"setPlayerSkin",lp)
 			else
 				triggerClientEvent(lp,"outputChatMessage",lp,"#990000Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.")
 			end
@@ -54,7 +56,8 @@ function doLogIn(qh, lp, nick, pass)
 				fadeCamera(lp, true)
 				setCameraTarget(lp, lp)
 				triggerClientEvent("onPlayerAuth", lp)
-				spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50)
+				spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50, row["skin"])
+				showCursor(lp,false)
 			end
 		end
 	else
@@ -96,3 +99,9 @@ end
 function isLogged(thePlayer)
 	return getElementData(thePlayer, "logged")
 end
+
+function addDataToDataBase( nick, data, key )
+	dbExec(dbHandle, "UPDATE `accounts` SET "..data.." = '"..key.."' WHERE nick = '"..nick.."';")
+end
+addEvent("addDataToDataBase",true)
+addEventHandler("addDataToDataBase",root,addDataToDataBase)
