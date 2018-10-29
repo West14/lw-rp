@@ -35,7 +35,7 @@ function onSignIn(lp, nick, pass)
 				triggerClientEvent("onPlayerAuth", lp)
 				spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, -50)
 				--showCursor(lp,true)
-				triggerClientEvent(lp,"setPlayerSkin",lp)
+				triggerClientEvent(lp,"setSkin",lp)
 			else
 				triggerClientEvent(lp,"outputChatMessage",lp,"#990000Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.")
 			end

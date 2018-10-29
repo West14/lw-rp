@@ -89,7 +89,7 @@ addEvent("onPlayerAuth",true)
 addEventHandler("onPlayerAuth", root, onPlayerAuth)
 
 
-function setPlayerSkin() -- смена скина при реге
+function setSkin() -- смена скина при реге
 	selectedSkin = 1
 	setElementModel(lp, register_skins[selectedSkin])
 	bindKey("arrow_l","down",changeSkin,selectedSkin)
@@ -98,8 +98,8 @@ function setPlayerSkin() -- смена скина при реге
 	outputChatMessage("Выберите ваш будущий скин. Управление: стрелочка влево, стрелочка вправо.")
 	outputChatMessage("Чтобы выбрать скин нажмите Enter.")
 end
-addEvent("setPlayerSkin",true)
-addEventHandler("setPlayerSkin", root, setPlayerSkin)
+addEvent("setSkin",true)
+addEventHandler("setSkin", root, setSkin)
 
 function changeSkin( key,state ) -- выбор скина
 	if key ==  "arrow_l" then -- если нажал стрелочку влево
