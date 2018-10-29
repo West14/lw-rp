@@ -9,20 +9,22 @@ end
 
 
 function onPlayerPressKey( btn,press )
-	if (press) then
-		if chat_focus == 0 then -- если чат в фокусе(курсор стоит в нём)
-			if btn == "F6" or btn == "Y" then
-				if chat_opened == 0 then -- если чат не открыт
-					addEventHandler("onClientRender",root,openChat) -- отрисовка обводки
-					chat_opened = 1 
-					DGS:dgsSetVisible(chatBox,true) -- показываем чатбокс
-					DGS:dgsBringToFront( chatBox ) -- переместить на передний фон
-					DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
-					chat_focus = 1
-				elseif chat_opened == 1 then -- если чат открыт
-					removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
-					chat_opened = 0
-					DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
+	if isLogged(lp) then
+		if (press) then
+			if chat_focus == 0 then -- если чат в фокусе(курсор стоит в нём)
+				if btn == "F6" or btn == "Y" then
+					if chat_opened == 0 then -- если чат не открыт
+						addEventHandler("onClientRender",root,openChat) -- отрисовка обводки
+						chat_opened = 1 
+						DGS:dgsSetVisible(chatBox,true) -- показываем чатбокс
+						DGS:dgsBringToFront( chatBox ) -- переместить на передний фон
+						DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
+						chat_focus = 1
+					elseif chat_opened == 1 then -- если чат открыт
+						removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
+						chat_opened = 0
+						DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
+					end
 				end
 			end
 		end

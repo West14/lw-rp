@@ -96,12 +96,18 @@ function dbSetup()
 	end
 end
 
-function isLogged(thePlayer)
-	return getElementData(thePlayer, "logged")
-end
-
 function addDataToDataBase( nick, data, key )
 	dbExec(dbHandle, "UPDATE `accounts` SET "..data.." = '"..key.."' WHERE nick = '"..nick.."';")
 end
 addEvent("addDataToDataBase",true)
 addEventHandler("addDataToDataBase",root,addDataToDataBase)
+
+function removeData()
+	local players = getElementsByType ( "player" )
+	for theKey,thePlayer in ipairs(players) do -- use a generic for loop to step through each player
+		setElementData(thePlayer,"skin",nil)
+		setElementData(thePlayer,"nick",nil)
+		setElementData(thePlayer,"logged",false)
+	end
+end
+addEventHandler("onResourceStop",root,removeData)
