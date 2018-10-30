@@ -53,6 +53,8 @@ function doLogIn(qh, lp, nick, pass)
 				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
 				setElementData(lp, "nick",  nick)
 				setElementData(lp, "logged", true)
+				setElementData(lp, "level",row["level"])
+				setElementData(lp, "exp",row["exp"])
 				fadeCamera(lp, true)
 				setCameraTarget(lp, lp)
 				triggerClientEvent("onPlayerAuth", lp)
@@ -113,7 +115,8 @@ function removeData()
 		setElementData(thePlayer,"skin",nil)
 		setElementData(thePlayer,"nick",nil)
 		setElementData(thePlayer,"logged",false)
-		setElementInterior(thePlayer,0)
+		setElementData(lp, "level",nil)
+		setElementData(lp, "exp",nil)
 	end
 end
 addEventHandler("onResourceStop",root,removeData)
@@ -169,3 +172,23 @@ function onEndRegister( thePlayer, skin )
 end
 addEvent("onClientEndRegister",true)
 addEventHandler("onClientEndRegister",root,onEndRegister)
+
+function onPayDay( )
+	local players = getElementsByType ( "player" ) -- get a table of all the players in the server
+	for k,v in ipairs(ids) do
+		if v == player then
+			if isLogged(player) then
+				triggerClientEvent("outputChatMessage",player,"PAYDAY")
+				setElementData(player,"exp",getElementData(player,"exp")+1)
+				if getElementData(player,"exp")*getElementData(player,"level") >= getElementData(player,"level")*4 then
+					addDataToDataBase(getElementData(player,"nick"),'exp',0)
+					addDataToDataBase(getElementData(player,"nick"),'level',getElementData(player,"level")+1)
+				else
+					addDataToDataBase(getElementData(player,"nick"),'exp',getElementData(player,"exp")+1)
+				end
+			end
+		end
+	end
+end
+addEvent("onPayDay",true)
+addEventHandler("onPayDay",root,onPayDay)
