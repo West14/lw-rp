@@ -31,10 +31,10 @@ function onSignIn(lp, nick, pass)
 				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
 				setElementData(lp, "nick",  nick)
 				fadeCamera(lp, true)
-				setCameraTarget(lp, lp)
 				triggerClientEvent("onPlayerAuth", lp)
-				spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, -50)
-				--showCursor(lp,true)
+				setCameraMatrix(lp, 177.953125,-88.08984375,1002.6156616211,277.91015625,-86.4990234375,1000.1518554688)
+				setElementInterior(lp, 18, 181.3447265625, -88.0458984375, 1002.0307006836)
+				showCursor(lp,true)
 				triggerClientEvent(lp,"setSkin",lp)
 			else
 				triggerClientEvent(lp,"outputError",lp,"Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.")
@@ -113,6 +113,7 @@ function removeData()
 		setElementData(thePlayer,"skin",nil)
 		setElementData(thePlayer,"nick",nil)
 		setElementData(thePlayer,"logged",false)
+		setElementInterior(thePlayer,0)
 	end
 end
 addEventHandler("onResourceStop",root,removeData)
@@ -159,3 +160,12 @@ function getPlayerID(player) -- функция взятия ид из игрок
 end 
 addEventHandler("getPlayerID",root,getPlayerID)
 addEvent("getPlayerID",true)
+
+function onEndRegister( thePlayer, skin )
+	spawnPlayer(thePlayer, 391.658203125, -1524.560546875, 32.266296386719, 50,skin)
+	fadeCamera(thePlayer,true)
+	setCameraTarget(thePlayer,thePlayer)
+	setElementInterior(thePlayer,0)
+end
+addEvent("onClientEndRegister",true)
+addEventHandler("onClientEndRegister",root,onEndRegister)

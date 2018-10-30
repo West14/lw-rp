@@ -1,7 +1,7 @@
 <meta>
-	<info author="Jabka Dev"	type="gamemode" />
+	<info author="Jabka Dev" type="gamemode" />
 	<min_mta_version client="1.3.0-9.04431" />
-	<script src="Server/main.lua"> </script>
+	
 	<script src="Client/main_auth.lua" type="client" />
 	<script src="Client/global_variables.lua" type="client" />
 
@@ -11,4 +11,6 @@
 	<script src="Shared/global_functions.lua" type="shared" />
 
 	<script src="Server/chat_functions.lua" type="shared" />
+
+	<script src="Server/main.lua" type="server"/>
 </meta>
