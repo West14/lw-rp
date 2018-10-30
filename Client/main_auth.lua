@@ -44,7 +44,7 @@ function logIn( button, state ) -- когда игрок жмет на кноп�
 				triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, teaEncode(pass, encKey))
 				setElementData(lp,"logged", true)
 			else
-				outputChatMessage("Неверные данные!")
+				outputError("Неверные данные!")
 			end
 		end
 	end
@@ -58,10 +58,10 @@ function signIn( button, state ) -- когда игрок жмет на кноп
 			if string.find(nick,"_") then
 				triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, teaEncode(pass, encKey))
 			else
-				outputChatMessage("Неверный никнейм!")
+				outputError("Неверный никнейм!")
 			end
 		else
-			outputChatMessage("Неверные данные!")
+			outputError("Неверные данные!")
 		end
 	end
 end
