@@ -118,11 +118,11 @@ function registerClick( button, state, absoluteX, absoluteY )
 	elseif source == registered.button[2] then -- следующий
 		selectedSkin = selectedSkin + 1 -- увеличение выбора
 		if selectedgender == 1 then
-			if selectedSkin >= #male_register_skins then -- если выбор равен или больше массива
+			if selectedSkin > #male_register_skins then -- если выбор больше массива
 				selectedSkin = 1 -- выбранный скин = 1
 			end
 		elseif selectedgender == 2 then
-			if selectedSkin >= #female_register_skins then -- если выбор равен или больше массива
+			if selectedSkin > #female_register_skins then -- если выбор больше массива
 				selectedSkin = 1 -- выбранный скин = 1
 			end
 		end

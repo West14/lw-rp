@@ -13,4 +13,6 @@
 	<script src="Server/chat_functions.lua" type="shared" />
 
 	<script src="Server/main.lua" type="server"/>
+	
+	<map src="Maps/derevyshka.map" dimension="0"></map>
 </meta>

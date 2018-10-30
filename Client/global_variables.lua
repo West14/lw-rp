@@ -68,8 +68,8 @@ function timestamp( )
 	if seconds <= 9 then -- такая же ситуация, как и с часами
 		seconds = "0"..seconds
 	end
-	if minutes == 0 and seconds == 0 then
-		triggerServerEvent("onPayday",lp)
+	if minutes == "00" and seconds == "00" then
+		triggerServerEvent("onPayDay",lp)
 	end
 end
 addEventHandler("onClientRender",root,timestamp)
