@@ -58,7 +58,7 @@ function timestamp( )
 	hours = time.hour
 	minutes = time.minute
 	seconds = time.second
-	setTime(hours, minutes) -- реальное время на сервере
+	-- setTime(hours, minutes) -- реальное время на сервере
 	if hours <= 9 then -- если час меньше двухзначного числа, то автоматически добавляется ноль в начале
 		hours = "0"..hours
 	end
