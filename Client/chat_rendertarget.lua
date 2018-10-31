@@ -65,9 +65,10 @@ function RenderMainTarget()
 end
 addEventHandler("onClientRender" , root, RenderMainTarget)
 
+
 function handleRestore( didClearRenderTargets )
     if didClearRenderTargets then
-        TextFuel()
+        TextFuel() 
     end
 end
 addEventHandler("onClientRestore",root,handleRestore)
