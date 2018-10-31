@@ -7,3 +7,11 @@ end
 function isLogged(thePlayer)
 	return getElementData(thePlayer, "logged")
 end
+
+function realTime() -- спёрто с МТА вики
+    local realtime = getRealTime()
+
+    setTime(realtime.hour, realtime.minute)
+    setMinuteDuration(60000)
+end
+addEventHandler("onResourceStart", getResourceRootElement(), realTime)
