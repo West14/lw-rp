@@ -27,7 +27,7 @@ function onSignIn(lp, nick, pass)
 	isRegistered(nick, 
 		function(state)
 			if state then
-				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password, gender) VALUES(?, ?, 1)", nick, pass)
+				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password) VALUES(?, ?)", nick, pass)
 				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
 				setElementData(lp, "nick",  nick)
 				fadeCamera(lp, true)
