@@ -90,7 +90,7 @@ function isRegistered(nick, callback)
 end
 
 function dbSetup()
-	dbHandle = dbConnect("mysql", "dbname=jabkarp;host=127.0.0.1;charset=utf8", "root", "")
+	dbHandle = dbConnect("mysql", "dbname=jabkarp;host=127.0.0.1;charset=utf8", "jabka", "root")
 	if dbHandle then		
 		outputServerLog("[MySQL] Connection successfull")
 	else
@@ -115,8 +115,8 @@ function removeData()
 		setElementData(thePlayer,"skin",nil)
 		setElementData(thePlayer,"nick",nil)
 		setElementData(thePlayer,"logged",false)
-		setElementData(lp, "level",nil)
-		setElementData(lp, "exp",nil)
+		setElementData(thePlayer, "level",nil)
+		setElementData(thePlayer, "exp",nil)
 	end
 end
 addEventHandler("onResourceStop",root,removeData)
