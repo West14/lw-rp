@@ -43,8 +43,8 @@ function TextScroll(ypos) -- скролл чата
 end
 
 function chatKey( btn, press ) -- когда игрок нажал кнопку
-    if press then -- если нажал
-        if chat_opened == 1 then -- если чат виден
+    if chat_opened == 1 then -- если чат виден
+         if press then -- если нажал
             if btn == "mouse_wheel_up" then -- если кнопка = колёсико вверх
                 yposition = yposition + 17 -- скроллим позицию вверх
                 TextScroll(yposition) -- функция скролла чата
@@ -64,3 +64,10 @@ function RenderMainTarget()
     end
 end
 addEventHandler("onClientRender" , root, RenderMainTarget)
+
+function handleRestore( didClearRenderTargets )
+    if didClearRenderTargets then
+        TextFuel()
+    end
+end
+addEventHandler("onClientRestore",root,handleRestore)

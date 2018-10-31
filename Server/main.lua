@@ -117,6 +117,7 @@ function removeData()
 		setElementData(thePlayer,"logged",false)
 		setElementData(thePlayer, "level",nil)
 		setElementData(thePlayer, "exp",nil)
+		setElementPosition( thePlayer, 0, 0, 0 )
 	end
 end
 addEventHandler("onResourceStop",root,removeData)
