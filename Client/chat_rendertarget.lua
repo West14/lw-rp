@@ -44,7 +44,7 @@ end
 
 function chatKey( btn, press ) -- когда игрок нажал кнопку
     if press then -- если нажал
-        if chat_opened then -- если чат виден
+        if chat_opened == 1 then -- если чат виден
             if btn == "mouse_wheel_up" then -- если кнопка = колёсико вверх
                 yposition = yposition + 17 -- скроллим позицию вверх
                 TextScroll(yposition) -- функция скролла чата
