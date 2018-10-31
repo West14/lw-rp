@@ -58,17 +58,15 @@ end
 addEventHandler("onClientKey", root, chatKey)
 
 
-function RenderMainTarget()
+function dxRenderMainTarget()
     if isElement(renderMainTarget) then
         dxDrawImage(0,0,700,250,renderMainTarget)
     end
 end
-addEventHandler("onClientRender" , root, RenderMainTarget)
+addEventHandler("onClientRender", root, dxRenderMainTarget)
 
 
-function handleRestore( didClearRenderTargets )
-    if didClearRenderTargets then
-        TextFuel() 
-    end
+function handleRestore()
+    TextFuel() 
 end
 addEventHandler("onClientRestore",root,handleRestore)

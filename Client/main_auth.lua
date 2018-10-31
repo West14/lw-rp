@@ -205,6 +205,7 @@ function selectSkin( ) -- выбор скина
 	removeEventHandler("onClientGUIClick",registered.button[3],registerClick)
 	removeEventHandler("onClientGUIClick",registered.radiobutton[1],registerClick)
 	removeEventHandler("onClientGUIClick",registered.radiobutton[2],registerClick)
+	removeEventHandler("onClientRender",root,rotatePed)
 
 	guiSetVisible( registered.button[1], false)
 	guiSetVisible( registered.button[2], false)
