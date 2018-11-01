@@ -39,13 +39,19 @@ function logIn( button, state ) -- когда игрок жмет на кноп�
 	if button == "left" and state == "down" then
 		local nick = DGS:dgsGetText( login )
 		local pass = DGS:dgsGetText( pass ) 
-		if #nick > 1 and #pass > 1 then
-			if string.find(nick,"_") then
-				triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, teaEncode(pass, encKey))
-				setElementData(lp,"logged", true)
-			else
-				outputError("Неверные данные!")
+		local firstLetter = string.sub(nick,1,1)
+		local lastLetter = string.sub(nick,#nick,#nick)
+		if firstLetter and lastLetter ~= "_" then
+			if #nick > 1 and #pass > 1 then
+				if string.find(nick,"_") then
+					triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, teaEncode(pass, encKey))
+					setElementData(lp,"logged", true)
+				else
+					outputError("Неверные данные!")
+				end
 			end
+		else
+			outputError("Неверный никнейм!")
 		end
 	end
 end
@@ -54,14 +60,20 @@ function signIn( button, state ) -- когда игрок жмет на кноп
 	if button == "left" and state == "down" then
 		local nick = DGS:dgsGetText( login )
 		local pass = DGS:dgsGetText( pass ) 
-		if #nick > 1 and #pass > 1 then
-			if string.find(nick,"_") then
-				triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, teaEncode(pass, encKey))
+		local firstLetter = string.sub(nick,1,1)
+		local lastLetter = string.sub(nick,#nick,#nick)
+		if firstLetter and lastLetter ~= "_" then
+			if #nick > 6 and #pass > 6 then
+				if string.find(nick,"_") then
+					triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, teaEncode(pass, encKey))
+				else
+					outputError("Неверный никнейм!")
+				end
 			else
-				outputError("Неверный никнейм!")
+				outputError("Неверные данные!")
 			end
 		else
-			outputError("Неверные данные!")
+			outputError("Неверный никнейм!")
 		end
 	end
 end

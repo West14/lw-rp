@@ -8,6 +8,8 @@
 	<script src="Client/chat_general.lua" type="client" />
 	<script src="Client/chat_rendertarget.lua" type="client" />
 
+	<script src="Client/player_tag.lua" type="client" />
+
 	<script src="Shared/global_functions.lua" type="shared" />
 
 	<script src="Server/chat_functions.lua" type="shared" />

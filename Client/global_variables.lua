@@ -5,6 +5,7 @@
 
 encKey = "c3CKcjgKDGiVfyN8"
 screenW, screenH = guiGetScreenSize() -- get player`s screen size
+global_rendertarget = dxCreateRenderTarget( screenW, screenH, true )
 DGS = exports.dgs -- exports from dgs
 lp = getLocalPlayer() -- локальный игрок
 chat_messages = {} -- сообщения чата
@@ -13,6 +14,8 @@ registered = {
     radiobutton = {}
 }
 yposition = 225
+yposition_new = 0 
+yposition_max = 0
 showChat(false)
 -- регистрация и авторизация
 editWidth = 400

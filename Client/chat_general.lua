@@ -41,7 +41,6 @@ function onPlayerEnterMessage( ... )
 		if (text:sub(1,1) == "/") then -- если текст команда
 			-- LATER
 		else
-			--triggerServerEvent("sendMessage",lp, "msg", lp, "[..hours..:..minutes..:..seconds..] ".."nick".."[ "..'getElementData(lp,"id")'.." ]: "..text)	-- триггерим ивент с сервера, чтобы отправить сообщение
 			triggerServerEvent("sendMessage",lp, "msg",lp, getElementData(lp,"nick").."[ "..getElementData(lp,"id").." ]: "..text)
 		end
 		clearChatBox()
