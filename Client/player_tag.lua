@@ -9,18 +9,7 @@ function dxDrawTextOnElement(TheElement,text,height,distance,R,G,B,alpha,size,fo
 		if(sx) and (sy) then
 			local distanceBetweenPoints = getDistanceBetweenPoints3D(x, y, z, x2, y2, z2)
 			if(distanceBetweenPoints < distance) then
-				dxSetRenderTarget( global_rendertarget, true )
-				dxDrawText ( "#000000"..text, sx+1, sy + 1, sx+1, sy+1, tocolor ( 0, 0, 0, 255 ), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center",false,false,false,true)
-    			dxDrawText ( "#000000"..text, sx+1, sy - 1, sx+1, sy-1, tocolor ( 0, 0, 0, 255 ), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center",false,false,false,true)
-    			dxDrawText ( "#000000"..text, sx-1, sy + 1, sx-1, sy+1, tocolor ( 0, 0, 0, 255 ), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center",false,false,false,true)
-    			dxDrawText ( "#000000"..text, sx-1, sy - 1, sx-1, sy-1, tocolor ( 0, 0, 0, 255 ), (size or 1.2)-(distanceBetweenPoints / distance), "default-bold", "center", "center",false,false,false,true)
-    			dxDrawText ( "#000000"..text, sx-1, sy, sx, sy, tocolor ( 0, 0, 0, 255 ), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center",false,false,false,true)
-   				dxDrawText ( "#000000"..text, sx, sy - 1, sx, sy, tocolor ( 0, 0, 0, 255 ), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center",false,false,false,true)
-    			dxDrawText ( "#000000"..text, sx, sy, sx-1, sy, tocolor ( 0, 0, 0, 255 ), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center",false,false,false,true)
-    			dxDrawText ( "#000000"..text, sx, sy, sx, sy-1, tocolor ( 0, 0, 0, 255 ), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center",false,false,false,true)
-				
-				dxDrawText(text, sx, sy, sx, sy, tocolor(R or 255, G or 255, B or 255, alpha or 255), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center")
-				dxSetRenderTarget( )
+				dxDrawText(text, sx, sy, sx-1, sy-1, tocolor(R or 255, G or 255, B or 255, alpha or 255), (size or 1.2)-(distanceBetweenPoints / distance), font or "default-bold", "center", "center")
 			end
 		end
 	end
@@ -36,8 +25,3 @@ function ()
 		end
 	end
 end)
-
-function dxDrawGlobalRenderTarget( )
-	dxDrawImage( 0, 0, screenW, screenH, global_rendertarget)
-end
-addEventHandler( "onClientRender", getRootElement(), dxDrawGlobalRenderTarget )
