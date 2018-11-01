@@ -20,7 +20,9 @@ function ()
 	for k,v in ipairs(getElementsByType("player")) do
 		if isElementStreamedIn( v ) then
 			if isLogged(v) then
-				dxDrawTextOnElement(v,getElementData( v,"nick").." [ "..getElementData(v,"id").." ]",1,20,255,255,255)
+				if v ~= lp then
+					dxDrawTextOnElement(v,getElementData( v,"nick").." [ "..getElementData(v,"id").." ]",1,20,255,255,255)
+				end
 			end
 		end
 	end
