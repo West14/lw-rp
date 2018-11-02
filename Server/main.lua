@@ -1,9 +1,8 @@
 encKey = "c3CKcjgKDGiVfyN8"
 ids = {} 
-admins = {}
-
 function initScript()
 	dbSetup()
+	table_admins = {}
 end
 
 addEventHandler("onResourceStart", getRootElement(), initScript)
@@ -44,10 +43,10 @@ function onSignIn(lp, nick, pass)
 end
 
 function onPlayerOff( )
-	for i,v in ipairs(admins) do
+	for i,v in pairs(table_admins) do
 		if source == v then
-			table.remove(i)
-			outputDebugString( nick.." администратор вышел из игры.", 0, 255, 76, 91 )
+			table.remove(v)
+			outputDebugString( getElementData(v,"nick").." администратор вышел из игры.", 0, 255, 76, 91 )
 		end
 	end
 end
@@ -66,7 +65,8 @@ function doLogIn(qh, lp, nick, pass)
 				setElementData(lp, "level",row["level"])
 				setElementData(lp, "exp",row["exp"])
 				if row["admin"] > 0 then
-					table.insert(admins,source)
+					table.insert(table_admins,lp)
+					setElementData( lp, "alevel", row["admin"] )
 					outputDebugString( nick.." авторизовался как администратор "..row["admin"].." уровня", 0, 255, 76, 91 )
 				end
 				fadeCamera(lp, true)
@@ -132,6 +132,9 @@ function removeData()
 		setElementData(thePlayer, "level",nil)
 		setElementData(thePlayer, "exp",nil)
 		setElementPosition( thePlayer, 0, 0, 0 )
+		for i=#table_admins,1,-1 do
+			table_admins[i] = nil
+		end
 	end
 end
 addEventHandler("onResourceStop",root,removeData)

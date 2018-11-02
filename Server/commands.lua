@@ -25,10 +25,17 @@ function doAchat(qh,source,args)
 	if result then
 		for _,row in ipairs(result) do
 			if getElementData( source, "nick") == row["nick"] then
-				for theKey, thePlayer in ipairs(admins) do
+				for theKey, thePlayer in pairs(table_admins) do
 					triggerClientEvent( thePlayer, "outputAdminChatMessage", thePlayer, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
 				end
 			end
 		end
+	end
+end
+
+function cmd_admins( args )
+	triggerClientEvent( source,"outputChatMessage", source, "Администраторы в сети:")
+	for k,v in pairs(table_admins) do
+		triggerClientEvent( source,"outputChatMessage", source, getElementData( v, "nick").."( "..getElementData( v, "alevel").. " )")
 	end
 end

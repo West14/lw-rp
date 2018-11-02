@@ -9,7 +9,7 @@ function dxDrawTextOnElement(TheElement,text,height,distance,R,G,B,alpha,size,fo
 		if(sx) and (sy) then
 			local distanceBetweenPoints = getDistanceBetweenPoints3D(x, y, z, x2, y2, z2)
 			if(distanceBetweenPoints < distance) then
-				dxDrawText(text, sx, sy, sx-1, sy-1, tocolor(R or 255, G or 255, B or 255, alpha or 255), size or 1.2, font or "sans", "center", "center")
+				dxDrawText(text, sx, sy, sx-1, sy-1, tocolor(R or 255, G or 255, B or 255, alpha or 255), size or 1.2, font or "default-bold", "center", "center")
 			end
 		end
 	end
