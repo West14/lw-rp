@@ -18,7 +18,7 @@ function cmd_a(args)
 	if args[2] == nil then
 		triggerClientEvent(source, "outputError", source, "Используйте /a [Текст]") 
 	else
-		local qh = dbQuery(doAchat, {source,args}, dbHandle, "SELECT `nick` FROM `accounts` WHERE `admin` > 0")
+		local qh = dbQuery(doAchat, {source,args}, dbHandle, "SELECT `nick`, `admin` FROM `accounts` WHERE `admin` > 0")
 	end
 end
 
@@ -31,7 +31,7 @@ function doAchat(qh,source,args)
 			if getElementData( source, "nick") == row["nick"] then
 				for theKey, thePlayer in ipairs(players) do
 					if getElementData( thePlayer, "nick" ) == row["nick"] then
-						triggerClientEvent( thePlayer, "outputAdminChatMessage", thePlayer, getElementData(source,"nick")..": ", args )
+						triggerClientEvent( thePlayer, "outputAdminChatMessage", thePlayer, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
 					end
 				end
 			else
