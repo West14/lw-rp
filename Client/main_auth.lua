@@ -95,7 +95,7 @@ function onPlayerAuth( ) -- когда игрок авторизовываетс
 	DGS:dgsSetVisible ( pass, false )
 	DGS:dgsSetVisible ( submit, false )
 	DGS:dgsSetVisible ( register, false )
-	setPlayerHudComponentVisible("radar", true)
+	--setPlayerHudComponentVisible("radar", true)
 end
 addEvent("onPlayerAuth",true)
 addEventHandler("onPlayerAuth", root, onPlayerAuth)

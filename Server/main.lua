@@ -193,3 +193,4 @@ function onPayDay( )
 end
 addEvent("onPayDay",true)
 addEventHandler("onPayDay",root,onPayDay)
+

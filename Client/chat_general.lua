@@ -13,9 +13,8 @@ function onPlayerPressKey( btn,press )
 	if isLogged(lp) then
 		if (press) then
 			if btn == "F6" then
-					chatCheck()
-				end
-			else
+				chatCheck()
+			elseif btn == "Y" then
 				if chat_focus == 0 then -- если чат в фокусе(курсор стоит в нём)
 					chatCheck()
 				end
@@ -46,7 +45,8 @@ function onPlayerEnterMessage( ... )
 	local iftext = string.gsub(text,"%s+", "") -- проверка не пустой ли текст без пробелов
 	if #iftext > 0 then
 		if (text:sub(1,1) == "/") then -- если текст команда
-			-- LATER
+			local cmd = split(text:sub(2), " ")
+			triggerServerEvent("sendCommand", lp, cmd)
 		else
 			triggerServerEvent("sendMessage",lp, "msg",lp, getElementData(lp,"nick").."[ "..getElementData(lp,"id").." ]: "..text)
 		end
