@@ -15,27 +15,28 @@ addEventHandler("sendCommand",root, onCommand)
 
 
 function cmd_a(args)
-	local qh = dbQuery(doAchat, {source,args}, dbHandle, "SELECT `nick`, `admin` FROM `accounts` WHERE `admin` > 0")
+	if getAlevel(source) > 0 then
+		local qh = dbQuery(doAchat, {source,args}, dbHandle, "SELECT `nick`, `admin` FROM `accounts` WHERE `admin` > 0")
+	end
 end
 
 function doAchat(qh,source,args)
 	local result = dbPoll( qh, -1 )
-	local players = getElementsByType( "player" )
 	args[1] = nil
 	if result then
 		for _,row in ipairs(result) do
-			if getElementData( source, "nick") == row["nick"] then
-				for theKey, thePlayer in pairs(table_admins) do
-					triggerClientEvent( thePlayer, "outputAdminChatMessage", thePlayer, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
-				end
+			for theKey, thePlayer in pairs(table_admins) do
+				triggerClientEvent( thePlayer, "outputAdminChatMessage", thePlayer, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
 			end
 		end
 	end
 end
 
 function cmd_admins( args )
-	triggerClientEvent( source,"outputChatMessage", source, "Администраторы в сети:")
-	for k,v in pairs(table_admins) do
-		triggerClientEvent( source,"outputChatMessage", source, getElementData( v, "nick").."( "..getElementData( v, "alevel").. " )")
+	if getAlevel(source) > 0 then
+		triggerClientEvent( source,"outputChatMessage", source, "Администраторы в сети:")
+		for k,v in pairs(table_admins) do
+			triggerClientEvent( source,"outputChatMessage", source, getElementData( v, "nick").."( "..getElementData( v, "alevel").. " )")
+		end
 	end
 end

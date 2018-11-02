@@ -64,9 +64,9 @@ function doLogIn(qh, lp, nick, pass)
 				setElementData(lp, "logged", true)
 				setElementData(lp, "level",row["level"])
 				setElementData(lp, "exp",row["exp"])
+				setElementData( lp, "alevel", row["admin"] )
 				if row["admin"] > 0 then
 					table.insert(table_admins,lp)
-					setElementData( lp, "alevel", row["admin"] )
 					outputDebugString( nick.." авторизовался как администратор "..row["admin"].." уровня", 0, 255, 76, 91 )
 				end
 				fadeCamera(lp, true)
@@ -211,3 +211,6 @@ end
 addEvent("onPayDay",true)
 addEventHandler("onPayDay",root,onPayDay)
 
+function getAlevel( player )
+	return getElementData( player, "alevel")
+end
