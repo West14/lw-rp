@@ -15,18 +15,18 @@ addEventHandler("sendCommand",root, onCommand)
 
 
 function cmd_a(args)
-	if getAlevel(source) > 0 then
-		local qh = dbQuery(doAchat, {source,args}, dbHandle, "SELECT `nick`, `admin` FROM `accounts` WHERE `admin` > 0")
-	end
+	local qh = dbQuery(doAchat, {source,args}, dbHandle, "SELECT `nick`, `admin` FROM `accounts` WHERE `admin` > 0")
 end
 
 function doAchat(qh,source,args)
-	local result = dbPoll( qh, -1 )
-	args[1] = nil
-	if result then
-		for _,row in ipairs(result) do
-			for theKey, thePlayer in pairs(table_admins) do
-				triggerClientEvent( thePlayer, "outputAdminChatMessage", thePlayer, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
+	if getAlevel(source) > 0 then
+		local result = dbPoll( qh, -1 )
+		args[1] = nil
+		if result then
+			for _,row in ipairs(result) do
+				for theKey, thePlayer in pairs(table_admins) do
+					triggerClientEvent( thePlayer, "outputAdminChatMessage", thePlayer, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
+				end
 			end
 		end
 	end
