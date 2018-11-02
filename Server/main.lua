@@ -1,5 +1,6 @@
 encKey = "c3CKcjgKDGiVfyN8"
 ids = {} 
+admins = {}
 
 function initScript()
 	dbSetup()
@@ -36,12 +37,21 @@ function onSignIn(lp, nick, pass)
 				setElementInterior(lp, 18, 181.3447265625, -88.0458984375, 1002.0307006836)
 				showCursor(lp,true)
 				triggerClientEvent(lp,"setSkin",lp)
-			else
 				triggerClientEvent(lp,"outputError",lp,"Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.")
 			end
 		end
 	)
 end
+
+function onPlayerOff( )
+	for i,v in ipairs(admins) do
+		if source == v then
+			table.remove(i)
+			outputDebugString( nick.." администратор вышел из игры.", 0, 255, 76, 91 )
+		end
+	end
+end
+addEventHandler( "onPlayerQuit", getRootElement(), onPlayerOff )
 
 function doLogIn(qh, lp, nick, pass)
 	local result = dbPoll(qh, 0)
@@ -55,6 +65,10 @@ function doLogIn(qh, lp, nick, pass)
 				setElementData(lp, "logged", true)
 				setElementData(lp, "level",row["level"])
 				setElementData(lp, "exp",row["exp"])
+				if row["admin"] > 0 then
+					table.insert(admins,source)
+					outputDebugString( nick.." авторизовался как администратор "..row["admin"].." уровня", 0, 255, 76, 91 )
+				end
 				fadeCamera(lp, true)
 				setCameraTarget(lp, lp)
 				triggerClientEvent("onPlayerAuth", lp)
