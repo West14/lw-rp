@@ -57,7 +57,7 @@ function doLogIn(qh, lp, nick, pass)
 	if result then
 		for _, row in ipairs(result) do
 			if pass ~= row["password"] then
-				triggerClientEvent(lp,"outputError",lp,"Неверные данные.")
+				triggerClientEvent(lp,"outputError",lp,"Неверные пароль.")
 			else
 				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
 				setElementData(lp, "nick",  nick)

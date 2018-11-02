@@ -1,5 +1,10 @@
 function onCommand(cmd)
-	assert(loadstring("cmd_" .. cmd[1] .. "(...)"))(cmd)
+	local func = "cmd_" .. cmd[1]
+	if _G[func] then
+		assert(loadstring(func .. "(...)"))(cmd)
+	else
+		triggerClientEvent(source, "outputError", source, "Команда не найдена")
+	end
 end
 
 function cmd_help(args)
