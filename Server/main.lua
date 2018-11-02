@@ -45,7 +45,7 @@ end
 function onPlayerOff( )
 	for i,v in pairs(table_admins) do
 		if source == v then
-			table.remove(v)
+			table.remove(table_admins,i)
 			outputDebugString( getElementData(v,"nick").." администратор вышел из игры.", 0, 255, 76, 91 )
 		end
 	end

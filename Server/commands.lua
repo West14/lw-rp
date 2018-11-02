@@ -19,24 +19,21 @@ function cmd_a(args)
 end
 
 function doAchat(qh,source,args)
-	if getAlevel(source) > 0 then
-		local result = dbPoll( qh, -1 )
-		args[1] = nil
-		if result then
-			for _,row in ipairs(result) do
-				for theKey, thePlayer in pairs(table_admins) do
-					triggerClientEvent( thePlayer, "outputAdminChatMessage", thePlayer, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
-				end
+	local result = dbPoll( qh, -1 )
+	local players = getElementsByType( "player" )
+	args[1] = nil
+	if result then
+		for _,row in ipairs(result) do
+			if getElementData( source, "nick") == row["nick"] then
+				triggerClientEvent( table_admins, "outputAdminChatMessage", source, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
 			end
 		end
 	end
 end
 
 function cmd_admins( args )
-	if getAlevel(source) > 0 then
-		triggerClientEvent( source,"outputChatMessage", source, "Администраторы в сети:")
-		for k,v in pairs(table_admins) do
-			triggerClientEvent( source,"outputChatMessage", source, getElementData( v, "nick").."( "..getElementData( v, "alevel").. " )")
-		end
+	triggerClientEvent( source,"outputChatMessage", source, "Администраторы в сети:")
+	for k,v in pairs(table_admins) do
+		triggerClientEvent( source,"outputChatMessage", source, getElementData( v, "nick").."( "..getElementData( v, "alevel").. " )")
 	end
 end
