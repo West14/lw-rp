@@ -60,7 +60,7 @@ addEventHandler("onClientKey", root, chatKey)
 
 function dxRenderMainTarget()
     if isElement(renderMainTarget) then
-        dxDrawImage(0,0,700,250,renderMainTarget)
+        dxDrawImage(0,0,700,250,renderMainTarget, 0, 0, 0, tocolor(255,255,255,255), true)
     end
 end
 addEventHandler("onClientRender", root, dxRenderMainTarget)
