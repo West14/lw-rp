@@ -11,6 +11,8 @@
 
 	<script src="Client/player_tag.lua" type="client" />
 
+	<script src="Client/afk_system.lua" type="client" />
+
 	<script src="Shared/global_functions.lua" type="shared" />
 	<script src="Server/commands.lua" type="server" />
 
