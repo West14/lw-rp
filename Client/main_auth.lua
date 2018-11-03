@@ -11,7 +11,7 @@ function onStart( )
     setBlurLevel(0)
     setPlayerHudComponentVisible("area_name", false)
     setPlayerHudComponentVisible("radar", false)
-    setPlayerNametagShowing(false)
+    setPlayerNametagShowing(lp, false)
 end
 addEventHandler("onClientResourceStart",root,onStart)
 
