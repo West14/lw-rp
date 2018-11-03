@@ -36,6 +36,7 @@ function onSignIn(lp, nick, pass)
 				setElementInterior(lp, 18, 181.3447265625, -88.0458984375, 1002.0307006836)
 				showCursor(lp,true)
 				triggerClientEvent(lp,"setSkin",lp)
+			else
 				triggerClientEvent(lp,"outputError",lp,"Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.")
 			end
 		end
