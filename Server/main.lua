@@ -152,6 +152,11 @@ function assignID() -- перебирает ид, когда игрок подк
     end 
 end 
 addEventHandler("onPlayerJoin",root,assignID) 
+
+function removeNick() 
+    setPlayerNametagShowing ( source, false ) 
+end 
+addEventHandler ("onPlayerJoin", root, removeNick) 
   
 function startup() -- когда ресурс запускается, то сервер проверяет игроков на наличие данных ид в игроке.
     for k, v in ipairs(getElementsByType("player")) do 
