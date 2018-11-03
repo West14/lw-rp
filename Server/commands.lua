@@ -3,15 +3,7 @@ function onCommand(cmd)
 	if _G[func] then
 		assert(loadstring(func .. "(...)"))(cmd)
 	else
-		triggerClientEvent(source, "outputError", source, "Команда не найдена")
-	end
-end
-
-function cmd_help(args)
-	if args[2] == nil or args[3] == nil then 
-		triggerClientEvent(source, "outputError", source, "Используйте /help [arg1] [arg2]") 
-	else
-		triggerClientEvent(source, "outputSuccess", source, "Вы ввели команду /help " .. args[2] .. " " .. args[3])
+		triggerClientEvent(lp, "outputChatMessage", lp, "Команда не найдена.", "#990000")
 	end
 end
 
@@ -44,9 +36,14 @@ function cmd_admins( args )
 end
 
 function cmd_me(args)
+	args[1] = nil
+	local msg = ""
+	for i, theMsg in pairs(args) do
+		msg = msg.." "..theMsg
+	end
 	if args[2] == nil then
 		triggerClientEvent(source, "outputChatMessage", source, "Используйте /me [действие]", "#990000")
 	else
-		triggerClientEvent(source, "outputChatMessage", source, getElementData(source, "nick") .. " " .. args[2], "#D667FF")
+		triggerClientEvent(source, "outputChatMessage", source, getElementData(source, "nick") .. msg, "#D667FF")
 	end
 end
