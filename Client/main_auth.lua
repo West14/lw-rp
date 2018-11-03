@@ -58,7 +58,7 @@ function signIn( button, state ) -- когда игрок жмет на кноп
 		local pass = DGS:dgsGetText( pass ) 
 		if nick:find("^%u%l+_%u%l+$") then
 			if #pass > 6 and #nick > 6 then
-				triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, teaEncode(pass, encKey))
+				triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, teaEncode(pass, encKey))
 			else
 				outputError("Длина никнейма и пароля должна быть больше 6 символов.")
 			end
