@@ -72,7 +72,7 @@ function doLogIn(qh, lp, nick, pass)
 				end
 				fadeCamera(lp, true)
 				setCameraTarget(lp, lp)
-				triggerClientEvent("onPlayerAuth", lp)
+				triggerClientEvent(lp,"onPlayerAuth", lp)
 				spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50, row["skin"])
 				showCursor(lp,false)
 			end
