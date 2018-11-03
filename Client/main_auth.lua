@@ -44,10 +44,10 @@ function logIn( button, state ) -- когда игрок жмет на кноп�
 			if #pass > 1 then
 				triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, teaEncode(pass, encKey))
 			else
-				outputError("Введите пароль.")
+				outputChatMessage("Введите пароль.")
 			end
 		else
-			outputError("Введите никнейм в формате Имя_Фамилия.")
+			outputChatMessage("Введите никнейм в формате Имя_Фамилия.")
 		end
 	end
 end
@@ -60,10 +60,10 @@ function signIn( button, state ) -- когда игрок жмет на кноп
 			if #pass > 6 and #nick > 6 then
 				triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, teaEncode(pass, encKey))
 			else
-				outputError("Длина никнейма и пароля должна быть больше 6 символов.")
+				outputChatMessage("Длина никнейма и пароля должна быть больше 6 символов.")
 			end
 		else
-			outputError("Введите никнейм в формате Имя_Фамилия.")
+			outputChatMessage( "Введите никнейм в формате Имя_Фамилия." )
 		end
 	end
 end
@@ -85,6 +85,7 @@ function onPlayerAuth( ) -- когда игрок авторизовываетс
 	DGS:dgsSetVisible ( pass, false )
 	DGS:dgsSetVisible ( submit, false )
 	DGS:dgsSetVisible ( register, false )
+	removeEventHandler( "onClientRender", getRootElement(), Blur.render )
 	--setPlayerHudComponentVisible("radar", true)
 end
 addEvent("onPlayerAuth",true)
