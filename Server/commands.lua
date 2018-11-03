@@ -3,7 +3,7 @@ function onCommand(cmd)
 	if _G[func] then
 		assert(loadstring(func .. "(...)"))(cmd)
 	else
-		triggerClientEvent(lp, "outputChatMessage", lp, "Команда не найдена.", "#990000")
+		triggerClientEvent(source, "outputChatMessage", source, "Команда не найдена.", "#990000")
 	end
 end
 
