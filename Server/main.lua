@@ -14,7 +14,7 @@ function onLogIn(lp, nick, pass)
 	isRegistered(nick, 
 		function(state)
 			if state then
-				triggerClientEvent(lp,"outputError",lp,"Аккаунт с таким никнеймом не найден, пожалуйста зарегистрируйтесь.")
+				triggerClientEvent(lp, "outputChatMessage", lp, "Аккаунт с таким никнеймом не найден, пожалуйста зарегистрируйтесь.", "#990000")
 			else
 				local qh = dbQuery(doLogIn, {lp, nick, pass}, dbHandle, "SELECT * FROM `accounts` WHERE `nick` = ?", nick)
 			end
@@ -37,7 +37,7 @@ function onSignIn(lp, nick, pass)
 				showCursor(lp,true)
 				triggerClientEvent(lp,"setSkin",lp)
 			else
-				triggerClientEvent(lp,"outputError",lp,"Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.")
+				triggerClientEvent(lp, "outputChatMessage", lp, "Аккаунт с таким никнеймом уже зарегистрирован, используйте другой.", "#990000")
 			end
 		end
 	)
@@ -58,7 +58,7 @@ function doLogIn(qh, lp, nick, pass)
 	if result then
 		for _, row in ipairs(result) do
 			if pass ~= row["password"] then
-				triggerClientEvent(lp,"outputError",lp,"Неверные пароль.")
+				triggerClientEvent(lp, "outputChatMessage", lp, "Неверный пароль.", "#990000")
 			else
 				triggerClientEvent(lp, "outputChatMessage", lp, "Добро пожаловать, " .. nick, "#FFFFFF")
 				setElementData(lp, "nick",  nick)
@@ -78,7 +78,7 @@ function doLogIn(qh, lp, nick, pass)
 			end
 		end
 	else
-		triggerClientEvent(lp,"outputError",lp,"Произошла непредвиденная ошибка. Попробуйте ещё раз.")
+		triggerClientEvent(lp, "outputChatMessage", lp, "Произошла непредвиденная ошибка. Попробуйте ещё раз.", "#990000")
 	end
 end
 
