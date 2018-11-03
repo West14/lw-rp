@@ -28,7 +28,7 @@ function onSignIn(lp, nick, pass)
 		function(state)
 			if state then
 				dbExec(dbHandle, "INSERT INTO `accounts`(nick, password) VALUES(?, ?)", nick, pass)
-				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
+				triggerClientEvent(lp, "outputChatMessage", lp, "Добро пожаловать, " .. nick, "#D667FF")
 				setElementData(lp, "nick",  nick)
 				fadeCamera(lp, true)
 				triggerClientEvent("onPlayerAuth", lp)
@@ -60,7 +60,7 @@ function doLogIn(qh, lp, nick, pass)
 			if pass ~= row["password"] then
 				triggerClientEvent(lp,"outputError",lp,"Неверные пароль.")
 			else
-				triggerClientEvent(lp,"outputSuccess",lp,"Добро пожаловать, " .. nick)
+				triggerClientEvent(lp, "outputChatMessage", lp, "Добро пожаловать, " .. nick, "#FFFFFF")
 				setElementData(lp, "nick",  nick)
 				setElementData(lp, "logged", true)
 				setElementData(lp, "level",row["level"])

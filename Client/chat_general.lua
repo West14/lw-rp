@@ -65,7 +65,10 @@ function chat_onDGSBlur()
 end
 
 function outputChatMessage( msg, hexColor ) -- написать сообщение
-	table.insert(chat_messages,hexColor or "#FFFFFF".."[ "..hours..":"..minutes..":"..seconds.." ] "..msg) -- исёртим сообщение в таблицу
+	if hexColor == nil then
+		hexColor = "#FFFFFF"
+	end
+	table.insert(chat_messages,hexColor .. "[ "..hours..":"..minutes..":"..seconds.." ] "..msg) -- исёртим сообщение в таблицу
 	TextFuel() -- отрисовываем чат
 end
 addEvent("outputChatMessage",true) -- добавляем ивент для триггера с серверной части
@@ -79,7 +82,7 @@ function outputAdminChatMessage( msgNick, msg )
 	outputChatMessage("[ Admin Chat ]: "..msgNick..message,"#ADFF2F")
 end
 addEvent( "outputAdminChatMessage",true)
-addEventHandler( "outputAdminChatMessage", root, outputAdminChatMessage)	
+addEventHandler( "outputAdminChatMessage", root, outputAdminChatMessage)
 
 
 function clearChatBox( )

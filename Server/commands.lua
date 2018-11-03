@@ -42,3 +42,11 @@ function cmd_admins( args )
 		triggerClientEvent( source,"outputChatMessage", source, getElementData( v, "nick").."( "..getElementData( v, "alevel").. " )")
 	end
 end
+
+function cmd_me(args)
+	if args[2] == nil then
+		triggerClientEvent(source, "outputChatMessage", source, "Используйте /me [действие]", "#990000")
+	else
+		triggerClientEvent(source, "outputChatMessage", source, getElementData(source, "nick") .. " " .. args[2], "#D667FF")
+	end
+end
