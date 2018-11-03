@@ -40,7 +40,7 @@ end
 addEventHandler( "onClientResourceStart", getRootElement(), Blur.createShader )
 
 function Blur.render()
-	alpha, strength = 255, 3
+	alpha, strength = 255, 1
 	-- Update screen source
 	dxUpdateScreenSource(screenSource, true)
 	
