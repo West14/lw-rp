@@ -32,12 +32,34 @@ function chatCheck( )
 		DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
 		chat_focus = 1
 		showCursor(true)
+		addEventHandler( "onClientRender", getRootElement(), openRender )
+		alpha = 0
 	elseif chat_opened == 1 then -- если чат открыт
 		removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
+		addEventHandler( "onClientRender", getRootElement(), closeRender )
+		removeEventHandler( "onClientRender", getRootElement(), openRender )
 		chat_opened = 0
 		DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
 		showCursor(false)
 	end
+end
+
+function openRender()
+	if alpha < 255 then
+		alpha = alpha + 1,5
+	end
+	Blur.render(alpha)
+end
+
+function closeRender()
+	if alpha > 0 then
+		alpha = alpha - 1,5
+	elseif alpha == 0 then
+		outputDebugString( "bad")
+		removeEventHandler( "onClientRender", getRootElement(), closeRender )
+	end
+	outputDebugString( "ok" )
+	Blur.render(alpha)
 end
 
 function onPlayerEnterMessage( ... )
