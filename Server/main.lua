@@ -225,6 +225,6 @@ end
 
 addEventHandler("onPlayerWasted", root, 
 	function()
-		spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50, getElementData(source, "skin"))
+		setTimer(spawnPlayer, 2000, 1, source, 391.658203125, -1524.560546875, 32.266296386719, 50, getElementData(source, "skin"))
 	end
-	)
+)
