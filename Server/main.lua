@@ -65,7 +65,8 @@ function doLogIn(qh, lp, nick, pass)
 				setElementData(lp, "logged", true)
 				setElementData(lp, "level",row["level"])
 				setElementData(lp, "exp",row["exp"])
-				setElementData( lp, "alevel", row["admin"] )
+				setElementData(lp, "alevel", row["admin"] )
+				setElementData(lp, "skin", row["skin"])
 				if row["admin"] > 0 then
 					table.insert(table_admins,lp)
 					outputDebugString( nick.." авторизовался как администратор "..row["admin"].." уровня", 0, 255, 76, 91 )
@@ -189,6 +190,7 @@ addEventHandler("getPlayerID",root,getPlayerID)
 addEvent("getPlayerID",true)
 
 function onEndRegister( thePlayer, skin )
+	setElementData(thePlayer, "skin", skin)
 	spawnPlayer(thePlayer, 391.658203125, -1524.560546875, 32.266296386719, 50,skin)
 	fadeCamera(thePlayer,true)
 	setCameraTarget(thePlayer,thePlayer)
@@ -220,3 +222,9 @@ addEventHandler("onPayDay",root,onPayDay)
 function getAlevel( player )
 	return getElementData( player, "alevel")
 end
+
+addEventHandler("onPlayerWasted", root, 
+	function()
+		spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50, getElementData(source, "skin"))
+	end
+	)
