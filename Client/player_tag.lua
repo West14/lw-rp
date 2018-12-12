@@ -22,6 +22,11 @@ function ()
 			if isLogged(v) and getElementData(v,"id")  then
 				if v ~= lp then
 					dxDrawTextOnElement(v,getElementData( v,"nick").." [ "..getElementData(v,"id").." ]",1,20,255,255,255)
+					afktime = getElementData( v, "afktime")
+					if afktime ~= nil then
+						afktime = math.floor((getTickCount() - afktime) / 1000)
+						dxDrawTextOnElement(v,"AFK ".. afktime .. " секунд",1.5,219, 219, 219)
+					end
 				end
 			end
 		end

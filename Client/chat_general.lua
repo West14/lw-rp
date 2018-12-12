@@ -55,10 +55,8 @@ function closeRender()
 	if alpha > 0 then
 		alpha = alpha - 1,5
 	elseif alpha == 0 then
-		outputDebugString( "bad")
 		removeEventHandler( "onClientRender", getRootElement(), closeRender )
 	end
-	outputDebugString( "ok" )
 	Blur.render(alpha)
 end
 
@@ -73,6 +71,8 @@ function onPlayerEnterMessage( ... )
 			triggerServerEvent("sendMessage",lp, "msg",lp, getElementData(lp,"nick").."[ "..getElementData(lp,"id").." ]: "..text)
 		end
 		clearChatBox()
+		addEventHandler( "onClientRender", getRootElement(), closeRender )
+		removeEventHandler( "onClientRender", getRootElement(), openRender )
 	end
 end
 
