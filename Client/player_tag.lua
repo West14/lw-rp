@@ -15,6 +15,14 @@ function dxDrawTextOnElement(TheElement,text,height,distance,R,G,B,alpha,size,fo
 	end
 end
 
+function dxDrawLinedRectangle( x, y, width, height, color, _width, postGUI )
+	_width = _width or 1
+	dxDrawLine ( x, y, x+width, y, color, _width, postGUI ) -- Top
+	dxDrawLine ( x, y, x, y+height, color, _width, postGUI ) -- Left
+	dxDrawLine ( x, y+height, x+width, y+height, color, _width, postGUI ) -- Bottom
+	return dxDrawLine ( x+width, y, x+width, y+height, color, _width, postGUI ) -- Right
+end
+
 addEventHandler("onClientRender", getRootElement(), 
 function ()
 	for k,v in ipairs(getElementsByType("player")) do
@@ -49,9 +57,13 @@ function ()
 						local sx, sy = getScreenFromWorldPosition(x, y, z+height)
 						if(sx) and (sy) then
 							local distanceBetweenPoints = getDistanceBetweenPoints3D(x, y, z, x2, y2, z2)
-							if(distanceBetweenPoints < distance) then							
-								dxDrawRectangle(sx / 1.06, sy+15, getPedArmor(v), screenH * 0.01, tocolor(225, 227, 232))
-								dxDrawRectangle(sx / 1.06, sy/1.01, getElementHealth(v), screenH * 0.01, tocolor(255, 0, 0))
+							if(distanceBetweenPoints < distance) then													
+								dxDrawRectangle(sx / 1.0625, sy/1.02, getPedArmor(v), screenH * 0.01, tocolor(225, 227, 232))
+								dxDrawRectangle(sx / 1.0625, sy/0.99, getElementHealth(v), screenH * 0.01, tocolor(255, 0, 0))
+								dxDrawLinedRectangle(sx / 1.0625, sy/0.99, 100, screenH * 0.01, tocolor(0,0,0), 2, false)
+								if (getPedArmor(v) > 0) then
+									dxDrawLinedRectangle(sx / 1.0625, sy/1.02, 100, screenH * 0.01, tocolor(0,0,0), 2, false)
+								end
 							end
 						end
 					end
