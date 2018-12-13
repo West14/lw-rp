@@ -47,3 +47,14 @@ function cmd_me(args)
 		triggerClientEvent(source, "outputChatMessage", source, getElementData(source, "nick") .. msg, "#D667FF")
 	end
 end
+
+function cmd_makeleader(args)
+	args[1] = nil
+	player = args[2]
+	if type(player) == "number" then
+		local player = getPlayerByID(player)
+	end 
+	setPlayerLeader(player, tonumber(args[3]) )
+	triggerClientEvent( source,"outputChatMessage", source, "Вы назначили "..getElementData(player, "nick").." на пост лидера "..Fraction_list[fr_id])
+	triggerClientEvent( player,"outputChatMessage", source, "Вы были назначены на пост лидера "..Fraction_list[fr_id])
+end
