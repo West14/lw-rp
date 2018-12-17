@@ -10,6 +10,8 @@ function onStart( )
     fadeCamera(true)
     setBlurLevel(0)
     setPlayerHudComponentVisible("area_name", false)
+    showPlayerHudComponent("health", false)
+    showPlayerHudComponent("armour", false)
     setPlayerHudComponentVisible("radar", false)
 end
 addEventHandler("onClientResourceStart",root,onStart)

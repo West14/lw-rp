@@ -61,7 +61,6 @@ function timestamp( )
 	hours = time.hour
 	minutes = time.minute
 	seconds = time.second
-	-- setTime(hours, minutes) -- реальное время на сервере
 	if hours <= 9 then -- если час меньше двухзначного числа, то автоматически добавляется ноль в начале
 		hours = "0"..hours
 	end
@@ -70,9 +69,6 @@ function timestamp( )
 	end
 	if seconds <= 9 then -- такая же ситуация, как и с часами
 		seconds = "0"..seconds
-	end
-	if minutes == "00" and seconds == "00" then
-		triggerServerEvent("onPayDay",lp)
 	end
 end
 addEventHandler("onClientRender",root,timestamp)

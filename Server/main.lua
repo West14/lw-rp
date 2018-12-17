@@ -1,5 +1,5 @@
 encKey = "c3CKcjgKDGiVfyN8"
-ids = {} 
+ids = {}
 function initScript()
 	dbSetup()
 	table_admins = {}
@@ -67,6 +67,8 @@ function doLogIn(qh, lp, nick, pass)
 				setElementData(lp, "exp",row["exp"])
 				setElementData(lp, "alevel", row["admin"] )
 				setElementData(lp, "skin", row["skin"])
+				setElementData(lp, "fraction", row["fraction"])
+				setElementData(lp, "leader", row["leader"])
 				if row["admin"] > 0 then
 					table.insert(table_admins,lp)
 					outputDebugString( nick.." авторизовался как администратор "..row["admin"].." уровня", 0, 255, 76, 91 )
@@ -74,7 +76,14 @@ function doLogIn(qh, lp, nick, pass)
 				fadeCamera(lp, true)
 				setCameraTarget(lp, lp)
 				triggerClientEvent(lp,"onPlayerAuth", lp)
-				spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50, row["skin"])
+				fraction = row["fraction"]
+				if fraction > 0 then
+					pos = ipairs(Fraction_spawn[fraction]["x"],Fraction_spawn[fraction]["y"],Fraction_spawn[fraction]["z"])
+					spawnPlayer(lp, pos, , pos.z, 50, row["skin"])
+				else
+					spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50, row["skin"])
+				end
+				
 				showCursor(lp,false)
 			end
 		end
@@ -188,6 +197,22 @@ function getPlayerID(player) -- функция взятия ид из игрок
 end 
 addEventHandler("getPlayerID",root,getPlayerID)
 addEvent("getPlayerID",true)
+
+function getPlayer( player )
+	if type(player) == "number" then
+		return getPlayerByID(player)
+	elseif isElement( player ) then
+		return player
+	end
+end
+
+function getPlayerByNick( nick )
+	for k, v in ipairs(getElementsByType("player")) do 
+	    if getElementData(v,"nick") == nick then
+	      	return v
+	    end
+    end 
+end
 
 function onEndRegister( thePlayer, skin )
 	setElementData(thePlayer, "skin", skin)

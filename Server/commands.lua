@@ -51,10 +51,33 @@ end
 function cmd_makeleader(args)
 	args[1] = nil
 	player = args[2]
-	if type(player) == "number" then
-		local player = getPlayerByID(player)
+	player_leader = false
+	fr_id = tonumber(args[3])
+	player_id = tonumber(args[2])
+	if type(player_id) == "number" then
+		player = getPlayerByID(player_id)
+		player_nick = getElementData( player, "nick")
+	else
+		player_nick = player
+		player = getPlayerByNick(player_nick)
 	end 
-	setPlayerLeader(player, tonumber(args[3]) )
-	triggerClientEvent( source,"outputChatMessage", source, "Вы назначили "..getElementData(player, "nick").." на пост лидера "..Fraction_list[fr_id])
-	triggerClientEvent( player,"outputChatMessage", source, "Вы были назначены на пост лидера "..Fraction_list[fr_id])
+	setPlayerLeader(player,fr_id)
+	if fr_id > 0 then
+		triggerClientEvent( source,"outputChatMessage", source, "Вы назначили "..player_nick.." на пост лидера "..Fraction_list[fr_id])
+		triggerClientEvent( player,"outputChatMessage", player, "Вы были назначены на пост лидера "..Fraction_list[fr_id])
+		player_leader = true
+	else
+		triggerClientEvent( source,"outputChatMessage", source, "Вы сняли с поста лидера игрока "..player_nick)
+		triggerClientEvent( player,"outputChatMessage", player, "Вы были сняты с поста лидера")
+	end
+	dbExec(dbHandle,"UPDATE `accounts` SET `fraction` = ?, `leader` = '?' WHERE `accounts`.`nick` = ?", fr_id,player_leader,player_nick)
+end
+
+function cmd_checkleader()
+	local frac_id = getElementData(source,"leader")
+	if frac_id == nil or frac_id == false then 
+		triggerClientEvent( source, "outputChatMessage", source, "Вы не лидер")
+	elseif frac_id >= 1 then
+		triggerClientEvent( source, "outputChatMessage", source, "Вы лидер "..Fraction_list[frac_id])
+	end
 end
