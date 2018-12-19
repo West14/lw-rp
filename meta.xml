@@ -6,6 +6,9 @@
 	<script src="Client/global_variables.lua" type="client" />
 
 	<script src="Client/chat_general.lua" type="client" />
+
+	<script src="Client/pop-ups.lua" type="client" />
+
 	<script src="Client/chat_blur.lua" type="client" />
 	<script src="Client/chat_rendertarget.lua" type="client" />
 
@@ -27,6 +30,7 @@
 	<map src="Maps/derevyshka.map" dimension="0"></map>
 
 	<file src="Images/radar_map.jpg" />
+	<file src="Images/bg_gradient.jpg" />
 	<file src="Images/player.png" type="client"></file>
 
 	<file src="Shaders/chat_blur.c" type="client" />

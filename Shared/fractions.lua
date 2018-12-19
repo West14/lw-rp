@@ -4,15 +4,8 @@ Fraction_list = {
 }
 Fraction_spawn = {
 	[1] = {
-		["x"] = {391.658203125},
-		["y"] = {-1524.560546875},
-		["z"] = {52.266296386719}
-	},
-	[2] = {
-		["x"] = {0},
-		["y"] = {0},
-		["z"] = {0}
-	}
+		Vector3(391.658203125,-1524.560546875,52.266296386719),0},
+	[2] = Vector3(0,0,0)
 }
 
 function setPlayerLeader(player, fr_id )
@@ -28,10 +21,20 @@ function getPlayerFraction(player)
 	return getElementData( player, "fraction")
 end
 
-function fraction_invite()
-	-- body
+function isLeader( player )
+	return getElementData( player, "leader")
+end
+
+function fraction_invite(player,rank)
+	if isLeader(lp) then
+		if type(player) == "player" then
+			if rank > 0 then
+				setElementData( player, "fraction", getElementData(source,"fraction"))
+			end
+		end
+	end
 end
 
 function fraction_uninvite()
-	-- body
-end
+	-- bodys
+end 

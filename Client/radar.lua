@@ -71,20 +71,22 @@ local function getRadarRadius()
     if not isPedInVehicle(lp) then
         return minDist
     else
-        local theVehicle = getPedOccupiedVehicle ( lp )
-        if getVehicleType(theVehicle) == "Plane" then
-            return maxDist
+        local theVehicle = getPedOccupiedVehicle( lp )
+        if theVehicle then
+            if getVehicleType(theVehicle) == "Plane" then
+                return maxDist
+            end
+            local speed = getElementVelocity(theVehicle)
+            if speed <= minVel then
+                return minDist
+            elseif speed >= maxVel then
+                return maxDist
+            end
+            local streamDistance = speed - minVel
+            streamDistance = streamDistance * ratio
+            streamDistance = streamDistance + minDist
+            return math.ceil(streamDistance)
         end
-        local speed = getElementVelocity(theVehicle)
-        if speed <= minVel then
-            return minDist
-        elseif speed >= maxVel then
-            return maxDist
-        end
-        local streamDistance = speed - minVel
-        streamDistance = streamDistance * ratio
-        streamDistance = streamDistance + minDist
-        return math.ceil(streamDistance)
     end
 end
 

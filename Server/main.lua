@@ -78,8 +78,8 @@ function doLogIn(qh, lp, nick, pass)
 				triggerClientEvent(lp,"onPlayerAuth", lp)
 				fraction = row["fraction"]
 				if fraction > 0 then
-					pos = ipairs(Fraction_spawn[fraction]["x"],Fraction_spawn[fraction]["y"],Fraction_spawn[fraction]["z"])
-					spawnPlayer(lp, pos, , pos.z, 50, row["skin"])
+					spawnPlayer(lp, Fraction_spawn[fraction][1], 50, row["skin"])
+					setElementInterior(lp,Fraction_spawn[fraction][2])
 				else
 					spawnPlayer(lp, 391.658203125, -1524.560546875, 32.266296386719, 50, row["skin"])
 				end

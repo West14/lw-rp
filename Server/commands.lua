@@ -81,3 +81,7 @@ function cmd_checkleader()
 		triggerClientEvent( source, "outputChatMessage", source, "Вы лидер "..Fraction_list[frac_id])
 	end
 end
+
+function cmd_pc()
+	triggerClientEvent( source, "createPopUp", source,"TEST",5)
+end
