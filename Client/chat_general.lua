@@ -3,6 +3,7 @@ DGS:dgsSetVisible(chatBox,false)
 DGS:dgsEditSetMaxLength ( chatBox, 62 )
 chat_opened = 0
 chat_focus = 0
+chat_mouse = 0
 chat_entries = {} 
 function openChat( )
 	dxDrawRectangle(10, 265, 479, 34, tocolor(55, 55, 55, 255), false)
@@ -32,32 +33,13 @@ function chatCheck( )
 		DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
 		chat_focus = 1
 		showCursor(true)
-		addEventHandler( "onClientRender", getRootElement(), openRender )
 		alpha = 0
 	elseif chat_opened == 1 then -- если чат открыт
 		removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
-		addEventHandler( "onClientRender", getRootElement(), closeRender )
-		removeEventHandler( "onClientRender", getRootElement(), openRender )
 		chat_opened = 0
 		DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
 		showCursor(false)
 	end
-end
-
-function openRender()
-	if alpha < 255 then
-		alpha = alpha + 1,5
-	end
-	Blur.render(alpha)
-end
-
-function closeRender()
-	if alpha > 0 then
-		alpha = alpha - 1,5
-	elseif alpha == 0 then
-		removeEventHandler( "onClientRender", getRootElement(), closeRender )
-	end
-	Blur.render(alpha)
 end
 
 function onPlayerEnterMessage( ... )
@@ -68,11 +50,9 @@ function onPlayerEnterMessage( ... )
 			local cmd = split(text:sub(2), " ")
 			triggerServerEvent("sendCommand", lp, cmd)
 		else
-			triggerServerEvent("sendMessage",lp, "msg",lp, getElementData(lp,"nick").."[ "..getElementData(lp,"id").." ]: "..text)
+			triggerServerEvent("sendMessage",lp,lp,15,nil, getElementData(lp,"nick").."[ "..getElementData(lp,"id").." ]: "..text)
 		end
 		clearChatBox()
-		addEventHandler( "onClientRender", getRootElement(), closeRender )
-		removeEventHandler( "onClientRender", getRootElement(), openRender )
 	end
 end
 

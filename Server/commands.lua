@@ -1,6 +1,7 @@
 function onCommand(cmd)
 	local func = "cmd_" .. cmd[1]
 	if _G[func] then
+		table.remove(cmd,1)
 		assert(loadstring(func .. "(...)"))(cmd)
 	else
 		triggerClientEvent(source, "outputChatMessage", source, "Команда не найдена.", "#990000")
@@ -17,8 +18,6 @@ end
 
 function doAchat(qh,source,args)
 	local result = dbPoll( qh, -1 )
-	local players = getElementsByType( "player" )
-	args[1] = nil
 	if result then
 		for _,row in ipairs(result) do
 			if getElementData( source, "nick") == row["nick"] then
@@ -36,24 +35,68 @@ function cmd_admins( args )
 end
 
 function cmd_me(args)
-	args[1] = nil
 	local msg = ""
 	for i, theMsg in pairs(args) do
 		msg = msg.." "..theMsg
 	end
-	if args[2] == nil then
+	if args[1] == nil then
 		triggerClientEvent(source, "outputChatMessage", source, "Используйте /me [действие]", "#990000")
 	else
-		triggerClientEvent(source, "outputChatMessage", source, getElementData(source, "nick") .. msg, "#D667FF")
+		sendMessageToAll(source,15,"#D667FF",getElementData(source,"nick").."[ "..getElementData(source,"id").." ]: "..msg)
+	end
+end
+
+function cmd_do(args)
+	text = ""
+	for i, theMsg in pairs(args) do
+		text = text.." "..theMsg
+	end
+	text = removeHex(text)
+	if string.len(text) > 0 then
+		local lpName = getElementData(source,"nick")
+		sendMessageToAll(source,15,"#D667FF",text.. " (( "..lpName.." ))")
+	else
+		triggerServerEvent("outputChatMessage",source,source,"Используйте: /do [Текст]", "#A9A9A9")
+	end
+end
+
+function cmd_todo(args)
+	local msg = ""
+	for i, theMsg in pairs(args) do
+		msg = msg.." "..theMsg
+	end
+	local first = split(msg,"*")
+	local second = string.gsub(msg,unpack(first).."%*","")
+	if string.len(string.gsub(unpack(first),"%s+","")) > 0 and string.len(string.gsub(second,"%s+","")) > 0 then
+		sendMessageToAll(source,15,"#FFFFFF",unpack(first)..", - сказал "..getElementData(source,"nick")..", #D667FF"..second)
+	end
+end
+
+function cmd_s( args )
+	local msg = ""
+	for i, theMsg in pairs(args) do
+		msg = msg.." "..theMsg
+	end
+	if string.len(removeHex(msg)) > 0 and string.len(string.gsub(msg,"%*","")) > 0 then
+		sendMessageToAll(source,20,nil, getElementData(source,"nick").."[ "..getElementData(source,"id").." ]: "..msg)
+	end
+end
+
+function cmd_w( args )
+	local msg = ""
+	for i, theMsg in pairs(args) do
+		msg = msg.." "..theMsg
+	end
+	if string.len(removeHex(msg)) > 0 and string.len(string.gsub(msg,"%*","")) > 0 then
+		sendMessageToAll(source,10,nil, getElementData(source,"nick").."[ "..getElementData(source,"id").." ]: "..msg)
 	end
 end
 
 function cmd_makeleader(args)
-	args[1] = nil
-	player = args[2]
+	player = args[1]
 	player_leader = false
-	fr_id = tonumber(args[3])
-	player_id = tonumber(args[2])
+	fr_id = tonumber(args[2])
+	player_id = tonumber(args[1])
 	if type(player_id) == "number" then
 		player = getPlayerByID(player_id)
 		player_nick = getElementData( player, "nick")

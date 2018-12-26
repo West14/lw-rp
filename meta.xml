@@ -30,7 +30,6 @@
 	<map src="Maps/derevyshka.map" dimension="0"></map>
 
 	<file src="Images/radar_map.jpg" />
-	<file src="Images/bg_gradient.jpg" />
 	<file src="Images/player.png" type="client"></file>
 
 	<file src="Shaders/chat_blur.c" type="client" />

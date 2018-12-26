@@ -4,7 +4,7 @@ function isLocalPlayerActive ()
       setElementData(lp,"afktime",startTimer)
   elseif isMainMenuActive() == false then
   		startTimer = 0
-  		setElementData(lp,"afktime",nil)
+  		setElementData(lp,"afktime",0)
    end
 end
 addEventHandler( "onClientRender", getRootElement(), isLocalPlayerActive )

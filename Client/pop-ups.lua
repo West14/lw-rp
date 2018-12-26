@@ -16,7 +16,6 @@ function popUpRender( )
 	local now = getTickCount()
     local elapsedTime = now - starttick
     local duration = popup_time - starttick
-	dxDrawImage( screenW-5-332, screenH/2, 332, 111, "Images/bg_gradient.jpg",0,0,0,tocolor( 255, 255, 255,alpha))
 	dxDrawText( popup_text, screenW-150, screenH/2,screenW150,screenH/2,tocolor( 255, 255, 255, alpha))
 	if (now - starttick) / 1000 >= popup_time then
 		now = nil

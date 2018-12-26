@@ -31,7 +31,7 @@ function ()
 				if v ~= lp then
 					dxDrawTextOnElement(v,getElementData( v,"nick").." [ "..getElementData(v,"id").." ]",1,20,255,255,255)
 					afktime = getElementData( v, "afktime")
-					if afktime ~= nil then
+					if afktime ~= 0 then
 						afktime = math.floor((getTickCount() - afktime) / 1000)
 						dxDrawTextOnElement(v,"AFK ".. afktime .. " секунд",1.5,219, 219, 219)
 					end
