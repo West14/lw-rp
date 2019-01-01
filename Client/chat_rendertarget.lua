@@ -74,8 +74,14 @@ function dxRenderMainTarget()
 end
 addEventHandler("onClientRender", root, dxRenderMainTarget)
 
+function handleMinimize( )
+    afkStart()
+end
+addEventHandler( "onClientMinimize", root, handleMinimize )
+
 
 function handleRestore()
     TextFuel() 
+    afkStop()
 end
 addEventHandler("onClientRestore",root,handleRestore)
