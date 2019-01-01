@@ -170,7 +170,7 @@ function render()
             dxDrawRectangle(healthbarLeft, barsTop, healthbarWidth,        barsHeight, healthBg)
             dxDrawRectangle(healthbarLeft, barsTop, healthbarWidth*health, barsHeight, healthVal)
 
-            if settings.oxygenbar.alwaysRender or (oxygen < 1 or isPedInWater(localPlayer)) then
+            if settings.oxygenbar.alwaysRender or (oxygen < 1 or isElementInWater(localPlayer)) then
                 -- draw armor bar
                 local armorLeft = barsLeft + barsWidth/2 + barsOffset/2
                 local armorWidth = barsWidth/4 - barsOffset

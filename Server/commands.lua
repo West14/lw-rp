@@ -56,7 +56,7 @@ function cmd_do(args)
 		local lpName = getElementData(source,"nick")
 		sendMessageToAll(source,15,"#D667FF",text.. " (( "..lpName.." ))")
 	else
-		triggerServerEvent("outputChatMessage",source,source,"Используйте: /do [Текст]", "#A9A9A9")
+		triggerClientEvent(source,"outputChatMessage",source,"Используйте: /do [Текст]", "#A9A9A9")
 	end
 end
 
@@ -66,9 +66,11 @@ function cmd_todo(args)
 		msg = msg.." "..theMsg
 	end
 	local first = split(msg,"*")
-	local second = string.gsub(msg,unpack(first).."%*","")
-	if string.len(string.gsub(unpack(first),"%s+","")) > 0 and string.len(string.gsub(second,"%s+","")) > 0 then
-		sendMessageToAll(source,15,"#FFFFFF",unpack(first)..", - сказал "..getElementData(source,"nick")..", #D667FF"..second)
+	if first[2] ~= nil then
+		local second = string.gsub(msg,unpack(first).."%*","")
+		if string.len(string.gsub(unpack(first),"%s+","")) > 0 and string.len(string.gsub(second,"%s+","")) > 0 then
+			sendMessageToAll(source,15,"#FFFFFF",unpack(first)..", - сказал "..getElementData(source,"nick")..", #D667FF"..second)
+		end
 	end
 end
 
@@ -78,7 +80,7 @@ function cmd_s( args )
 		msg = msg.." "..theMsg
 	end
 	if string.len(removeHex(msg)) > 0 and string.len(string.gsub(msg,"%*","")) > 0 then
-		sendMessageToAll(source,20,nil, getElementData(source,"nick").."[ "..getElementData(source,"id").." ]: "..msg)
+		sendMessageToAll(source,20,nil,getElementData(source,"nick").."[ "..getElementData(source,"id").." ] крикнул: "..msg)
 	end
 end
 
@@ -88,7 +90,7 @@ function cmd_w( args )
 		msg = msg.." "..theMsg
 	end
 	if string.len(removeHex(msg)) > 0 and string.len(string.gsub(msg,"%*","")) > 0 then
-		sendMessageToAll(source,10,nil, getElementData(source,"nick").."[ "..getElementData(source,"id").." ]: "..msg)
+		sendMessageToAll(source,10,nil,getElementData(source,"nick").."[ "..getElementData(source,"id").." ] шепчет: "..msg)
 	end
 end
 
@@ -127,4 +129,32 @@ end
 
 function cmd_pc()
 	triggerClientEvent( source, "createPopUp", source,"TEST",5)
+end
+
+function cmd_setwalk(args)
+	if args[1] ~= nil then
+		local style = tonumber(args[1])
+		if style <= #walkstyles then
+			local walkstyle = walkstyles[style]
+			dbExec(dbHandle,"UPDATE `accounts` SET `walkstyle` = ? WHERE `accounts`.`nick` = ?", style, getElementData(source,"nick"))
+			setPedWalkingStyle( source, walkstyles[style] )
+			setElementData( source, "walkstyle",style )
+			triggerClientEvent( source, "outputChatMessage", source, "Вы сменили свою походку!")
+		end
+	end
+end
+
+function cmd_walk( )
+	walkstyle = walkstyles_anim[getElementData(source,"walkstyle")]
+	setPedAnimation(source, "ped", walkstyle, true)
+	setTimer( function(pl)
+		setPedAnimation(pl, "ped", walkstyle, 1,false)
+		bindKey(pl,"lshift", "down", function(pl)
+			setPedAnimation(pl,"ped",walkstyle,0,false,false,false,false)
+		end)
+	end, 50, 1, source )
+end
+
+function cmd_q( )
+	kickPlayer ( source, source, "Вы покинули сервер." )
 end

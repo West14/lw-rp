@@ -10,8 +10,8 @@ function onStart( )
     fadeCamera(true)
     setBlurLevel(0)
     setPlayerHudComponentVisible("area_name", false)
-    showPlayerHudComponent("health", false)
-    showPlayerHudComponent("armour", false)
+    setPlayerHudComponentVisible("health", false)
+    setPlayerHudComponentVisible("armour", false)
     setPlayerHudComponentVisible("radar", false)
 end
 addEventHandler("onClientResourceStart",root,onStart)
@@ -185,8 +185,14 @@ end
 function setSkin( lp, skin ) -- функция сета скина
 	if selectedgender == 1 then
 		setElementModel(lp, male_register_skins[skin])
+		setElementData( lp, "walkstyle", 1 )
+		setPedWalkingStyle( lp, 0 )
+		dbExec(dbHandle,"UPDATE `accounts` SET `walkstyle` = ? WHERE `accounts`.`nick` = ?", 0, lpName)
 	elseif selectedgender == 2 then
 		setElementModel(lp, female_register_skins[skin])
+		setElementData(lp,"walkstyle",4)
+		setPedWalkingStyle( lp, 129)
+		dbExec(dbHandle,"UPDATE `accounts` SET `walkstyle` = ? WHERE `accounts`.`nick` = ?", 4, lpName)
 	end
 end
 

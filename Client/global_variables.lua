@@ -38,6 +38,7 @@ female_register_skins = {
 	[4] = 69
 }
 
+
 registered.button[1] = guiCreateButton(1128, 346, 140, 33, "Влево", false) 
 registered.button[2] = guiCreateButton(1279, 345, 141, 34, "Вправо", false)
 registered.button[3] = guiCreateButton(1133, 400, 280, 36, "Готово", false)
@@ -61,6 +62,7 @@ function timestamp( )
 	hours = time.hour
 	minutes = time.minute
 	seconds = time.second
+
 	if hours <= 9 then -- если час меньше двухзначного числа, то автоматически добавляется ноль в начале
 		hours = "0"..hours
 	end

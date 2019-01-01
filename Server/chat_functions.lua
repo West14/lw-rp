@@ -30,7 +30,7 @@ function isPlayerInRangeOfPoint(player,x,y,z,range)
    elseif ((x-px)^2+(y-py)^2+(z-pz)^2)^0.5 <= range/1.5 then
    		msg_color = "#696969"
    end
-   if chat_range <= 10 then
+   if range <= 10 then
    		msg_color = "#FFFFFF"
    end
    return ((x-px)^2+(y-py)^2+(z-pz)^2)^0.5<=range

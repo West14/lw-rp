@@ -5,6 +5,7 @@ chat_opened = 0
 chat_focus = 0
 chat_mouse = 0
 chat_entries = {} 
+chat_index = 0
 function openChat( )
 	dxDrawRectangle(10, 265, 479, 34, tocolor(55, 55, 55, 255), false)
 end
@@ -18,6 +19,7 @@ function onPlayerPressKey( btn,press )
 			elseif btn == "Y" then
 				if chat_focus == 0 then -- если чат в фокусе(курсор стоит в нём)
 					chatCheck()
+
 				end
 			end
 		end
@@ -42,17 +44,23 @@ function chatCheck( )
 	end
 end
 
-function onPlayerEnterMessage( ... )
+function onPlayerEnterMessage( )
 	local text = removeHex(DGS:dgsGetText( chatBox )) -- текст из эдитбокса
 	local iftext = string.gsub(text,"%s+", "") -- проверка не пустой ли текст без пробелов
-	if #iftext > 0 then
+	if string.len(iftext) > 0 then
 		if (text:sub(1,1) == "/") then -- если текст команда
 			local cmd = split(text:sub(2), " ")
 			triggerServerEvent("sendCommand", lp, cmd)
 		else
+			
 			triggerServerEvent("sendMessage",lp,lp,15,nil, getElementData(lp,"nick").."[ "..getElementData(lp,"id").." ]: "..text)
 		end
 		clearChatBox()
+	else
+		removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
+		chat_opened = 0
+		DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
+		showCursor(false)
 	end
 end
 
@@ -72,6 +80,7 @@ function outputChatMessage( msg, hexColor ) -- написать сообщени
 	end
 	table.insert(chat_messages,hexColor .. "[ "..hours..":"..minutes..":"..seconds.." ] "..msg) -- исёртим сообщение в таблицу
 	TextFuel() -- отрисовываем чат
+	chat_index = chat_index + 1
 end
 addEvent("outputChatMessage",true) -- добавляем ивент для триггера с серверной части
 addEventHandler("outputChatMessage",root,outputChatMessage) -- добавляем хандлер ивента
