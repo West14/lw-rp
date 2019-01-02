@@ -76,7 +76,6 @@ addEventHandler("onClientRender", root, dxRenderMainTarget)
 
 function handleRestore()
     TextFuel() 
-    startTick = 0
-    setElementData(getLocalPlayer(),"afktime", 0)
+
 end
 addEventHandler("onClientRestore",root,handleRestore)
