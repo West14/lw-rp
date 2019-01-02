@@ -185,14 +185,8 @@ end
 function setSkin( lp, skin ) -- функция сета скина
 	if selectedgender == 1 then
 		setElementModel(lp, male_register_skins[skin])
-		setElementData( lp, "walkstyle", 1 )
-		setPedWalkingStyle( lp, 0 )
-		dbExec(dbHandle,"UPDATE `accounts` SET `walkstyle` = ? WHERE `accounts`.`nick` = ?", 0, lpName)
 	elseif selectedgender == 2 then
 		setElementModel(lp, female_register_skins[skin])
-		setElementData(lp,"walkstyle",4)
-		setPedWalkingStyle( lp, 129)
-		dbExec(dbHandle,"UPDATE `accounts` SET `walkstyle` = ? WHERE `accounts`.`nick` = ?", 4, lpName)
 	end
 end
 
@@ -202,8 +196,14 @@ function selectSkin( ) -- выбор скина
 	setElementData(lp, "gender",selectedgender)
 	if selectedgender == 1 then
 		setElementData(lp,"skin",male_register_skins[selectedSkin])
+		setElementData( lp, "walkstyle", 1 )
+		setPedWalkingStyle( lp, 0 )
+		triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'walkstyle',getElementData(lp,"walkstyle"))
 	elseif selectedgender == 2 then
 		setElementData(lp,"skin",female_register_skins[selectedSkin])
+		setElementData(lp,"walkstyle",4)
+		setPedWalkingStyle( lp, 129)
+		triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'walkstyle',getElementData(lp,"walkstyle"))
 	end
 	triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'skin',getElementData(lp,"skin"))
 	

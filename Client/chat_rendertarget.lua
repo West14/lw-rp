@@ -74,14 +74,9 @@ function dxRenderMainTarget()
 end
 addEventHandler("onClientRender", root, dxRenderMainTarget)
 
-function handleMinimize( )
-    afkStart()
-end
-addEventHandler( "onClientMinimize", root, handleMinimize )
-
-
 function handleRestore()
     TextFuel() 
-    afkStop()
+    startTick = 0
+    setElementData(getLocalPlayer(),"afktime", 0)
 end
 addEventHandler("onClientRestore",root,handleRestore)

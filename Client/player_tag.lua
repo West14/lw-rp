@@ -42,14 +42,14 @@ function renderTagStreamedInPlayers( )
 	for k,v in ipairs(getElementsByType("player")) do
 		if isElementStreamedIn( v ) then
 			if isLogged(v) and getElementData(v,"id")  then
-				--if v ~= lp then
+				if v ~= lp then
 					dxDrawTextOnElement(v,getElementData( v,"nick").." [ "..getElementData(v,"id").." ]",1,20,255,255,255)
-					afktime = math.floor((getTickCount() - getElementData(v,"afktime")) / 1000)
-					if afktime > 0 then	
-						dxDrawTextOnElement(v,"AFK ",1.3,219, 219, 219)
-						dxDrawTextOnElement(v,afktime .. " секунд",1.2,219, 219, 219)
+					status = getElementData(v, "status")
+					if status == "afk" then	
+						dxDrawTextOnElement(v,"AFK ",1.2,219, 219, 219)
+						--dxDrawTextOnElement(v,afktime .. " секунд",1.2,219, 219, 219)
 					end
-				--end
+				end
 			end
 		end
 	end

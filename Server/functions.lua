@@ -43,6 +43,7 @@ function removeData()
 		setElementData(thePlayer,"logged",false)
 		setElementData(thePlayer, "level",nil)
 		setElementData(thePlayer, "exp",nil)
+		setElementData(thePlayer, "afktime", 0)
 		setElementPosition( thePlayer, 0, 0, 0 )
 		for i=#table_admins,1,-1 do
 			table_admins[i] = nil
@@ -90,9 +91,3 @@ function removeNick()
     setPlayerNametagShowing ( source, false ) 
 end 
 addEventHandler ("onPlayerJoin", root, removeNick) 
-
-function lastPlayerPosChange(player)
-	return getPlayerIdleTime(source) or getPlayerIdleTime( player )
-end
-addEvent("lastPlayerPosChange",true)
-addEventHandler("lastPlayerPosChange",root,lastPlayerPosChange)
