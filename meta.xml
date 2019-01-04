@@ -13,6 +13,7 @@
 	<script src="Client/radar.lua" type="client" />
 	<script src="Client/player_tag.lua" type="client" />
 	<script src="Client/afk_system.lua" type="client" />
+	<script src="Client/tab_list.lua" type="client" />
 
 	<script src="Shared/global_functions.lua" type="shared" />
 	<script src="Shared/fractions.lua" type="shared" />
