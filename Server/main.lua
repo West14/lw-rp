@@ -1,5 +1,4 @@
 encKey = "c3CKcjgKDGiVfyN8"
-ids = {}
 walkstyles = {
 	[1] = 0,
 	[2] = 118,

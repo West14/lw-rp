@@ -1,231 +1,84 @@
-function onStart( )
+local loginTexture = dxCreateRoundedTexture(screenW * 0.2917, screenH * 0.6500, 10)
+local loginTextureSmooth = dxSmoothRoundedTexture(loginTexture, screenW * 0.3542, screenH * 0.1756, screenW * 0.2917, screenH * 0.6500, "Images/mask.png" )
+
+local buttons = {
+	[1] = {screenW * 0.3785, screenH * 0.6800, 0,0},
+	[2] = {screenW * 0.5111, screenH * 0.6800, 0,0}
+}
+
+local Btnhovered = {
+	[1] = false,
+	[2] = false
+}
+
+wanim,hanim = false
+
+local authButtonActive = dxCreateRoundedTexture(screenW * 0.1104, screenH * 0.0578,10)
+local authButtonInActive = dxCreateRoundedTexture(screenW * 0.1104, screenH * 0.0578,10)
+local authButtonSmoothActive = dxSmoothRoundedTexture(authButtonActive, screenW * 0.3785, screenH * 0.6800, screenW * 0.1104, screenH * 0.0578, "Images/mask-active.png" )
+local authButtonSmoothInActive = dxSmoothRoundedTexture(authButtonActive, screenW * 0.3785, screenH * 0.6800, screenW * 0.1104, screenH * 0.0578, "Images/mask-inactive.png" )
+
+function onResStart(  )
+	loginPanel = dxCreateRenderTarget( screenW * 0.2917, screenH * 0.6500, true )
 	showCursor(true)
-	DGS:dgsSetProperty(pass,"masked",true) -- Маскируем эдит для пароля под ******
-	addEventHandler ( "onDgsMouseClick", root, onGuiClicked ) -- хадлер клика на меню
-	addEventHandler ( "onDgsEditSwitched", login, onClickToEdit ) -- хадлер клика на логин
-	addEventHandler ( "onDgsEditSwitched", pass, onClickToEdit ) -- хадлер клика на пароль
-	addEventHandler ( "onDgsEditSwitched", login, guiTextClear ) -- хадлер таба на логин
-	addEventHandler ( "onDgsEditSwitched", pass, guiTextClear ) -- хадлер таба на пароль
-	setCameraMatrix(1677.4501, -1493.8395, 123.0782, 1527.5341,-1778.5883,71.1633)
-    fadeCamera(true)
-    setBlurLevel(0)
-    setPlayerHudComponentVisible("area_name", false)
-    setPlayerHudComponentVisible("health", false)
-    setPlayerHudComponentVisible("armour", false)
-    setPlayerHudComponentVisible("radar", false)
+    dxSetRenderTarget( loginPanel ) -- Select custom render target for drawing
+   	dxDrawRoundedRectangle(0, 0, screenW * 0.2917, screenH * 0.6500, tocolor(34,37,42,216), 10)
+    dxSetRenderTarget()       
 end
-addEventHandler("onClientResourceStart",root,onStart)
+addEventHandler( "onClientResourceStart", getRootElement(), onResStart )
 
-function onGuiClicked( btn,state )
-	if source == login then
-		onClickToEdit(btn,state)
-	elseif source == pass then
-		onClickToEdit(btn,state)
-	elseif source == submit then
-		logIn(btn,state)
-	elseif source == register then
-		signIn(btn,state)
-	end
+function renderLogInPanel( )
+	dxDrawImage( screenW * 0.3542, screenH * 0.1756, screenW * 0.2917, screenH * 0.6500, loginTextureSmooth )
+	
 end
+addEventHandler( "onClientRender", root, renderLogInPanel )
 
-function guiTextClear( )
-	local text = DGS:dgsGetText( source )
-	if text == "Логин" then
-		DGS:dgsSetText(source, "")
-	elseif text == "Пароль" then
-		DGS:dgsSetText(source, "")
-	end
+function renderMainMenu( )
+	dxDrawImage(screenW * 0.3250, screenH * 0.1756, screenW * 0.3556, screenH * 0.5689, "Images/auth-logo.png", 0, 0, 0, tocolor(255, 255, 255, 255), true)
+
+	dxDrawImage( screenW * 0.3785, screenH * 0.6800, screenW * 0.1104, screenH * 0.0578, authButtonSmoothInActive )
+	dxDrawImage( screenW * 0.3785, screenH * 0.6800, buttons[1][3],buttons[1][4], authButtonSmoothActive)
+
+	dxDrawImage( screenW * 0.5111, screenH * 0.6800, screenW * 0.1104, screenH * 0.0578, authButtonSmoothInActive )
+	dxDrawImage( screenW * 0.5111, screenH * 0.6800, buttons[2][3],buttons[2][4], authButtonSmoothActive,0,0,0)
 end
+addEventHandler( "onClientRender", root, renderMainMenu )
 
-function logIn( button, state ) -- когда игрок жмет на кнопку "Войти"
-	if button == "left" and state == "down" then
-		local nick = DGS:dgsGetText( login )
-		local pass = DGS:dgsGetText( pass ) 
-
-		if nick:find("^%u%l+_%u%l+$") then
-			if #pass > 1 then
-				triggerServerEvent ( "onPlayerLogIn", lp, lp, nick, teaEncode(pass, encKey))
-			else
-				outputChatMessage("Введите пароль.")
+function isCursorOnBtn( )
+	for k,v in ipairs(buttons) do
+		if isMouseInPosition(v[1],v[2],screenW * 0.1104, screenH * 0.0578) then
+			if not(animbtn) then
+				Btnhovered[k] = true
+				endWidth,endHeight = screenW * 0.1104, screenH * 0.0578
+				animbtn = k
+				if not(isEventHandlerAdded("onClientRender", getRootElement(), animateBtn)) then
+					addEventHandler( "onClientRender", getRootElement(), animateBtn )
+				end
 			end
 		else
-			outputChatMessage("Введите никнейм в формате Имя_Фамилия.")
+			Btnhovered[k] = false
 		end
 	end
 end
+addEventHandler( "onClientRender", getRootElement(), isCursorOnBtn )
 
-function signIn( button, state ) -- когда игрок жмет на кнопку "Региcтрация"
-	if button == "left" and state == "down" then
-		local nick = DGS:dgsGetText( login )
-		local pass = DGS:dgsGetText( pass ) 
-		if nick:find("^%u%l+_%u%l+$") then
-			if #pass > 6 and #nick > 6 then
-				triggerServerEvent ( "onPlayerSignIn", lp, lp, nick, teaEncode(pass, encKey))
-			else
-				outputChatMessage("Длина никнейма и пароля должна быть больше 6 символов.")
+function animateBtn(  )
+	if wanim and hanim then
+		outputDebugString( "end" )
+		removeEventHandler("onClientRender",root,animateBtn)
+		animbtn = false
+	else
+		buttons[animbtn][3] = animate(buttons[animbtn][3],endWidth,"Linear",100,function(width )
+			if width == endWidth then
+				wanim = true
 			end
-		else
-			outputChatMessage( "Введите никнейм в формате Имя_Фамилия." )
-		end
-	end
-end
-
-function onClickToEdit( button, state ) -- убирает стандартный текст при нажатии
-	if button == "left" and state == "down" then
-		local text = DGS:dgsGetText( source )
-		if text == "Логин" then
-			DGS:dgsSetText(source, "")
-		elseif text == "Пароль" then
-			DGS:dgsSetText(source, "")
-		end
-	end
-end
-
-function onPlayerAuth( ) -- когда игрок авторизовывается
-	lpName = getElementData(lp,"nick")
-	DGS:dgsSetVisible ( login, false )
-	DGS:dgsSetVisible ( pass, false )
-	DGS:dgsSetVisible ( submit, false )
-	DGS:dgsSetVisible ( register, false )
-	--removeEventHandler( "onClientRender", getRootElement(), Blur.render )
-	--setPlayerHudComponentVisible("radar", true)
-end
-addEvent("onPlayerAuth",true)
-addEventHandler("onPlayerAuth", root, onPlayerAuth)
-
-function registerMenu()
-	dxDrawRectangle(1121, 231, 309, 233, tocolor(0, 0, 0, 165), false)
-    dxDrawRectangle(1126, 344, 142, 35, tocolor(0, 0, 0, 255), true)
-    dxDrawRectangle(1123, 231, 307, 22, tocolor(25, 25, 25, 255), false)
-    dxDrawText("Регистрация персонажа", 1123, 231, 1430, 253, tocolor(255, 255, 255, 255), 1.00, "default-bold", "center", "center", false, false, true, false, false)
-   	dxDrawText("Пол персонажа:", 1128, 269, 1229, 292, tocolor(255, 255, 255, 255), 1.00, "default-bold", "left", "center", false, false, true, false, false)
-    dxDrawText("Выбор скина:", 1123, 312, 1430, 336, tocolor(255, 255, 255, 255), 1.00, "default", "center", "center", false, false, true, true, false)
-    dxDrawRectangle(1128, 344, 142, 35, tocolor(0, 0, 0, 255), true)
-    dxDrawText("Предыдущий", 1128, 344, 1268, 377, tocolor(192, 192, 192, 255), 1.00, "default", "center", "center", false, false, true, true, false)
-    dxDrawRectangle(1278, 344, 142, 35, tocolor(0, 0, 0, 255), true)
-    dxDrawText("Следущий", 1278, 345, 1418, 378, tocolor(192, 192, 192, 255), 1.00, "default", "center", "center", false, false, true, true, false)
-    dxDrawRectangle(1133, 398, 280, 38, tocolor(17, 0, 0, 255), true)
-    dxDrawText("Далее", 1134, 399, 1413, 436, tocolor(255, 255, 255, 255), 1.00, "default-bold", "center", "center", false, false, true, true, false)
-end
-
-function registerClick( button, state, absoluteX, absoluteY )
-	if source == registered.button[1] then -- кнопка предыдущий
-		selectedSkin = selectedSkin -1 -- уменьшение выбор
-		if selectedSkin <= 0 then -- если выбранный скин равен или меньше нуля
-			if selectedgender == 1 then
-				selectedSkin = #male_register_skins -- выбранный скин = конец массива со скинами
-			elseif selectedgender == 2 then
-				selectedSkin = #female_register_skins -- выбранный скин = конец массива со скинами
+		end)
+		outputDebugString( buttons[animbtn][3] )
+		buttons[animbtn][4] = animate(buttons[animbtn][4],endHeight,"Linear",100,function( height )
+			if height == endHeight then
+				hanim = true			
 			end
-		end
-		--outputDebugString(selectedSkin) -- дебаг выбранного скина
-		setSkin( lp, selectedSkin ) -- функция смены скина персонажа
-	elseif source == registered.button[2] then -- следующий
-		selectedSkin = selectedSkin + 1 -- увеличение выбора
-		if selectedgender == 1 then
-			if selectedSkin > #male_register_skins then -- если выбор больше массива
-				selectedSkin = 1 -- выбранный скин = 1
-			end
-		elseif selectedgender == 2 then
-			if selectedSkin > #female_register_skins then -- если выбор больше массива
-				selectedSkin = 1 -- выбранный скин = 1
-			end
-		end
-		setSkin( lp, selectedSkin ) -- сет скина
-		--outputDebugString(selectedSkin) --дебаг
-	elseif source == registered.button[3] then -- далее
-		selectSkin()
-	elseif source == registered.radiobutton[2] then
-		selectedgender = 1
-		selectedSkin = 1
-		setElementModel(lp,male_register_skins[1])
-	elseif source == registered.radiobutton[1] then
-		selectedgender = 2
-		selectedSkin = 1
-		setElementModel(lp,female_register_skins[1])
+		end)
+		outputDebugString( buttons[animbtn][4] )
 	end
-end
-
-
-function setSkins() -- смена скина при реге
-	selectedSkin = 1
-	selectedgender = 1
-	setElementModel(lp, male_register_skins[selectedSkin])
-	addEventHandler("onClientRender",root,rotatePed)
-	outputChatMessage("Выберите ваш будущий скин. Вращение: стрелочка влево, стрелочка вправо.")
-
-	addEventHandler("onClientRender",root,registerMenu)
-	addEventHandler("onClientGUIClick",registered.button[1],registerClick)
-	addEventHandler("onClientGUIClick",registered.button[2],registerClick)
-	addEventHandler("onClientGUIClick",registered.button[3],registerClick)
-	addEventHandler("onClientGUIClick",registered.radiobutton[1],registerClick)
-	addEventHandler("onClientGUIClick",registered.radiobutton[2],registerClick)
-
-	guiSetVisible( registered.button[1], true)
-	guiSetVisible( registered.button[2], true)
-	guiSetVisible( registered.button[3], true)
-	guiSetVisible( registered.button[3], true)
-
-	guiSetVisible( registered.radiobutton[1], true)
-	guiSetVisible( registered.radiobutton[2], true)
-end
-addEvent("setSkin",true)
-addEventHandler("setSkin", root, setSkins)
-
-function rotatePed()
-	local rotX, rotY, rotZ = getElementRotation(localPlayer) -- get the local players's rotation
-	if getKeyState("arrow_l") then
-    	setElementRotation(localPlayer,0,0,rotZ-1,"default",true) -- turn the player 1 degrees
-	elseif getKeyState("arrow_r") then
-    	setElementRotation(localPlayer,0,0,rotZ+1,"default",true) -- turn the player 1 degrees
-	end
-end
-
-
-function setSkin( lp, skin ) -- функция сета скина
-	if selectedgender == 1 then
-		setElementModel(lp, male_register_skins[skin])
-	elseif selectedgender == 2 then
-		setElementModel(lp, female_register_skins[skin])
-	end
-end
-
-function selectSkin( ) -- выбор скина
-	showCursor(false)
-	
-	setElementData(lp, "gender",selectedgender)
-	if selectedgender == 1 then
-		setElementData(lp,"skin",male_register_skins[selectedSkin])
-		setElementData( lp, "walkstyle", 1 )
-		setPedWalkingStyle( lp, 0 )
-		triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'walkstyle',getElementData(lp,"walkstyle"))
-	elseif selectedgender == 2 then
-		setElementData(lp,"skin",female_register_skins[selectedSkin])
-		setElementData(lp,"walkstyle",4)
-		setPedWalkingStyle( lp, 129)
-		triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'walkstyle',getElementData(lp,"walkstyle"))
-	end
-	triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'skin',getElementData(lp,"skin"))
-	
-	triggerServerEvent("addDataToDataBase",lp,getElementData(lp,"nick"),'gender',selectedgender)
-	setElementData(lp, "logged", true)
-	removeEventHandler("onClientRender",root,registerMenu)
-
-	removeEventHandler("onClientGUIClick",registered.button[1],registerClick)
-	removeEventHandler("onClientGUIClick",registered.button[2],registerClick)
-	removeEventHandler("onClientGUIClick",registered.button[3],registerClick)
-	removeEventHandler("onClientGUIClick",registered.radiobutton[1],registerClick)
-	removeEventHandler("onClientGUIClick",registered.radiobutton[2],registerClick)
-	removeEventHandler("onClientRender",root,rotatePed)
-
-	guiSetVisible( registered.button[1], false)
-	guiSetVisible( registered.button[2], false)
-	guiSetVisible( registered.button[3], false)
-	guiSetVisible( registered.button[3], false)
-
-	guiSetVisible( registered.radiobutton[1], false)
-	guiSetVisible( registered.radiobutton[2], false)
-
-	showCursor(false)
-	triggerServerEvent("onClientEndRegister",root,lp,getElementData(lp,"skin"))
 end
