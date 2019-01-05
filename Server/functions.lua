@@ -1,3 +1,4 @@
+ids = {}
 function isLogged(thePlayer) -- проверка на авторизацию
 	return getElementData(thePlayer, "logged")
 end

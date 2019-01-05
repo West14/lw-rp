@@ -2,7 +2,7 @@
 	<info author="Jabka Dev" type="gamemode" />
 	<min_mta_version client="1.5.0-9.04431" server="1.5.0-9.04570"/>
 	
-	<script src="Client/main_auth.lua" type="client" />
+	<script src="Shared/global_functions.lua" type="shared" />
 	<script src="Client/global_variables.lua" type="client" />
 	<script src="Client/pop-ups.lua" type="client" />
 	<script src="Client/dx-system.lua" type="client" />
@@ -13,9 +13,11 @@
 	<script src="Client/radar.lua" type="client" />
 	<script src="Client/player_tag.lua" type="client" />
 	<script src="Client/afk_system.lua" type="client" />
+
 	<script src="Client/tab_list.lua" type="client" />
 
-	<script src="Shared/global_functions.lua" type="shared" />
+	<script src="Client/main_auth.lua" type="client" />
+
 	<script src="Shared/fractions.lua" type="shared" />
 
 	<script src="Server/commands.lua" type="server" />
@@ -26,10 +28,13 @@
 	<script src="Server/weather.lua" type="server" />
 
 	<map src="Maps/derevyshka.map" dimension="0"></map>
-	<file src="Images/radar_map.jpg" />
 	<file src="Images/player.png" type="client"></file>
+	<file src="Images/mask.png" type="client"></file>
+	<file src="Images/mask-inactive.png" type="client"></file>
+	<file src="Images/mask-active.png" type="client"></file>
 
-	<file src="Fonts/AC Boucle.ttf" type="client" />
-
+	<file src="Shaders/smooth.fx" />
 	<file src="Shaders/chat_blur.c" type="client" />
+
+	<oop>true</oop>
 </meta>

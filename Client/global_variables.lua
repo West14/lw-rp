@@ -20,10 +20,6 @@ showChat(false)
 -- регистрация и авторизация
 editWidth = 400
 editHeight = 35
-login = DGS:dgsCreateEdit( (screenW - editWidth) / 2, (screenH - editHeight ) / 2 - 35, editWidth, editHeight, "Логин", false, false, tocolor(0,0,0,255),1,1,false,tocolor(109, 118, 120) )
-pass = DGS:dgsCreateEdit( (screenW - editWidth) / 2, (screenH - editHeight ) / 2 + 35, editWidth, editHeight, "Пароль", false, false, tocolor(0,0,0,255),1,1,false,tocolor(109, 118, 120) )
-submit = DGS:dgsCreateButton( (screenW - editWidth) / 2, (screenH - editHeight ) / 2 + 75, editWidth, editHeight, "Авторизация", false )
-register = DGS:dgsCreateButton( (screenW - editWidth) / 2, (screenH - editHeight ) / 2 + 115, editWidth, editHeight, "Регистрация", false )
 male_register_skins = {
 	[1] = 47,
 	[2] = 98,
@@ -37,25 +33,6 @@ female_register_skins = {
 	[3] = 40,
 	[4] = 69
 }
-
-
-registered.button[1] = guiCreateButton(1128, 346, 140, 33, "Влево", false) 
-registered.button[2] = guiCreateButton(1279, 345, 141, 34, "Вправо", false)
-registered.button[3] = guiCreateButton(1133, 400, 280, 36, "Готово", false)
-registered.radiobutton[1] = guiCreateRadioButton(1326, 269, 97, 23, "Женский", false)
-guiSetFont(registered.radiobutton[1], "default-bold-small")
-registered.radiobutton[2] = guiCreateRadioButton(1229, 269, 97, 23, "Мужской", false)
-guiSetFont(registered.radiobutton[2], "default-bold-small")
-guiSetProperty(registered.radiobutton[2], "NormalTextColour", "FFFBFCFE")
-guiRadioButtonSetSelected(registered.radiobutton[2], true)    
-
-guiSetVisible( registered.button[1], false)
-guiSetVisible( registered.button[2], false)
-guiSetVisible( registered.button[3], false)
-guiSetVisible( registered.button[3], false)
-
-guiSetVisible( registered.radiobutton[1], false)
-guiSetVisible( registered.radiobutton[2], false)
 
 function timestamp( )
 	time = getRealTime()
