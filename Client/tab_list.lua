@@ -6,13 +6,8 @@ local tablist_opened = false
 
 function showTabList()
 	if tablist_opened then
-		dxDrawImage(screenW * 0.3476, screenH * 0.2362, screenW * 0.3054, screenH * 0.5286, tablistRT)
+		dxDrawImage(screenW * 0.3476, screenH * 0.2362, screenW * 1, screenH * 1, tablistRT)
 	end
-end
-
-
-function sortPlayers(a, b)
-
 end
 
 function renderTabList()
@@ -36,13 +31,11 @@ function handleTabList(button, press)
 		if press then
 			renderTabList()
 			tablist_opened = true
-			outputDebugString('tab pressed')
 		elseif not(press) then
 			tablist_opened = false
-			outputDebugString('tab released')
 		end
 	end
 end
 
 addEventHandler("onClientKey", getRootElement(), handleTabList)
-addEventHandler("onClientRender", getRootElement(), showTabList)
+addEventHandler("onClientRender", getRootElement(), renderTabList)
