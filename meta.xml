@@ -23,6 +23,7 @@
 	<script src="Server/login.lua" type="server" />
 	<script src="Server/main.lua" type="server"/>
 	<script src="Server/chat_functions.lua" type="shared" />
+	<script src="Server/weather.lua" type="server" />
 
 	<map src="Maps/derevyshka.map" dimension="0"></map>
 	<file src="Images/radar_map.jpg" />
