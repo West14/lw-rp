@@ -158,3 +158,9 @@ end
 function cmd_q( )
 	kickPlayer ( source, source, "Вы покинули сервер." )
 end
+
+function cmd_buycar(args)
+	if args[1] ~= nil then
+		dbExec(dbHandle, "INSERT INTO `vehicles`(acc_id, model_id) VALUES (?, ?)", getElementData(source, 'acc_id'), args[1])
+	end
+end

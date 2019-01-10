@@ -50,6 +50,7 @@ function doLogIn(qh, lp, nick, pass)
 				triggerClientEvent(lp, "outputChatMessage", lp, "Неверный пароль.", "#990000")
 			else
 				triggerClientEvent(lp, "outputChatMessage", lp, "Добро пожаловать, " .. nick, "#FFFFFF")
+				setElementData(lp, "acc_id", row["id"])
 				setElementData(lp, "nick",  nick)
 				setElementData(lp, "logged", true)
 				setElementData(lp, "level",row["level"])

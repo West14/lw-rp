@@ -1,22 +1,30 @@
 <meta>
 	<info author="Jabka Dev" type="gamemode" />
-	<min_mta_version client="1.5.0-9.04431" server="1.5.0-9.04570"/>
-	
+	<min_mta_version client="1.5.6" server="1.5.4-9.11413"/>
+
 	<script src="Shared/global_functions.lua" type="shared" />
+
+	<file src="Fonts/Montserrat-Light.ttf" />
+	<file src="Fonts/Montserrat-ExtraLight.ttf" />
+	<file src="Fonts/Montserrat-Bold.ttf" />
+	<file src="Fonts/Montserrat-Medium.ttf" />
+	<file src="Fonts/Montserrat-Regular.ttf" />
+	
 	<script src="Client/global_variables.lua" type="client" />
+	<script src="Client/global_functions.lua" type="client" />
 	<script src="Client/pop-ups.lua" type="client" />
 	<script src="Client/dx-system.lua" type="client" />
 	<script src="Client/chat_general.lua" type="client" />
 	<script src="Client/chat_scroll.lua" type="client" />
-	<script src="Client/chat_blur.lua" type="client" />
 	<script src="Client/chat_rendertarget.lua" type="client" />
 	<script src="Client/radar.lua" type="client" />
 	<script src="Client/player_tag.lua" type="client" />
 	<script src="Client/afk_system.lua" type="client" />
+	<script src="Client/main_auth.lua" type="client" />
+	<script src="Client/login_blur.lua" type="client" />
+	<script src="Client/colorcorrection.lua" type="client" />
 
 	<script src="Client/tab_list.lua" type="client" />
-
-	<script src="Client/main_auth.lua" type="client" />
 
 	<script src="Shared/fractions.lua" type="shared" />
 
@@ -28,13 +36,29 @@
 	<script src="Server/weather.lua" type="server" />
 
 	<map src="Maps/derevyshka.map" dimension="0"></map>
-	<file src="Images/player.png" type="client"></file>
-	<file src="Images/mask.png" type="client"></file>
-	<file src="Images/mask-inactive.png" type="client"></file>
-	<file src="Images/mask-active.png" type="client"></file>
+	<file src="Images/player.png" type="client" />
+	<file src="Images/mask.png" type="client" />
+	<file src="Images/avatar-mask.png" type="client" />
+	<file src="Images/mask-inactive.png" type="client" />
+	<file src="Images/mask-active.png" type="client" />
+	<file src="Images/checkbox-inactive.png" type="client" />
+	<file src="Images/checkbox-active.png" type="client" />
+	<file src="Images/davatar.jpg" type="client" />
+	<file src="Images/mask-error.png" type="client" />
+	<file src="Images/mask-success.png" type="client" />
+	<file src="Images/mask-add.png" type="client" />
+	<file src="Images/shaderpallete.png" type="client" />
 
-	<file src="Shaders/smooth.fx" />
-	<file src="Shaders/chat_blur.c" type="client" />
+	<file src="Shaders/mta-helper.fx" type="client" />
+	<file src="Shaders/dBlurH.fx" type="client" />
+	<file src="Shaders/dBlurV.fx" type="client" />
+	<file src="Shaders/car_refgene.fx" type="client" />
+	<file src="Shaders/car_refgrun.fx" type="client" />
+	<file src="Shaders/car_refgrunL.fx" type="client" />
+	<file src="Shaders/addPalette.fx" type="client" />
+
+	<file src="Shaders/mask.fx" type="client" />
+	<file src="Shaders/login_blur.c" type="client" />
 
 	<oop>true</oop>
 </meta>
