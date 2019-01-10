@@ -1,44 +1,7 @@
-local anims, builtins = {}, {"Linear", "InQuad", "OutQuad", "InOutQuad", "OutInQuad", "InElastic", "OutElastic", "InOutElastic", "OutInElastic", "InBack", "OutBack", "InOutBack", "OutInBack", "InBounce", "OutBounce", "InOutBounce", "OutInBounce", "SineCurve", "CosineCurve"}
+MainDraw = {}
 
-function table.find(t, v)
-    for k, a in ipairs(t) do
-        if a == v then
-            return k
-        end
-    end
-    return false
-end
 
-function animate(f, t, easing, duration, onChange, onEnd)
-    assert(type(f) == "number", "Bad argument @ 'animate' [expected number at argument 1, got "..type(f).."]")
-    assert(type(t) == "number", "Bad argument @ 'animate' [expected number at argument 2, got "..type(t).."]")
-    assert(type(easing) == "string" or (type(easing) == "number" and (easing >= 1 or easing <= #builtins)), "Bad argument @ 'animate' [Invalid easing at argument 3]")
-    assert(type(duration) == "number", "Bad argument @ 'animate' [expected function at argument 4, got "..type(duration).."]")
-    assert(type(onChange) == "function", "Bad argument @ 'animate' [expected function at argument 5, got "..type(onChange).."]")
-    table.insert(anims, {from = f, to = t, easing = table.find(builtins, easing) and easing or builtins[easing], duration = duration, start = getTickCount( ), onChange = onChange, onEnd = onEnd})
-    return #anims
-end
-
-function destroyAnimation(a)
-    if anims[a] then
-        table.remove(anims, a)
-    end
-end
-
-addEventHandler("onClientRender", root, function( )
-    local now = getTickCount( )
-    for k,v in ipairs(anims) do
-        v.onChange(interpolateBetween(v.from, 0, 0, v.to, 0, 0, (now - v.start) / v.duration, v.easing))
-        if now >= v.start+v.duration then
-            if type(v.onEnd) == "function" then
-                v.onEnd( )
-            end
-            table.remove(anims, k)
-        end
-    end
-end)
-
-function dxCreateRoundedTexture(text_width,text_height,radius)
+function dxCreateRoundedTexture(text_X,text_Y,text_width,text_height,radius,mask)
     assert(text_width,"Missing argument 'text_width' at dxCreateRoundedTexture")
     assert(text_height,"Missing argument 'height' at dxCreateRoundedTexture")
     assert(radius,"Missing argument 'radius' at dxCreateRoundedTexture")
@@ -77,21 +40,35 @@ function dxCreateRoundedTexture(text_width,text_height,radius)
         end
     end
     texture:setPixels(pix)
-    return texture
+    if mask then
+        return dxSmoothRoundedTexture(texture,text_X,text_Y,text_width,text_height, mask)
+    else
+        return texture
+    end
+    
 end
 
 function dxSmoothRoundedTexture( texture, x,y, width, height, mask )
     local mask = dxCreateTexture( mask )
     local shader = dxCreateShader("Shaders/smooth.fx")
     if shader and mask then
-
-
         dxSetShaderValue( shader, "Texture0",texture) -- текстура
         dxSetShaderValue( shader, "Texture1",mask) -- маска     
 
         return shader
     end
 
+end
+
+function dxMaskTexture(texture, mask)
+    local mask = dxCreateTexture( mask )
+    local shader = dxCreateShader("Shaders/mask.fx")
+    if shader and mask then
+        dxSetShaderValue( shader, "Texture0",texture) -- текстура
+        dxSetShaderValue( shader, "Texture1",mask) -- маска     
+
+        return shader
+    end
 end
 
 function dxDrawRoundedRectangle(x, y, rx, ry, color, radius)
@@ -143,42 +120,33 @@ function isCursorOverText(posX, posY, sizeX, sizeY)
     end
 end
 
-local anims, builtins = {}, {"Linear", "InQuad", "OutQuad", "InOutQuad", "OutInQuad", "InElastic", "OutElastic", "InOutElastic", "OutInElastic", "InBack", "OutBack", "InOutBack", "OutInBack", "InBounce", "OutBounce", "InOutBounce", "OutInBounce", "SineCurve", "CosineCurve"}
-
-function table.find(t, v)
-    for k, a in ipairs(t) do
-        if a == v then
-            return k
-        end
-    end
-    return false
-end
-
-function animate(f, t, easing, duration, onChange, onEnd)
-    assert(type(f) == "number", "Bad argument @ 'animate' [expected number at argument 1, got "..type(f).."]")
-    assert(type(t) == "number", "Bad argument @ 'animate' [expected number at argument 2, got "..type(t).."]")
-    assert(type(easing) == "string" or (type(easing) == "number" and (easing >= 1 or easing <= #builtins)), "Bad argument @ 'animate' [Invalid easing at argument 3]")
-    assert(type(duration) == "number", "Bad argument @ 'animate' [expected function at argument 4, got "..type(duration).."]")
-    assert(type(onChange) == "function", "Bad argument @ 'animate' [expected function at argument 5, got "..type(onChange).."]")
-    table.insert(anims, {from = f, to = t, easing = table.find(builtins, easing) and easing or builtins[easing], duration = duration, start = getTickCount( ), onChange = onChange, onEnd = onEnd})
-    return #anims
-end
-
-function destroyAnimation(a)
-    if anims[a] then
-        table.remove(anims, a)
-    end
-end
-
-addEventHandler("onClientRender", root, function( )
-    local now = getTickCount( )
-    for k,v in ipairs(anims) do
-        v.onChange(interpolateBetween(v.from, 0, 0, v.to, 0, 0, (now - v.start) / v.duration, v.easing))
-        if now >= v.start+v.duration then
-            if type(v.onEnd) == "function" then
-                v.onEnd( )
+function dxDraw()
+    for id,element in pairs(MainDraw) do
+        if isElement(element) then
+            local x,y,width,height = getElementData(element,"x"),getElementData(element,"y"),getElementData(element,"width"),getElementData(element,"height")
+            if getElementType(element) == "dx-edit" then
+                dxDrawRectangle(x,y,width,height)
             end
-            table.remove(anims, k)
+            if isCursorOverText(x,y,width,height) then
+                triggerEvent("onDxMouseEnter",element)
+            end
         end
     end
-end)
+end
+
+
+function createEdit(x,y,width,height)
+    local edit = createElement("dx-edit")
+    table.insert(MainDraw,#MainDraw,edit)
+    setElementData(edit,"dxfunction","dxDrawRectangle")
+    addEventHandler("onClientRender",root,dxDraw)
+    setElementData(edit,"x",tonumber(x))
+    setElementData(edit,"y",tonumber(y))
+    setElementData(edit,"width",tonumber(width))
+    setElementData(edit,"height",tonumber(height))
+end
+
+function onDxMouseEnter()
+
+end
+addEventHandler("onDxMouseEnter",root,onDxMouseEnter)

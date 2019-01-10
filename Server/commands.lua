@@ -42,7 +42,7 @@ function cmd_me(args)
 	if args[1] == nil then
 		triggerClientEvent(source, "outputChatMessage", source, "Используйте /me [действие]", "#990000")
 	else
-		sendMessageToAll(source,15,"#D667FF",getElementData(source,"nick").."[ "..getElementData(source,"id").." ]: "..msg)
+		sendMessageToAll(source,15,"#D667FF",getElementData(source,"nick").."["..getElementData(source,"id").."]: "..msg)
 	end
 end
 
@@ -80,7 +80,7 @@ function cmd_s( args )
 		msg = msg.." "..theMsg
 	end
 	if string.len(removeHex(msg)) > 0 and string.len(string.gsub(msg,"%*","")) > 0 then
-		sendMessageToAll(source,20,nil,getElementData(source,"nick").."[ "..getElementData(source,"id").." ] крикнул: "..msg)
+		sendMessageToAll(source,20,nil,getElementData(source,"nick").."["..getElementData(source,"id").."] крикнул: "..msg)
 	end
 end
 
@@ -90,40 +90,33 @@ function cmd_w( args )
 		msg = msg.." "..theMsg
 	end
 	if string.len(removeHex(msg)) > 0 and string.len(string.gsub(msg,"%*","")) > 0 then
-		sendMessageToAll(source,10,nil,getElementData(source,"nick").."[ "..getElementData(source,"id").." ] шепчет: "..msg)
+		sendMessageToAll(source,10,nil,getElementData(source,"nick").."["..getElementData(source,"id").."] шепчет: "..msg)
 	end
 end
 
 function cmd_makeleader(args)
-	player = args[1]
-	player_leader = false
-	fr_id = tonumber(args[2])
-	player_id = tonumber(args[1])
-	if type(player_id) == "number" then
-		player = getPlayerByID(player_id)
-		player_nick = getElementData( player, "nick")
-	else
-		player_nick = player
-		player = getPlayerByNick(player_nick)
-	end 
-	setPlayerLeader(player,fr_id)
-	if fr_id > 0 then
-		triggerClientEvent( source,"outputChatMessage", source, "Вы назначили "..player_nick.." на пост лидера "..Fraction_list[fr_id])
-		triggerClientEvent( player,"outputChatMessage", player, "Вы были назначены на пост лидера "..Fraction_list[fr_id])
-		player_leader = true
-	else
-		triggerClientEvent( source,"outputChatMessage", source, "Вы сняли с поста лидера игрока "..player_nick)
-		triggerClientEvent( player,"outputChatMessage", player, "Вы были сняты с поста лидера")
-	end
-	dbExec(dbHandle,"UPDATE `accounts` SET `fraction` = ?, `leader` = '?' WHERE `accounts`.`nick` = ?", fr_id,player_leader,player_nick)
-end
-
-function cmd_checkleader()
-	local frac_id = getElementData(source,"leader")
-	if frac_id == nil or frac_id == false then 
-		triggerClientEvent( source, "outputChatMessage", source, "Вы не лидер")
-	elseif frac_id >= 1 then
-		triggerClientEvent( source, "outputChatMessage", source, "Вы лидер "..Fraction_list[frac_id])
+	if getAlevel(source) > 4 then
+		player = args[1]
+		player_leader = false
+		fr_id = tonumber(args[2])
+		player_id = tonumber(args[1])
+		if type(player_id) == "number" then
+			player = getPlayerByID(player_id)
+			player_nick = getElementData( player, "nick")
+		else
+			player_nick = player
+			player = getPlayerByNick(player_nick)
+		end 
+		setPlayerLeader(player,fr_id)
+		if fr_id > 0 then
+			triggerClientEvent( source,"outputChatMessage", source, "Вы назначили "..player_nick.." на пост лидера "..Fraction_list[fr_id])
+			triggerClientEvent( player,"outputChatMessage", player, "Вы были назначены на пост лидера "..Fraction_list[fr_id])
+			player_leader = true
+		else
+			triggerClientEvent( source,"outputChatMessage", source, "Вы сняли с поста лидера игрока "..player_nick)
+			triggerClientEvent( player,"outputChatMessage", player, "Вы были сняты с поста лидера")
+		end
+		dbExec(dbHandle,"UPDATE `accounts` SET `fraction` = ?, `leader` = '?' WHERE `accounts`.`nick` = ?", fr_id,player_leader,player_nick)
 	end
 end
 
@@ -149,12 +142,19 @@ function cmd_walk( )
 	setPedAnimation(source, "ped", walkstyle, true)
 	setTimer( function(pl)
 		setPedAnimation(pl, "ped", walkstyle, 1,false)
-		bindKey(pl,"lshift", "down", function(pl)
-			setPedAnimation(pl,"ped",walkstyle,0,false,false,false,false)
-		end)
+		bindKey(pl,"lshift", "down", stopWalk)
 	end, 50, 1, source )
+end
+
+function cmd_test()
+	triggerClientEvent( source, "create3DIMG", source )
 end
 
 function cmd_q( )
 	kickPlayer ( source, source, "Вы покинули сервер." )
+end
+
+function stopWalk(pl)
+	setPedAnimation(pl,"ped",walkstyle,0,false,false,false,false)
+	unbindKey( pl, "lshift", "down", stopWalk)
 end

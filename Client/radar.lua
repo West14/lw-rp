@@ -107,153 +107,155 @@ end
 
 -- Triggered on every frame
 function render()
-    cx,cy,cz = getElementRotation(getCamera())
-    px,py,pz = getElementRotation(lp)
-    if isLogged(lp) then
-        mapZoomScale = mapScaleFactor / getRadarRadius()
-        if (not isPlayerMapVisible()) then
-            updateRT()
+    if hud_visible and isLogged(lp) then
+        cx,cy,cz = getElementRotation(getCamera())
+        px,py,pz = getElementRotation(lp)
+        if lp then
+            mapZoomScale = mapScaleFactor / getRadarRadius()
+            if (not isPlayerMapVisible()) then
+                updateRT()
 
-            local offset = 5
+                local offset = 5
 
-            -- Calculations
-            local barsHeight = 10
-            local barsWidth = mapDisplayWidth
+                -- Calculations
+                local barsHeight = 10
+                local barsWidth = mapDisplayWidth
 
-            local radarWidth = mapDisplayWidth + offset + offset
-            local radarHeight = mapDisplayHeight + offset + barsHeight + offset + offset
-            local radarLeft = settings.safeX
-            local radarTop = screenH - settings.safeY - radarHeight
-            
-            local mapWidth = mapDisplayWidth
-            local mapHeight = mapDisplayHeight
-            local mapLeft = radarLeft + offset
-            local mapTop = radarTop + offset
-
-            local barsLeft = radarLeft + offset
-            local barsTop = radarTop + offset + mapHeight + offset
-            local barsOffset = 5
-
-            -- Draw radar
-            dxDrawRectangle(radarLeft, radarTop, radarWidth, radarHeight, tocolor(0, 0, 0, 175))
-            dxSetBlendMode("add")
-            dxDrawImage(mapLeft, mapTop, mapWidth, mapHeight, maprendertarget, 0, 0, 0, tocolor(255, 255, 255, 150))
-            dxSetBlendMode("blend")
-
-            -- Calculate percentage values
-            local health = getElementHealth(localPlayer) / getMaxHealth(localPlayer)
-            local armor = getPedArmor(localPlayer) / 100
-            local oxygen = getPedOxygenLevel(localPlayer) / getMaxOxygen(localPlayer)
-
-            -- Compute healthbar color
-            local r, g, b = settings.healthbar.colorNormal[1], settings.healthbar.colorNormal[2], settings.healthbar.colorNormal[3]
-            if health >= 0.25 then
-                interpolateBetween(
-                    settings.healthbar.colorNormal[1], settings.healthbar.colorNormal[2], settings.healthbar.colorNormal[3],
-                    settings.healthbar.colorLow[1], settings.healthbar.colorLow[2], settings.healthbar.colorLow[3],
-                    math.floor(health*20)/10, "InOutQuad"
-                )
-            else
-                r, g, b = interpolateBetween(
-                    settings.healthbar.colorCritical[1], settings.healthbar.colorCritical[2], settings.healthbar.colorCritical[3],
-                    settings.healthbar.colorLow[1], settings.healthbar.colorLow[2], settings.healthbar.colorLow[3],
-                    math.floor(health*20)/10, "InOutQuad"
-                )
-            end
-            local healthBg = tocolor(r, g, b, 100)
-            local healthVal = tocolor(r, g, b, 190)
-
-            -- Draw health bar
-            local healthbarLeft = barsLeft
-            local healthbarWidth = barsWidth/2 - barsOffset/2
-
-            dxDrawRectangle(healthbarLeft, barsTop, healthbarWidth,        barsHeight, healthBg)
-            dxDrawRectangle(healthbarLeft, barsTop, healthbarWidth*health, barsHeight, healthVal)
-
-            if settings.oxygenbar.alwaysRender or (oxygen < 1 or isElementInWater(localPlayer)) then
-                -- draw armor bar
-                local armorLeft = barsLeft + barsWidth/2 + barsOffset/2
-                local armorWidth = barsWidth/4 - barsOffset
-
-                dxDrawRectangle(armorLeft, barsTop, armorWidth,       barsHeight, armorBg)
-                dxDrawRectangle(armorLeft, barsTop, armorWidth*armor, barsHeight, armorVal)
+                local radarWidth = mapDisplayWidth + offset + offset
+                local radarHeight = mapDisplayHeight + offset + barsHeight + offset + offset
+                local radarLeft = settings.safeX
+                local radarTop = screenH - settings.safeY - radarHeight
                 
-                -- draw oxygen bar
-                local oxygenLeft = barsLeft + barsWidth/2 + barsWidth/4 + barsOffset/2
-                local oxygenWidth = barsWidth/4 - barsOffset/2
+                local mapWidth = mapDisplayWidth
+                local mapHeight = mapDisplayHeight
+                local mapLeft = radarLeft + offset
+                local mapTop = radarTop + offset
 
-                dxDrawRectangle(oxygenLeft, barsTop, oxygenWidth,        barsHeight, oxygenBg)
-                dxDrawRectangle(oxygenLeft, barsTop, oxygenWidth*oxygen, barsHeight, oxygenVal)
-            else
-                -- draw armor bar (extended length)
-                local armorLeft = barsLeft + barsWidth/2 + barsOffset/2
-                local armorWidth = barsWidth/2 - barsOffset/2
+                local barsLeft = radarLeft + offset
+                local barsTop = radarTop + offset + mapHeight + offset
+                local barsOffset = 5
 
-                dxDrawRectangle(armorLeft, barsTop, armorWidth,       barsHeight, armorBg)
-                dxDrawRectangle(armorLeft, barsTop, armorWidth*armor, barsHeight, armorVal)
-            end
+                -- Draw radar
+                dxDrawRectangle(radarLeft, radarTop, radarWidth, radarHeight, tocolor(0, 0, 0, 175))
+                dxSetBlendMode("add")
+                dxDrawImage(mapLeft, mapTop, mapWidth, mapHeight, maprendertarget, 0, 0, 0, tocolor(255, 255, 255, 150))
+                dxSetBlendMode("blend")
 
-            local rx, ry, rz = getElementRotation(localPlayer)
-            local centerX, centerY = mapWidth/2, mapHeight*(3/5)
+                -- Calculate percentage values
+                local health = getElementHealth(localPlayer) / getMaxHealth(localPlayer)
+                local armor = getPedArmor(localPlayer) / 100
+                local oxygen = getPedOxygenLevel(localPlayer) / getMaxOxygen(localPlayer)
 
-            -- Draw heat-seeking rockets targeting the local player
-            if settings.blips.drawProjectiles then
-                for k, v in ipairs(getElementsByType("projectile")) do
+                -- Compute healthbar color
+                local r, g, b = settings.healthbar.colorNormal[1], settings.healthbar.colorNormal[2], settings.healthbar.colorNormal[3]
+                if health >= 0.25 then
+                    interpolateBetween(
+                        settings.healthbar.colorNormal[1], settings.healthbar.colorNormal[2], settings.healthbar.colorNormal[3],
+                        settings.healthbar.colorLow[1], settings.healthbar.colorLow[2], settings.healthbar.colorLow[3],
+                        math.floor(health*20)/10, "InOutQuad"
+                    )
+                else
+                    r, g, b = interpolateBetween(
+                        settings.healthbar.colorCritical[1], settings.healthbar.colorCritical[2], settings.healthbar.colorCritical[3],
+                        settings.healthbar.colorLow[1], settings.healthbar.colorLow[2], settings.healthbar.colorLow[3],
+                        math.floor(health*20)/10, "InOutQuad"
+                    )
+                end
+                local healthBg = tocolor(r, g, b, 100)
+                local healthVal = tocolor(r, g, b, 190)
+
+                -- Draw health bar
+                local healthbarLeft = barsLeft
+                local healthbarWidth = barsWidth/2 - barsOffset/2
+
+                dxDrawRectangle(healthbarLeft, barsTop, healthbarWidth,        barsHeight, healthBg)
+                dxDrawRectangle(healthbarLeft, barsTop, healthbarWidth*health, barsHeight, healthVal)
+
+                if settings.oxygenbar.alwaysRender or (oxygen < 1 or isElementInWater(localPlayer)) then
+                    -- draw armor bar
+                    local armorLeft = barsLeft + barsWidth/2 + barsOffset/2
+                    local armorWidth = barsWidth/4 - barsOffset
+
+                    dxDrawRectangle(armorLeft, barsTop, armorWidth,       barsHeight, armorBg)
+                    dxDrawRectangle(armorLeft, barsTop, armorWidth*armor, barsHeight, armorVal)
+                    
+                    -- draw oxygen bar
+                    local oxygenLeft = barsLeft + barsWidth/2 + barsWidth/4 + barsOffset/2
+                    local oxygenWidth = barsWidth/4 - barsOffset/2
+
+                    dxDrawRectangle(oxygenLeft, barsTop, oxygenWidth,        barsHeight, oxygenBg)
+                    dxDrawRectangle(oxygenLeft, barsTop, oxygenWidth*oxygen, barsHeight, oxygenVal)
+                else
+                    -- draw armor bar (extended length)
+                    local armorLeft = barsLeft + barsWidth/2 + barsOffset/2
+                    local armorWidth = barsWidth/2 - barsOffset/2
+
+                    dxDrawRectangle(armorLeft, barsTop, armorWidth,       barsHeight, armorBg)
+                    dxDrawRectangle(armorLeft, barsTop, armorWidth*armor, barsHeight, armorVal)
+                end
+
+                local rx, ry, rz = getElementRotation(localPlayer)
+                local centerX, centerY = mapWidth/2, mapHeight*(3/5)
+
+                -- Draw heat-seeking rockets targeting the local player
+                if settings.blips.drawProjectiles then
+                    for k, v in ipairs(getElementsByType("projectile")) do
+                        local blipPos = v.position
+                        local dist = (localPlayer.position - v.position).length
+                        if v.dimension == localPlayer.dimension and v.interior == Camera.interior and (settings.blips.projectilesAll or v.target == localPlayer or (localPlayer.vehicle and v.target == localPlayer.vehicle)) then
+                            local radius = dist/mapZoomScale
+                            local direction = math.atan2(v.position.x - localPlayer.position.x, v.position.y - localPlayer.position.y) + math.rad(Camera.rotation.z)
+                            local blipX, blipY = centerX + math.sin(direction) * radius, centerY - math.cos(direction) * radius
+                            if blipX >= 0 and blipX <= mapWidth and blipY >= 0 and blipY <= mapHeight then
+                                local path = "Images/blips/0.png"
+                                local blipColor = settings.blips.projectileColor
+                                local blipSize = settings.blips.sizeFactor
+                                dxDrawImage(mapLeft + blipX - blipSize/2, mapTop + blipY - blipSize/2, blipSize, blipSize, path, 0, 0, 0, blipColor)
+                            end
+                        end
+                    end
+                end
+
+                -- Draw blips
+                for k, v in ipairs(getElementsByType("blip")) do
                     local blipPos = v.position
                     local dist = (localPlayer.position - v.position).length
-                    if v.dimension == localPlayer.dimension and v.interior == Camera.interior and (settings.blips.projectilesAll or v.target == localPlayer or (localPlayer.vehicle and v.target == localPlayer.vehicle)) then
+                    local maxdist = v.visibleDistance
+
+                    if dist <= maxdist and v.dimension == localPlayer.dimension and v.interior == Camera.interior then
                         local radius = dist/mapZoomScale
+
                         local direction = math.atan2(v.position.x - localPlayer.position.x, v.position.y - localPlayer.position.y) + math.rad(Camera.rotation.z)
+
                         local blipX, blipY = centerX + math.sin(direction) * radius, centerY - math.cos(direction) * radius
-                        if blipX >= 0 and blipX <= mapWidth and blipY >= 0 and blipY <= mapHeight then
-                            local path = "Images/blips/0.png"
-                            local blipColor = settings.blips.projectileColor
-                            local blipSize = settings.blips.sizeFactor
-                            dxDrawImage(mapLeft + blipX - blipSize/2, mapTop + blipY - blipSize/2, blipSize, blipSize, path, 0, 0, 0, blipColor)
+
+                        local blipX = math.max(0, math.min(blipX, mapWidth)) -- clamp position between 0 and mapWidth
+                        local blipY = math.max(0, math.min(blipY, mapHeight)) -- clamp position between 0 and mapHeight
+
+                        local blipRot = getElementData(v, "blipRotation") or 0
+                        if type(blipRot) ~= "number" then
+                            blipRot = 0
                         end
+                        
+                        local path = "Images/blips/"..v.icon..".png"
+                        do
+                            local custom = getElementData(v, "customIcon")
+                            if custom and custom:sub(1, 1) == ":" then
+                                path = custom
+                            elseif custom then
+                                path = "Images/blips/"..custom..".png"
+                            end
+                        end
+                        local blipColor = (type(v.icon) == "number" and v.icon >= 1 and v.icon <= 63) and 0xFFFFFFFF or tocolor(getBlipColor(v))
+                        local blipSize = v.size * settings.blips.sizeFactor
+                        dxDrawImage(mapLeft + blipX - blipSize/2, mapTop + blipY - blipSize/2, blipSize, blipSize, path, blipRot, 0, 0, blipColor)
                     end
                 end
+
+                -- Draw local player blip
+                local blipSize = 2 * settings.blips.sizeFactor
+                dxDrawImage(mapLeft + centerX - blipSize/2, mapTop + centerY - blipSize/2, blipSize, blipSize, "Images/player.png", cz-pz, 0, 0)
             end
-
-            -- Draw blips
-            for k, v in ipairs(getElementsByType("blip")) do
-                local blipPos = v.position
-                local dist = (localPlayer.position - v.position).length
-                local maxdist = v.visibleDistance
-
-                if dist <= maxdist and v.dimension == localPlayer.dimension and v.interior == Camera.interior then
-                    local radius = dist/mapZoomScale
-
-                    local direction = math.atan2(v.position.x - localPlayer.position.x, v.position.y - localPlayer.position.y) + math.rad(Camera.rotation.z)
-
-                    local blipX, blipY = centerX + math.sin(direction) * radius, centerY - math.cos(direction) * radius
-
-                    local blipX = math.max(0, math.min(blipX, mapWidth)) -- clamp position between 0 and mapWidth
-                    local blipY = math.max(0, math.min(blipY, mapHeight)) -- clamp position between 0 and mapHeight
-
-                    local blipRot = getElementData(v, "blipRotation") or 0
-                    if type(blipRot) ~= "number" then
-                        blipRot = 0
-                    end
-                    
-                    local path = "Images/blips/"..v.icon..".png"
-                    do
-                        local custom = getElementData(v, "customIcon")
-                        if custom and custom:sub(1, 1) == ":" then
-                            path = custom
-                        elseif custom then
-                            path = "Images/blips/"..custom..".png"
-                        end
-                    end
-                    local blipColor = (type(v.icon) == "number" and v.icon >= 1 and v.icon <= 63) and 0xFFFFFFFF or tocolor(getBlipColor(v))
-                    local blipSize = v.size * settings.blips.sizeFactor
-                    dxDrawImage(mapLeft + blipX - blipSize/2, mapTop + blipY - blipSize/2, blipSize, blipSize, path, blipRot, 0, 0, blipColor)
-                end
-            end
-
-            -- Draw local player blip
-            local blipSize = 2 * settings.blips.sizeFactor
-            dxDrawImage(mapLeft + centerX - blipSize/2, mapTop + centerY - blipSize/2, blipSize, blipSize, "Images/player.png", cz-pz, 0, 0)
         end
     end
 end

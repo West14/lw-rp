@@ -2,20 +2,19 @@
 	ФАЙЛ СОЗДАН ДЛЯ ТОГО, ЧТОБЫ СКИДЫВАТЬ СЮДА ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ КЛИЕНТСКОЙ ЧАСТИ.
 --]]
 
-
-encKey = "c3CKcjgKDGiVfyN8"
 screenW, screenH = guiGetScreenSize() -- get player`s screen size
 global_rendertarget = dxCreateRenderTarget( screenW, screenH, true )
+api_key = "uRDWClUg73pUDRyrAqtS_5WYczuS7lDF"
 DGS = exports.dgs -- exports from dgs
 lp = getLocalPlayer() -- локальный игрок
+clp = getCamera()
 chat_messages = {} -- сообщения чата
 registered = {
     button = {},
     radiobutton = {}
 }
 yposition = 225
-yposition_new = 0 
-yposition_max = 0
+
 showChat(false)
 -- регистрация и авторизация
 editWidth = 400
@@ -34,6 +33,13 @@ female_register_skins = {
 	[4] = 69
 }
 
+font_montmediumL = dxCreateFont("Fonts/Montserrat-Medium.ttf",10)
+font_montmediumB = dxCreateFont("Fonts/Montserrat-Medium.ttf",10,true)
+
+font_montregular = dxCreateFont("Fonts/Montserrat-Regular.ttf",10)
+
+font_montlight = dxCreateFont("Fonts/Poppins-ExtraLight.ttf",9)
+
 function timestamp( )
 	time = getRealTime()
 	hours = time.hour
@@ -51,3 +57,7 @@ function timestamp( )
 	end
 end
 addEventHandler("onClientRender",root,timestamp)
+
+function dxDrawImage3D( x, y, z, width, height, material, color, rotation, ... )
+    return dxDrawMaterialLine3D( x, y, z, x + width, y + height, z + tonumber( rotation or 0 ), material, height, color or 0xFFFFFFFF, ... )
+end
