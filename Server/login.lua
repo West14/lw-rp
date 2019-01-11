@@ -87,7 +87,9 @@ function onSelectCharacter(table)
 		setElementInterior(source,Faction_spawn[faction][2])
 	else
 		spawnPlayer(source, 391.658203125, -1524.560546875, 32.266296386719, 50, table.skin)
+		setCameraTarget(source,source)
 	end
+	dbExec(dbHandle,"INSERT INTO `online`(`id`, `nick`, `fr_id`, `alevel`) VALUES ("..getElementData(source,"id")..",'"..table.nick.."',"..table.faction..","..table.admin..")")
 end
 
 addEvent("onPlayerLogIn", true)

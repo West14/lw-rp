@@ -42,7 +42,7 @@ function cmd_me(args)
 	if args[1] == nil then
 		triggerClientEvent(source, "outputChatMessage", source, "Используйте /me [действие]", "#990000")
 	else
-		sendMessageToAll(source,15,"#D667FF",getElementData(source,"nick").."[ "..getElementData(source,"id").." ]: "..msg)
+		sendMessageToAll(source,15,"#D667FF",getElementData(source,"nick").."["..getElementData(source,"id").."]: "..msg)
 	end
 end
 
@@ -80,7 +80,7 @@ function cmd_s( args )
 		msg = msg.." "..theMsg
 	end
 	if string.len(removeHex(msg)) > 0 and string.len(string.gsub(msg,"%*","")) > 0 then
-		sendMessageToAll(source,20,nil,getElementData(source,"nick").."[ "..getElementData(source,"id").." ] крикнул: "..msg)
+		sendMessageToAll(source,20,nil,getElementData(source,"nick").."["..getElementData(source,"id").."] крикнул: "..msg)
 	end
 end
 
@@ -90,7 +90,7 @@ function cmd_w( args )
 		msg = msg.." "..theMsg
 	end
 	if string.len(removeHex(msg)) > 0 and string.len(string.gsub(msg,"%*","")) > 0 then
-		sendMessageToAll(source,10,nil,getElementData(source,"nick").."[ "..getElementData(source,"id").." ] шепчет: "..msg)
+		sendMessageToAll(source,10,nil,getElementData(source,"nick").."["..getElementData(source,"id").."] шепчет: "..msg)
 	end
 end
 
@@ -123,7 +123,7 @@ function cmd_checkleader()
 	if frac_id == nil or frac_id == false then 
 		triggerClientEvent( source, "outputChatMessage", source, "Вы не лидер")
 	elseif frac_id >= 1 then
-		triggerClientEvent( source, "outputChatMessage", source, "Вы лидер "..Fraction_list[frac_id])
+		triggerClientEvent( source, "outputChatMessage", source, "Вы лидер "..Faction_list[frac_id])
 	end
 end
 
@@ -157,4 +157,70 @@ end
 
 function cmd_q( )
 	kickPlayer ( source, source, "Вы покинули сервер." )
+end
+
+function cmd_r(args)
+	if args[1] ~= nil then
+		FactionSendMessage(source,args)
+	end
+end
+
+function cmd_invite(args)
+
+end
+
+function cmd_uninvite(args)
+
+end
+
+function cmd_members()
+	if getElementData(source,"faction") ~= 0 then
+		local qh = dbQuery(function(qh,sourcePlayer)
+			local result = dbPoll(qh,0)
+			if result then
+				triggerClientEvent("outputChatMessage",sourcePlayer,"Онлайн фракции: ")	
+				for _,row in ipairs(result) do
+					player = getPlayerByID(row.id)
+					triggerClientEvent("outputChatMessage",sourcePlayer,getElementData(player,"nick"))
+				end
+				dbFree(qh)
+			end
+		end,{source},dbHandle,"SELECT `id`,`nick` FROM `online` WHERE `fr_id`=?",getElementData(source,"faction"))
+	end
+end
+
+function cmd_pesc()
+
+end
+
+function cmd_pbase()
+
+end
+
+function cmd_dc()
+
+end
+
+function cmd_cuff()
+
+end
+
+function cmd_search()
+
+end
+
+function cmd_searchtr()
+
+end
+
+function cmd_searchhou()
+
+end
+
+function cmd_wanted()
+
+end
+
+function cmd_pdlic()
+
 end

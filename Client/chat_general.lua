@@ -16,10 +16,9 @@ function onPlayerPressKey( btn,press )
 		if (press) then
 			if btn == "F6" then
 				chatCheck()
-			elseif btn == "Y" then
+			elseif btn == "y" then
 				if chat_focus == 0 then -- если чат в фокусе(курсор стоит в нём)
 					chatCheck()
-
 				end
 			end
 		end
@@ -39,6 +38,7 @@ function chatCheck( )
 	elseif chat_opened == 1 then -- если чат открыт
 		removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
 		chat_opened = 0
+		chat_focus = 0
 		DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
 		showCursor(false)
 	end

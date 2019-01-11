@@ -1,4 +1,3 @@
-ids = {}
 function isLogged(thePlayer) -- проверка на авторизацию
 	return getElementData(thePlayer, "logged")
 end
@@ -10,36 +9,11 @@ end
 addEvent("addDataToDataBase",true)
 addEventHandler("addDataToDataBase",root,addDataToDataBase)
 
-function assignID() -- перебирает ид, когда игрок подключается, через цикл for, и если ids[i] пусто,то оно заполняется данными игрока.
-    for i=1,getMaxPlayers() do 
-        if not ids[i] then 
-            ids[i] = source 
-            setElementData(source,"id",i)
-            break 
-        end 
-    end 
-end 
-addEventHandler("onPlayerJoin",root,assignID) 
-  
-function startup() -- когда ресурс запускается, то сервер проверяет игроков на наличие данных ид в игроке.
-    for k, v in ipairs(getElementsByType("player")) do 
-        local id = getElementData(v,"id") 
-        if id then ids[id] = v end 
-    end 
-end 
-addEventHandler("onResourceStart",resourceRoot,startup) 
-
-function freeID() -- освобождение ид, когда игрок выходит.
-    local id = getElementData(source,"id") 
-    if not id then return end 
-    ids[id] = nil 
-end 
-addEventHandler("onPlayerQuit",root,freeID) 
-
 function removeData()
 	local players = getElementsByType ( "player" )
 	for theKey,thePlayer in ipairs(players) do -- use a generic for loop to step through each player
 		setElementData(thePlayer,"skin",nil)
+		dbExec(dbHandle,"DELETE FROM `online` WHERE id='"..getElementData(thePlayer,"id").."'")
 		setElementData(thePlayer,"nick",nil)
 		setElementData(thePlayer,"logged",false)
 		setElementData(thePlayer, "level",nil)

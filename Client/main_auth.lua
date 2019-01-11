@@ -36,12 +36,13 @@ function onResStart(  )
 	changeWindow("menu")
 	DGS:dgsSetFont(logBtn,font_montmediumL)
 	setPlayerHudComponentVisible("radar",false)
+	setPlayerHudComponentVisible("area_name",false)
 	DGS:dgsSetFont(regBtn,font_montmediumL)
 	DGS:dgsSetFont(logEdit,"default")
 	DGS:dgsEditSetMasked ( passEdit, true )
 	DGS:dgsSetFont(passEdit,"default")
-	DGS:dgsSetProperty(logBtn,"textcolor",tocolor(136,196,49))
-	DGS:dgsSetProperty(regBtn,"textcolor",tocolor(136,196,49))
+	DGS:dgsSetProperty(logBtn,"textColor",tocolor(136,196,49))
+	DGS:dgsSetProperty(regBtn,"textColor",tocolor(136,196,49))
 	requestBrowserDomains({"forum.lw-rp.tk"})
 	fadeCamera(true)
 	setCameraTarget(lp)
@@ -117,7 +118,7 @@ addEventHandler( "onClientRender", root, renderLogInPanel )
 function onEnter(aX,aY)
 	DGS:dgsSetAlpha(source,0)
 	DGS:dgsAlphaTo(source,255,false,"Linear",500)
-	DGS:dgsSetProperty(source,"textcolor",tocolor(255,255,255))
+	DGS:dgsSetProperty(source,"textColor",tocolor(255,255,255))
 	DGS:dgsSetFont(source,font_montmediumB)
 end
 addEventHandler("onDgsMouseEnter",logBtn,onEnter)
@@ -125,7 +126,7 @@ addEventHandler("onDgsMouseEnter",regBtn,onEnter)
 
 function onExit()
 	DGS:dgsSetFont(source,font_montmediumL)
-	DGS:dgsSetProperty(source,"textcolor",tocolor(136,196,49))
+	DGS:dgsSetProperty(source,"textColor",tocolor(136,196,49))
 end
 addEventHandler("onDgsMouseLeave",logBtn,onExit)
 addEventHandler("onDgsMouseLeave",regBtn,onExit)
@@ -335,7 +336,7 @@ function renderSelectCharacters()
 end
 
 function renderCreateCharacters()
-
+	
 end
 
 
