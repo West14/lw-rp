@@ -38,14 +38,13 @@ function Blur.createShader()
 end
 addEventHandler( "onClientResourceStart", getRootElement(), Blur.createShader )
 
-function Blur.render(alpha)
-	strength = 0.7
+function Blur.render()
+	strength = 0.3
 	-- Update screen source
 	dxUpdateScreenSource(screenSource, true)
 	
 	-- Switch rendering to our render target
 	dxSetRenderTarget(renderTarget, false)
-	
 	-- Prepare render target content
 	dxDrawImage(0, 0, blurW, blurH, screenSource)
 	
@@ -54,11 +53,10 @@ function Blur.render(alpha)
 		dxSetShaderValue(shader, 'factor', 0.0020 * strength + (i / 8 * 0.001 * strength))
 		dxDrawImage(0, 0, blurW, blurH, shader)
 	end
-	
+		
 	-- Restore the default render target
 	dxSetRenderTarget()
-	dxDrawImageSection( 0, 0, 700, 250, 0, 0, 700, 250, renderTarget, 0, 0, 0, tocolor(255, 255, 255, alpha) )
-	--dxDrawImage(0, 0, blurW, blurH, renderTarget, 0, 0, 0, tocolor(255, 255, 255, alpha))
+	dxDrawImage(0, 0, blurW, blurH, renderTarget, 0, 0, 0, tocolor(255, 255, 255, 255))
 end
 
 function Blur:getScreenTexture()
