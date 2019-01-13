@@ -4,6 +4,24 @@
 
 	<script src="Shared/global_functions.lua" type="shared" />
 
+	<file src="Images/player.png" type="client" />
+	<file src="Images/mask.png" type="client" />
+	<file src="Images/auth-logo.png" type="client" />
+	<file src="Images/avatar-mask.png" type="client" />
+	<file src="Images/btn-inactive.png" type="client" />
+	<file src="Images/btn-active.png" type="client" />
+	<file src="Images/checkbox-inactive.png" type="client" />
+	<file src="Images/checkbox-active.png" type="client" />
+	<file src="Images/davatar.jpg" type="client" />
+	<file src="Images/mask-error.png" type="client" />
+	<file src="Images/mask-success.png" type="client" />
+	<file src="Images/mask-add.png" type="client" />
+	<file src="Images/radar_map.jpg" type="client" />
+	<file src="Images/wallet.png" type="client" />
+	<file src="Images/wallet-mask.png" type="client" />
+	<file src="Images/icons.png" type="client" />
+	<file src="Images/shaderpallete.png" type="client" />
+
 	<file src="Fonts/Montserrat-Light.ttf" />
 	<file src="Fonts/Montserrat-ExtraLight.ttf" />
 	<file src="Fonts/Montserrat-Bold.ttf" />
@@ -23,6 +41,7 @@
 	<script src="Client/main_auth.lua" type="client" />
 	<script src="Client/login_blur.lua" type="client" />
 	<script src="Client/colorcorrection.lua" type="client" />
+	<script src="Client/hud.lua" type="client" />
 
 	<script src="Client/tab_list.lua" type="client" />
 
@@ -36,18 +55,6 @@
 	<script src="Server/weather.lua" type="server" />
 
 	<map src="Maps/derevyshka.map" dimension="0"></map>
-	<file src="Images/player.png" type="client" />
-	<file src="Images/mask.png" type="client" />
-	<file src="Images/avatar-mask.png" type="client" />
-	<file src="Images/mask-inactive.png" type="client" />
-	<file src="Images/mask-active.png" type="client" />
-	<file src="Images/checkbox-inactive.png" type="client" />
-	<file src="Images/checkbox-active.png" type="client" />
-	<file src="Images/davatar.jpg" type="client" />
-	<file src="Images/mask-error.png" type="client" />
-	<file src="Images/mask-success.png" type="client" />
-	<file src="Images/mask-add.png" type="client" />
-	<file src="Images/shaderpallete.png" type="client" />
 
 	<file src="Shaders/mta-helper.fx" type="client" />
 	<file src="Shaders/dBlurH.fx" type="client" />
@@ -56,8 +63,8 @@
 	<file src="Shaders/car_refgrun.fx" type="client" />
 	<file src="Shaders/car_refgrunL.fx" type="client" />
 	<file src="Shaders/addPalette.fx" type="client" />
-
 	<file src="Shaders/mask.fx" type="client" />
+	<file src="Shaders/smooth.fx" type="client" />
 	<file src="Shaders/login_blur.c" type="client" />
 
 	<oop>true</oop>

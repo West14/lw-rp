@@ -1,4 +1,3 @@
-ids = {}
 local originalGetPlayerCount = getPlayerCount -- Store the original getPlayerCount function to a variable
 function removeHex(text, digits) -- функция с вики.
     assert(type(text) == "string", "Bad argument 1 @ removeHex [String expected, got " .. tostring(text) .. "]")

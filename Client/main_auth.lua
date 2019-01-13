@@ -1,7 +1,7 @@
 local loginTexture = dxCreateRoundedTexture(screenW * 0.3542, screenH * 0.1756, screenW * 0.2917, screenH * 0.6500, 10, "Images/mask.png")
 
-local authButtonActive = dxCreateRoundedTexture(screenW * 0.3785, screenH * 0.6800, screenW * 0.1104, screenH * 0.0578,10, "Images/mask-active.png")
-local authButtonInActive = dxCreateRoundedTexture(screenW * 0.3785, screenH * 0.6800, screenW * 0.1104, screenH * 0.0578,10, "Images/mask-inactive.png")
+local authButtonActive = dxCreateRoundedTexture(screenW * 0.3785, screenH * 0.6800, screenW * 0.1104, screenH * 0.0578,10, "Images/btn-active.png")
+local authButtonInActive = dxCreateRoundedTexture(screenW * 0.3785, screenH * 0.6800, screenW * 0.1104, screenH * 0.0578,10, "Images/btn-inactive.png")
 
 local CheckboxActive = dxCreateRoundedTexture(0,0, 13,13,2, "Images/checkbox-active.png")
 local CheckboxInActive = dxCreateRoundedTexture(0, 0, 13, 13,2, "Images/checkbox-inactive.png")
@@ -23,13 +23,21 @@ local remember_checkbox = false
 avatar = dxCreateTexture("Images/davatar.jpg")
 regavatar = dxMaskTexture(avatar, "Images/avatar-mask.png")
 avatar = dxMaskTexture(avatar, "Images/avatar-mask.png")
-
 playerCharacters = {}
 playerCharactersYpos = {}
-
---[[ dxDrawImage(screenW * 0.5896, screenH * 0.4911, screenW * 0.0167, screenH * 0.0233, ":jabka-rp/Images/checkbox-inactive.png", 0, 0, 0, tocolor(49, 205, 155, 255), true)
-dxDrawImage(screenW * 0.5896, screenH * 0.6056, screenW * 0.0167, screenH * 0.0233, ":jabka-rp/Images/checkbox-inactive.png", 0, 0, 0, tocolor(49, 205, 155, 255), true)
-]]
+selectGender = 'male'
+characterSkins = {
+	['male'] = {
+		[1] = 250,
+		[2] = 259,
+		[3] = 170
+	},
+	['female'] = {
+		[1] = 225,
+		[2] = 263
+	}
+	
+}
 
 function onResStart(  )
 	showCursor(true)
@@ -282,20 +290,6 @@ function startSingUp()
 	end
 end
 
-function errorSignUp()
-	emailsuccess = false
-	loginsuccess = false
-	outputChatMessage("Никнейм или почта заняты","#990000")
-end
-addEvent("errorSignUp",true)
-addEventHandler("errorSignUp",root,errorSignUp)
-
-function endSingUp()
-	removeEventHandler("onClientRender",root,renderLogInPanel)
-end
-addEvent("endSignUp",true)
-addEventHandler("endSignUp",root,endSingUp)
-
 function renderSelectCharacters()
 	ypos = screenH * 0.2233
 	for i = #playerCharacters,1,-1 do
@@ -318,14 +312,37 @@ function renderSelectCharacters()
 					setElementData(lp, "skin", playerCharacters[i].skin )
 					setElementData(lp, "faction", playerCharacters[i].faction )
 					setElementData(lp, "leader", playerCharacters[i].leader )
+					setElementData(lp, "tableid", playerCharacters[i].id)
+					setElementFrozen(lp,false)
 					setElementData(lp, "walkstyle", playerCharacters[i].walkstyle )
 				end
 			end
 		elseif isMouseInPosition(screenW * 0.4764, ypos+37, screenW * 0.0181, screenH * 0.0289) then
 			if getKeyState("mouse1") then
 				removeEventHandler("onClientRender",root,renderSelectCharacters)
+				removeEventHandler("onClientRender",root,renderLogInPanel)
 				activewindow = "createcharacter"
 				addEventHandler("onClientRender",root,renderCreateCharacters)
+				setCameraMatrix(-2148.14453125, -2514.9580078125, 31.037450790405, -2227.642578125, -2454.3369140625, 28.776023864746)
+				skinselect = 1
+				skinped = createPed(characterSkins[selectGender][skinselect],-2151.3000488281,-2511.1000976563,30.60000038147,220.001831)
+				DGS:dgsCreateEdit( 0.1333, 0.3067, 0.2625, 0.0444,"",true)
+				DGS:dgsCreateEdit( 0.1333, 0.4200, 0.2625, 0.0444,"",true)
+				addEventHandler("onClientKey",root,function(btn,press)
+					if press then
+						if btn == "arrow_r" then
+							if skinselect < #characterSkins[selectGender] then
+								skinselect = skinselect + 1
+								setElementModel(skinped,characterSkins[selectGender][skinselect])
+							end
+						elseif btn == "arrow_l" then
+							if skinselect ~= 1 then
+								skinselect = skinselect - 1
+								setElementModel(skinped,characterSkins[selectGender][skinselect])
+							end
+						end
+					end
+				end)
 			end
 		end
 		ypos = ypos + 37
@@ -336,9 +353,10 @@ function renderSelectCharacters()
 end
 
 function renderCreateCharacters()
-	
+	dxDrawImage( screenW * 0.1153, screenH * 0.1822, screenW * 0.2993, screenH * 0.6378, loginTexture, 0, 190, 43 )
+	dxDrawRectangle(screenW * 0.1326, screenH * 0.3500, screenW * 0.2625, screenH * 0.0022, tocolor(123, 168, 44, 255), true, nil, tocolor(0,0,0,0))
+	dxDrawRectangle(screenW * 0.1326, screenH * 0.4633, screenW * 0.2625, screenH * 0.0022, tocolor(123, 168, 44, 255), true, nil, tocolor(0,0,0,0))
 end
-
 
 function returnCharacters(result)
 	for i = #result,1,-1 do
@@ -348,3 +366,18 @@ function returnCharacters(result)
 end
 addEvent("onReturnCharacters",true)
 addEventHandler("onReturnCharacters",root,returnCharacters)
+
+
+function errorSignUp()
+	emailsuccess = false
+	loginsuccess = false
+	outputChatMessage("Никнейм или почта заняты","#990000")
+end
+addEvent("errorSignUp",true)
+addEventHandler("errorSignUp",root,errorSignUp)
+
+function endSingUp()
+	removeEventHandler("onClientRender",root,renderLogInPanel)
+end
+addEvent("endSignUp",true)
+addEventHandler("endSignUp",root,endSingUp)

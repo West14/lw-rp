@@ -56,7 +56,7 @@ function onPlayerOff( )
 end
 
 function onEndRegister( thePlayer, skin )
-	setElementData(thePlayer, "skin", skin)
+	setElementData(thePlayer, "skin", skin)	
 	spawnPlayer(thePlayer, 391.658203125, -1524.560546875, 32.266296386719, 50,98)
 	fadeCamera(thePlayer,true)
 	setCameraTarget(thePlayer,thePlayer)
@@ -89,6 +89,18 @@ function onSelectCharacter(table)
 		spawnPlayer(source, 391.658203125, -1524.560546875, 32.266296386719, 50, table.skin)
 		setCameraTarget(source,source)
 	end
+	setPlayerMoney(source,table.money,false)
+	local qh = dbQuery(function(qh,table)
+		local result = dbPoll(qh,0)
+		if result then
+			for k,row in ipairs(result) do
+				local veh = createVehicle(row.modelid,row.sx,row.sy,row.sz,row.rx,row.ry,row.rz,row.number)
+				setElementData(veh,"pid",row.playerid)
+				setElementData(veh, "id",row.carid)
+				setVehicleColor(veh,row.r,row.g,row.b)
+			end
+		end
+	end,{table},dbHandle,"SELECT * FROM `vehicles` WHERE playerid='"..table.id.."'")
 	dbExec(dbHandle,"INSERT INTO `online`(`id`, `nick`, `fr_id`, `alevel`) VALUES ("..getElementData(source,"id")..",'"..table.nick.."',"..table.faction..","..table.admin..")")
 end
 

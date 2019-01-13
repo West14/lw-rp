@@ -3,9 +3,8 @@ Faction_list = {
 	[2] = "Mayor"
 }
 Faction_spawn = {
-	[1] = {
-		Vector3(391.658203125,-1524.560546875,52.266296386719),0},
-	[2] = Vector3(0,0,0)
+	[1] = {Vector3(391.658203125,-1524.560546875,52.266296386719),0},
+	[2] = {Vector3(0,0,0),0}
 }
 
 function FactionInvite(player,target)

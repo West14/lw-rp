@@ -1,9 +1,9 @@
 local tagFont = nil
 
 function createTagFont( )
-	tagFont = dxCreateFont( "Fonts/AC Boucle.ttf", 15 )
+	tagFont = dxCreateFont( "Fonts/Montserrat-Light.ttf", 15 )
 	if tagFont ~= nil then
-		tagFont = dxCreateFont( "Fonts/AC Boucle.ttf", 15 )
+		tagFont = dxCreateFont( "Fonts/Montserrat-Light.ttf", 15 )
 	end
 end
 addEventHandler( "onClientResourceStart", root, createTagFont )

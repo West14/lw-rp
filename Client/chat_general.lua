@@ -17,7 +17,7 @@ function onPlayerPressKey( btn,press )
 			if btn == "F6" then
 				chatCheck()
 			elseif btn == "y" then
-				if chat_focus == 0 then -- если чат в фокусе(курсор стоит в нём)
+				if chat_focus == 1 then -- если чат в фокусе(курсор стоит в нём)
 					chatCheck()
 				end
 			end

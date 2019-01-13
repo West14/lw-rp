@@ -224,3 +224,34 @@ end
 function cmd_pdlic()
 
 end
+
+function cmd_addcar(args)
+	if args then
+		local qh = dbQuery(function(qh,sourcePlayer,args)
+			local result = dbPoll(qh,0)
+			if result then
+				for k,row in ipairs(result) do
+					if row.alevel > 0 then
+						outputDebugString(row.id)
+						dbExec(dbHandle,"INSERT INTO `vehicles` (`carid`, `playerid`, `modelid`, `number`, `sx`, `sy`, `sz`, `rx`, `ry`, `rz`, `r`, `g`, `b`) VALUES (NULL, '"..row.id.."', '"..args[1].."', 'POSJ', '0', '0', '10', '0', '0', '0', '"..args[2].."', '"..args[3].."', '"..args[4].."');")
+						local veh = createVehicle(args[1],0,0,10,0,0,0,'POSJ')
+						setElementData(veh,"pid",row.id)
+						setVehicleColor(veh,args[2],args[3],args[4])
+					end
+				end
+			end
+		end,{source,args},dbHandle,"SELECT `alevel`,`id` FROM `online` WHERE `nick`='"..getElementData(source,"nick").."'")
+	end
+end
+
+function cmd_park()
+	local veh = getPedOccupiedVehicle(source)
+	if getElementData(veh,"pid") == getElementData(source,"tableid") then
+		local x,y,z = getElementPosition(veh)
+		local rX,rY,rZ = getElementRotation(veh)
+		dbExec(dbHandle,"UPDATE `vehicles` SET `sx` = '"..x.."', `sy` = '"..y.."', `sz` = '"..z.."', rx = '"..rX.."', ry = '"..rY.."', rz='"..rZ.."' WHERE `vehicles`.`carid` = '"..getElementData(veh,"id").."'")
+		triggerClientEvent("outputChatMessage",source,"Вы успешно перепарковали ваше авто!")
+	else
+		triggerClientEvent("outputChatMessage",source,"Это не ваше ТС!")
+	end
+end

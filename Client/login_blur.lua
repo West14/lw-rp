@@ -6,7 +6,7 @@ local screenSource = false
 local blurW, blurH = guiGetScreenSize()
 
 function Blur.createShader()
-	shader = dxCreateShader("Shaders/chat_blur.c")
+	shader = dxCreateShader("Shaders/login_blur.c")
 
 	if not shader then
 		outputDebugString("Failed to create blur shader")
