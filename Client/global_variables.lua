@@ -35,10 +35,13 @@ female_register_skins = {
 
 font_montmediumL = dxCreateFont("Fonts/Montserrat-Medium.ttf",10)
 font_montmediumB = dxCreateFont("Fonts/Montserrat-Medium.ttf",10,true)
-
+font_montmediumXX = dxCreateFont("Fonts/Montserrat-Medium.ttf",11,true)
+font_montregularB = dxCreateFont("Fonts/Montserrat-Regular.ttf",10,false)
 font_montregular = dxCreateFont("Fonts/Montserrat-Regular.ttf",10)
+font_montlight = dxCreateFont("Fonts/Montserrat-ExtraLight.ttf",9)
+font_montlightX = dxCreateFont("Fonts/Montserrat-ExtraLight.ttf",12)
 
-font_montlight = dxCreateFont("Fonts/Poppins-ExtraLight.ttf",9)
+guiColor = tocolor(105, 158, 14, 255)
 
 function timestamp( )
 	time = getRealTime()

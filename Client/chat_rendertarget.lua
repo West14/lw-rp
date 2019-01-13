@@ -1,4 +1,5 @@
-renderChatTarget = dxCreateRenderTarget(700,250,true) --рендертаргет
+local renderChatTarget = dxCreateRenderTarget(700,250,true) --рендертаргет
+chat_index = 0
 
 function dxDrawBorderedText( text,xposit,yposit,zposit,top ) -- ИСПОЛЬЗОВАТЬ ТОЛЬКО С РЕНДЕРТАРГЕТОМ!!!!!!!!
     dxDrawText ( "#000000"..removeHex(text), xposit+1, yposit + 1, zposit+1, top+1, tocolor ( 0, 0, 0, 255 ), 1.00, "default-bold", "left", "top",false,false,false,true)
@@ -18,8 +19,8 @@ function TextFuel() -- описано ниже в скролле
     dxSetRenderTarget(renderChatTarget,true)
     for i = #chat_messages, 1, -1 do
         if ypos < 0 or ypos > 227 then 
-            i = #chat_messages-1
-            ypos = ypos - 17
+           i = #chat_messages-1
+           ypos = ypos - 17
         else
             dxDrawBorderedText(chat_messages[i],5,ypos,250,5)
             ypos = ypos - 17
@@ -29,41 +30,37 @@ function TextFuel() -- описано ниже в скролле
 end
 
 function TextScroll(ypos) -- скролл чата
-    if hud_visible then
-        dxSetRenderTarget(renderChatTarget,true)
-            for i = #chat_messages, 1, -1 do -- перебор сообщений с ходом -1
-            if ypos < 0 or ypos > 225 then -- если позиция собщения дальше рендертаргета
-                i = #chat_messages-1 
-                ypos = ypos - 17 -- позиция сообщения-17
-            else
-                dxDrawBorderedText(chat_messages[i],5,ypos,250,5) -- отрисовка сообщения 
-                ypos = ypos - 17
-            end
+    dxSetRenderTarget(renderChatTarget,true)
+        for i = #chat_messages, 1, -1 do -- перебор сообщений с ходом -1
+        if ypos < 0 or ypos > 225 then -- если позиция собщения дальше рендертаргета
+            i = #chat_messages-1 
+            ypos = ypos - 17 -- позиция сообщения-17
+        else
+            dxDrawBorderedText(chat_messages[i],5,ypos,250,5) -- отрисовка сообщения 
+            ypos = ypos - 17
         end
-        dxSetRenderTarget()
     end
+    dxSetRenderTarget()
 end
 
 function chatKey( btn, press ) -- когда игрок нажал кнопку
-    if hud_visible then
-        if chat_opened == 1 then -- если чат виден
-             if press then -- если нажал
-                if btn == "mouse_wheel_up" then -- если кнопка = колёсико вверх
-                    if not(chat_index == 1) then
-                        yposition = yposition + 17 -- скроллим позицию вверх
-                        TextScroll(yposition) -- функция скролла чата
-                        chat_index = chat_index - 1
-                        outputDebugString( chat_index )
-                    end
-                elseif btn == "mouse_wheel_down" then -- если кнопка = колёсико вниз
-                    if not(chat_index >= #chat_messages) then
-                        yposition = yposition - 17 -- скроллим позицию вниз
-                        TextScroll(yposition) -- функция скролла чата
-                        chat_index = chat_index + 1
-                        outputDebugString( chat_index )
-                    end
-    			end
-            end
+    if chat_opened == 1 then -- если чат виден
+         if press then -- если нажал
+            if btn == "mouse_wheel_up" then -- если кнопка = колёсико вверх
+                if not(chat_index == 1) then
+                    yposition = yposition + 17 -- скроллим позицию вверх
+                    TextScroll(yposition) -- функция скролла чата
+                    chat_index = chat_index - 1
+                    outputDebugString( chat_index )
+                end
+            elseif btn == "mouse_wheel_down" then -- если кнопка = колёсико вниз
+                if not(chat_index >= #chat_messages) then
+                    yposition = yposition - 17 -- скроллим позицию вниз
+                    TextScroll(yposition) -- функция скролла чата
+                    chat_index = chat_index + 1
+                    outputDebugString( chat_index )
+                end
+			end
         end
     end
 end
@@ -78,8 +75,7 @@ end
 addEventHandler("onClientRender", root, dxRenderMainTarget)
 
 function handleRestore()
-    if hud_visible then
-        TextFuel() 
-    end
+    TextFuel() 
+
 end
 addEventHandler("onClientRestore",root,handleRestore)

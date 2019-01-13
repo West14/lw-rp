@@ -6,7 +6,6 @@ chat_focus = 0
 chat_mouse = 0
 chat_entries = {} 
 chat_index = 0
-chat_index = 0
 function openChat( )
 	dxDrawRectangle(10, 265, 479, 34, tocolor(55, 55, 55, 255), false)
 end
@@ -14,11 +13,11 @@ end
 
 function onPlayerPressKey( btn,press )
 	if isLogged(lp) then
-		if hud_visible then
-			if (press) then
-				if btn == "F6" then
-					chatCheck()
-				elseif btn == "Y" then
+		if (press) then
+			if btn == "F6" then
+				chatCheck()
+			elseif btn == "y" then
+				if chat_focus == 1 then -- если чат в фокусе(курсор стоит в нём)
 					chatCheck()
 				end
 			end
@@ -39,6 +38,7 @@ function chatCheck( )
 	elseif chat_opened == 1 then -- если чат открыт
 		removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
 		chat_opened = 0
+		chat_focus = 0
 		DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
 		showCursor(false)
 	end
@@ -52,8 +52,8 @@ function onPlayerEnterMessage( )
 			local cmd = split(text:sub(2), " ")
 			triggerServerEvent("sendCommand", lp, cmd)
 		else
-
-			triggerServerEvent("sendMessage",lp,lp,15,nil, getElementData(lp,"nick")..": "..text)
+			
+			triggerServerEvent("sendMessage",lp,lp,15,nil, getElementData(lp,"nick").."[ "..getElementData(lp,"id").." ]: "..text)
 		end
 		clearChatBox()
 	else
@@ -100,9 +100,10 @@ function clearChatBox( )
 	DGS:dgsSetText ( chatBox, "" ) -- обнуление текста
 	DGS:dgsSetVisible(chatBox, false ) -- скрытие эдитбокса
 	showCursor (false) -- скрытие курсора
+	chat_visible = false -- переменная чата
 	removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
 	chat_opened = 0
-	chat_focus = 0	
+	chat_focus = 0
 end
 
 

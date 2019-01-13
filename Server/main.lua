@@ -14,6 +14,8 @@ walkstyles_anim = {
 }
 table_admins = {}
 
+ids = {}
+
 function initScript()
 	dbSetup()
 	
@@ -64,3 +66,38 @@ function checkTime( )
 	end
 end
 setTimer( checkTime, 1000, 0 )
+
+function assignID(lp) -- перебирает ид, когда игрок подключается, через цикл for, и если ids[i] пусто,то оно заполняется данными игрока.
+    for i=1,getMaxPlayers() do 
+        if not ids[i] then 
+			ids[i] = source 
+            setElementData(source,"id",i)
+            break 
+        end 
+    end 
+end 
+addEventHandler("onPlayerJoin",root,assignID) 
+  
+function startup() -- когда ресурс запускается, то сервер проверяет игроков на наличие данных ид в игроке.
+    for k, v in ipairs(getElementsByType("player")) do 
+        local id = getElementData(v,"id") 
+		if id then 
+			ids[id] = v 
+		end 
+    end 
+end 
+addEventHandler("onResourceStart",resourceRoot,startup) 
+
+function freeID() -- освобождение ид, когда игрок выходит.
+	dbExec(dbHandle,"DELETE FROM `online` WHERE id='"..getElementData(source,"id").."'")
+    local id = getElementData(source,"id") 
+    if not id then return end 
+	ids[id] = nil 
+end 
+addEventHandler("onPlayerQuit",root,freeID) 
+
+function getPlayers()
+	triggerClientEvent("onReturnPlayers",source,ids,getMaxPlayers())
+end
+addEvent("onClientGetsPlayers",true)
+addEventHandler("onClientGetsPlayers",root,getPlayers)
