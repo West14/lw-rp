@@ -1,4 +1,7 @@
-MainDraw = {}
+EditBox = {
+    create = createEdit,
+    setProperty = setProperty
+}
 
 
 function dxCreateRoundedTexture(text_X,text_Y,text_width,text_height,radius,mask)

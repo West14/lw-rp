@@ -257,4 +257,4 @@ function render()
         end
     end
 end
-addEventHandler("onClientRender", root, render, false)
+addEventHandler("onClientRender", lp, render, false)

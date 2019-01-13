@@ -6,7 +6,6 @@ function onLogIn(nick, pass)
 				triggerClientEvent(lp, "outputChatMessage", lp, "Аккаунт с таким никнеймом не найден, пожалуйста зарегистрируйтесь.", "#990000")
 			else
 				
-				
 			end
 		end
 	)
@@ -28,10 +27,10 @@ function regCallback(responseData,errno,lp,nick)
 	if type(errno) == "table" then
 		responseData = fromJSON(responseData)
 		if tonumber(responseData.code) == 1 then
+			iprint(getPlayerName(lp))
 			setElementData(lp, "logged", true)
 			triggerClientEvent(lp, "outputChatMessage", lp, "Внимание, "..nick.." вы зарегистрирвали свой аккаунт на форум(forum.lw-rp.tk)")
 			triggerClientEvent(lp, "outputChatMessage", lp, "Чтобы войти в следующий раз введите свой никнейм: "..nick..".")
-			
 			fadeCamera(lp, true)
 			setElementData(lp,"logged", true)
 			spawnPlayer(lp,0,0,0,0,162)
@@ -75,7 +74,7 @@ end
 function authCallback(qh,client)
 	local result = dbPoll( qh, 0 )
 	if result then
-		triggerClientEvent("onReturnCharacters",client,result)
+		triggerClientEvent(client,"onReturnCharacters",client,result)
 	end
 end
 
