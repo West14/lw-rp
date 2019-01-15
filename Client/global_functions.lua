@@ -92,3 +92,21 @@ function _dxDrawRectangle( posX, posY, width, height, radius, color, postGUI )
 	dxDrawCorner( posX + width - radius, posY + radius, radius, color, 3, postGUI )
 	dxDrawCorner( posX + width - radius, posY + height - radius, radius, color, 4, postGUI )
 end
+
+--AUTO
+function onVehicleEngineOn(btn,press)
+	if press then
+		if btn == "2" then
+			local theVehicle = getPedOccupiedVehicle ( lp )
+			if theVehicle then
+				local state = getVehicleEngineState(theVehicle)
+				if getElementData(theVehicle,"pid") == getElementData(lp, "tableid") then
+					setVehicleEngineState(theVehicle, not(state))
+				elseif getElementData(theVehicle, "frid") == getElementData(lp, "faction") then
+					setVehicleEngineState(theVehicle, not(state))
+ 				end
+			end
+		end
+	end
+end
+addEventHandler( "onClientKey", root, onVehicleEngineOn)

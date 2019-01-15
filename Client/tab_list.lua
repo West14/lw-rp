@@ -59,7 +59,6 @@ function dxDrawTabList()
 			dxDrawImage( posX, posY + h_height, width, height, renderTarget, 0, 0, 0, tocolor( 255, 255, 255, 255 ), true )
 			
 		end
-		showCursor( getKeyState( "mouse2" ) )
 	end
 end
 addEventHandler("onClientRender",root,dxDrawTabList)

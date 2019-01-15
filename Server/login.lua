@@ -46,10 +46,11 @@ function regCallback(responseData,errno,lp,nick)
 end
 
 function onPlayerOff( )
-	for i,v in pairs(table_admins) do
-		if source == v then
-			table.remove(table_admins,i)
-			outputDebugString( getElementData(v,"nick").." администратор вышел из игры.", 0, 255, 76, 91 )
+	local tableid = getElementData(source,"tableid")
+	local vehicles = getElementsByType("vehicle")
+	for i,vehicle in ipairs(vehicles) do
+		if tableid == getElementData(vehicle,"pid") then
+			destroyElement(vehicle)
 		end
 	end
 end
@@ -64,11 +65,6 @@ end
 
 function onAuth(userid)
 	local qh = dbQuery(authCallback,{client}, dbHandle, "SELECT * FROM `accounts` WHERE `forumid` ="..userid)
-	--[[spawnPlayer(client,345,421,23,0,45)
-	setCameraTarget(client,client)
-	showCursor(client,false)
-	setElementData(client,"logged",true)
-	setElementData(client,"nick","Jabka_Devs")]]
 end
 
 function authCallback(qh,client)
@@ -90,15 +86,18 @@ function onSelectCharacter(table)
 	end
 	setPlayerMoney(source,table.money,false)
 	local qh = dbQuery(function(qh,table)
+		playercar = {}
 		local result = dbPoll(qh,0)
 		if result then
 			for k,row in ipairs(result) do
 				local veh = createVehicle(row.modelid,row.sx,row.sy,row.sz,row.rx,row.ry,row.rz,row.number)
+				setVehicleEngineState(veh, false)
 				setElementData(veh,"pid",row.playerid)
 				setElementData(veh, "id",row.carid)
 				setVehicleColor(veh,row.r,row.g,row.b)
 			end
 		end
+		
 	end,{table},dbHandle,"SELECT * FROM `vehicles` WHERE playerid='"..table.id.."'")
 	dbExec(dbHandle,"INSERT INTO `online`(`id`, `nick`, `fr_id`, `alevel`) VALUES ("..getElementData(source,"id")..",'"..table.nick.."',"..table.faction..","..table.admin..")")
 end
