@@ -24,7 +24,7 @@ function dxDrawTabList()
 			local _width = c_height > height and width - s_width - 5 or width
 			
 			dxSetRenderTarget( renderTarget, true )
-				for i = 1, getPlayerCount() do
+				for i = 1, #players do
 					local posY = offsetY - scrollCache
 					dxDrawRectangle( 0, posY, width, r_height, tocolor( 0, 0, 0, 200 ) )
 					dxDrawText( getElementData( players[ i ], "nick" ) or "Не авторизован", (posX/2)-40, posY, 50, posY + r_height , tocolor( 255, 255, 255, 255 ), 1, font_montregular, "center", "center" )
@@ -59,7 +59,6 @@ function dxDrawTabList()
 			dxDrawImage( posX, posY + h_height, width, height, renderTarget, 0, 0, 0, tocolor( 255, 255, 255, 255 ), true )
 			
 		end
-		showCursor( getKeyState( "mouse2" ) )
 	end
 end
 addEventHandler("onClientRender",root,dxDrawTabList)

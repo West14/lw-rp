@@ -317,7 +317,7 @@ function renderSelectCharacters()
 					setElementData(lp, "walkstyle", playerCharacters[i].walkstyle )
 				end
 			end
-		elseif isMouseInPosition(screenW * 0.4764, ypos+37, screenW * 0.0181, screenH * 0.0289) then
+		elseif isMouseInPosition(screenW * 0.4764, ypos, screenW * 0.0181, screenH * 0.0289) and i == #playerCharacters then
 			if getKeyState("mouse1") then
 				removeEventHandler("onClientRender",root,renderSelectCharacters)
 				removeEventHandler("onClientRender",root,renderLogInPanel)

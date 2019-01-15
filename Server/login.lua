@@ -6,7 +6,6 @@ function onLogIn(nick, pass)
 				triggerClientEvent(lp, "outputChatMessage", lp, "Аккаунт с таким никнеймом не найден, пожалуйста зарегистрируйтесь.", "#990000")
 			else
 				
-				
 			end
 		end
 	)
@@ -28,10 +27,10 @@ function regCallback(responseData,errno,lp,nick)
 	if type(errno) == "table" then
 		responseData = fromJSON(responseData)
 		if tonumber(responseData.code) == 1 then
+			iprint(getPlayerName(lp))
 			setElementData(lp, "logged", true)
 			triggerClientEvent(lp, "outputChatMessage", lp, "Внимание, "..nick.." вы зарегистрирвали свой аккаунт на форум(forum.lw-rp.tk)")
 			triggerClientEvent(lp, "outputChatMessage", lp, "Чтобы войти в следующий раз введите свой никнейм: "..nick..".")
-			
 			fadeCamera(lp, true)
 			setElementData(lp,"logged", true)
 			spawnPlayer(lp,0,0,0,0,162)
@@ -47,10 +46,11 @@ function regCallback(responseData,errno,lp,nick)
 end
 
 function onPlayerOff( )
-	for i,v in pairs(table_admins) do
-		if source == v then
-			table.remove(table_admins,i)
-			outputDebugString( getElementData(v,"nick").." администратор вышел из игры.", 0, 255, 76, 91 )
+	local tableid = getElementData(source,"tableid")
+	local vehicles = getElementsByType("vehicle")
+	for i,vehicle in ipairs(vehicles) do
+		if tableid == getElementData(vehicle,"pid") then
+			destroyElement(vehicle)
 		end
 	end
 end
@@ -65,17 +65,12 @@ end
 
 function onAuth(userid)
 	local qh = dbQuery(authCallback,{client}, dbHandle, "SELECT * FROM `accounts` WHERE `forumid` ="..userid)
-	--[[spawnPlayer(client,345,421,23,0,45)
-	setCameraTarget(client,client)
-	showCursor(client,false)
-	setElementData(client,"logged",true)
-	setElementData(client,"nick","Jabka_Devs")]]
 end
 
 function authCallback(qh,client)
 	local result = dbPoll( qh, 0 )
 	if result then
-		triggerClientEvent("onReturnCharacters",client,result)
+		triggerClientEvent(client,"onReturnCharacters",client,result)
 	end
 end
 
@@ -91,15 +86,18 @@ function onSelectCharacter(table)
 	end
 	setPlayerMoney(source,table.money,false)
 	local qh = dbQuery(function(qh,table)
+		playercar = {}
 		local result = dbPoll(qh,0)
 		if result then
 			for k,row in ipairs(result) do
 				local veh = createVehicle(row.modelid,row.sx,row.sy,row.sz,row.rx,row.ry,row.rz,row.number)
+				setVehicleEngineState(veh, false)
 				setElementData(veh,"pid",row.playerid)
 				setElementData(veh, "id",row.carid)
 				setVehicleColor(veh,row.r,row.g,row.b)
 			end
 		end
+		
 	end,{table},dbHandle,"SELECT * FROM `vehicles` WHERE playerid='"..table.id.."'")
 	dbExec(dbHandle,"INSERT INTO `online`(`id`, `nick`, `fr_id`, `alevel`) VALUES ("..getElementData(source,"id")..",'"..table.nick.."',"..table.faction..","..table.admin..")")
 end
