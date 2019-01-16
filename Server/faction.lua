@@ -24,3 +24,9 @@ function parseFactionCallback(qh)
 	outputServerLog("Vehicles parsed!")
 	dbFree(qh)
 end
+
+function FactionSetRankName(pl,rank,name)
+	if getElementData(player,"leader") then
+		
+	end
+end	
