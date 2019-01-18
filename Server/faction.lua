@@ -17,10 +17,17 @@ function parseFactionCallback(qh)
 			local veh = createVehicle(row.modelid,row.sx,row.sy,row.sz,row.rx,row.ry,row.rz,row.number)
 			setVehicleEngineState(veh, false)
 			setElementData(veh,"frid",row.faction)
-			setElementData(veh, "id",row.carid)
+			setElementData(veh,"fuel",row.fuel)
+			setElementData(veh,"id",row.carid)
 			setVehicleColor(veh,row.r,row.g,row.b)
 		end
 	end
 	outputServerLog("Vehicles parsed!")
 	dbFree(qh)
 end
+
+function FactionSetRankName(pl,rank,name)
+	if getElementData(pl,"leader") then
+		
+	end
+end	

@@ -21,6 +21,7 @@
 	<file src="Images/wallet-mask.png" type="client" />
 	<file src="Images/icons.png" type="client" />
 	<file src="Images/shaderpallete.png" type="client" />
+	<file src="Images/speedbg.png" type="client" />
 
 	<file src="Fonts/Montserrat-Light.ttf" />
 	<file src="Fonts/Montserrat-ExtraLight.ttf" />
@@ -42,6 +43,7 @@
 	<script src="Client/login_blur.lua" type="client" />
 	<script src="Client/colorcorrection.lua" type="client" />
 	<script src="Client/hud.lua" type="client" />
+	<script src="Client/autosys.lua" type="client" />
 
 	<script src="Client/tab_list.lua" type="client" />
 

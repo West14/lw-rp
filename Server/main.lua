@@ -18,7 +18,6 @@ ids = {}
 
 function initScript()
 	dbSetup()
-	
 end
 
 addEventHandler("onResourceStart", getRootElement(), initScript)
@@ -31,7 +30,6 @@ function dbSetup()
 		outputServerLog("[MySQL] Connection error")
 	end
 end
-
 
 function onPayDay( )
 	local players = getElementsByType ( "player" ) -- get a table of all the players in the server
@@ -101,3 +99,10 @@ function getPlayers()
 end
 addEvent("onClientGetsPlayers",true)
 addEventHandler("onClientGetsPlayers",root,getPlayers)
+
+function updateFuel(veh,seat,thePlayer)
+	if seat == 0 then
+		dbExec(dbHandle,"UPDATE `vehicles` SET `fuel` = '"..getElementData(veh,"fuel").."' WHERE `carid` = "..getElementData(veh,"id")..";")
+	end
+end
+addEventHandler("onPlayerVehicleExit",root,updateFuel)

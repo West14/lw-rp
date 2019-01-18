@@ -2,8 +2,8 @@ function isLogged(thePlayer) -- проверка на авторизацию
 	return getElementData(thePlayer, "logged")
 end
 
-function addDataToDataBase( nick, column, value ) -- обновление данных в бд с клиента
-	dbExec(dbHandle, "UPDATE `accounts` SET ??=? WHERE nick=?", column, value, nick)
+function addDataToDataBase( table, nick, column, value ) -- обновление данных в бд с клиента
+	dbExec(dbHandle, "UPDATE `?` SET ??=? WHERE nick=?", table, column, value, nick)
 end
 
 addEvent("addDataToDataBase",true)
