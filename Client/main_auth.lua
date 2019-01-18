@@ -9,6 +9,8 @@ local CheckboxInActive = dxCreateRoundedTexture(0, 0, 13, 13,2, "Images/checkbox
 local iconsuccess = dxCreateRoundedTexture(0,0,13,13,2,"Images/mask-success.png")
 local iconerror = dxCreateRoundedTexture(0,0,13,13,2,"Images/mask-error.png")
 
+local createBgIcon = dxCreateTexture("Images/createperson-bg.png")
+
 local addicon = dxCreateRoundedTexture(0,0,26,26,2,"Images/mask-add.png")
 
 local logBtn = DGS:dgsCreateButton( 0.3785, 0.6800, 0.1104, 0.0578, "ВОЙТИ", true, false, color, 1, 1, authButtonInActive, authButtonActive, authButtonActive  )
@@ -25,18 +27,22 @@ regavatar = dxMaskTexture(avatar, "Images/avatar-mask.png")
 avatar = dxMaskTexture(avatar, "Images/avatar-mask.png")
 playerCharacters = {}
 playerCharactersYpos = {}
-selectGender = 'male'
+selectGender = 'Мужской'
 characterSkins = {
-	['male'] = {
+	['Мужской'] = {
 		[1] = 250,
 		[2] = 259,
 		[3] = 170
 	},
-	['female'] = {
+	['Женский'] = {
 		[1] = 225,
 		[2] = 263
 	}
-	
+}
+
+characterSpawns = {
+	[1] = {'Монгомери'},
+	[2] = {'Ещё какая-нибудь хуета'}
 }
 
 function onResStart(  )
@@ -317,32 +323,68 @@ function renderSelectCharacters()
 					setElementData(lp, "walkstyle", playerCharacters[i].walkstyle )
 				end
 			end
-		elseif isMouseInPosition(screenW * 0.4764, ypos, screenW * 0.0181, screenH * 0.0289) and i == #playerCharacters then
+		elseif isMouseInPosition(screenW * 0.4764, screenH * 0.2233 + 37 * #playerCharacters, screenW * 0.0181, screenH * 0.0289) then
 			if getKeyState("mouse1") then
-				removeEventHandler("onClientRender",root,renderSelectCharacters)
-				removeEventHandler("onClientRender",root,renderLogInPanel)
-				activewindow = "createcharacter"
-				addEventHandler("onClientRender",root,renderCreateCharacters)
-				setCameraMatrix(-2148.14453125, -2514.9580078125, 31.037450790405, -2227.642578125, -2454.3369140625, 28.776023864746)
-				skinselect = 1
-				skinped = createPed(characterSkins[selectGender][skinselect],-2151.3000488281,-2511.1000976563,30.60000038147,220.001831)
-				DGS:dgsCreateEdit( 0.1333, 0.3067, 0.2625, 0.0444,"",true)
-				DGS:dgsCreateEdit( 0.1333, 0.4200, 0.2625, 0.0444,"",true)
-				addEventHandler("onClientKey",root,function(btn,press)
-					if press then
-						if btn == "arrow_r" then
-							if skinselect < #characterSkins[selectGender] then
-								skinselect = skinselect + 1
-								setElementModel(skinped,characterSkins[selectGender][skinselect])
-							end
-						elseif btn == "arrow_l" then
-							if skinselect ~= 1 then
-								skinselect = skinselect - 1
-								setElementModel(skinped,characterSkins[selectGender][skinselect])
+				if not(isEventHandlerAdded("onClientPreRender",root,renderCreateCharacters)) then
+					removeEventHandler("onClientRender",root,renderSelectCharacters)
+					removeEventHandler("onClientRender",root,renderLogInPanel)
+					activewindow = "createcharacter"
+					addEventHandler("onClientPreRender",root,renderCreateCharacters)
+					setCameraMatrix(-2148.14453125, -2514.9580078125, 31.037450790405, -2227.642578125, -2454.3369140625, 28.776023864746)
+					
+					skinselect = 1
+
+					skinspawns = 1
+					
+					roundrotate = 0
+					
+					skinped = createPed(characterSkins[selectGender][skinselect],-2151.3000488281,-2511.1000976563,30.60000038147,220.001831)
+					
+					skinaddBtn = DGS:dgsCreateButton( 0.1924, 0.6578, 0.1368, 0.0611, "ВОЙТИ", true, false, guiColor, 1, 1, authButtonInActive, authButtonActive, authButtonActive )
+					
+					addEventHandler("onDgsMouseEnter",skinaddBtn,onEnter)
+					addEventHandler("onDgsMouseLeave",skinaddBtn,onExit)
+
+					DGS:dgsSetFont( skinaddBtn, font_montmediumL )
+
+					
+					addEventHandler("onClientKey",root,function(btn,press)
+						if press then
+							if btn == "mouse1" then
+								if isCursorOverText(screenW * 0.3160, screenH * 0.4033, screenW * 0.3229, screenH * 0.4289) or isCursorOverText(screenW * 0.2014, screenH * 0.4011, screenW * 0.2090, screenH * 0.4289) then
+									if selectGender == "Мужской" then
+										selectGender = "Женский"
+										skinselect = 1
+										setElementModel(skinped,characterSkins[selectGender][skinselect])
+									elseif selectGender == "Женский" then
+										selectGender = "Мужской"
+										skinselect = 1
+										setElementModel(skinped,characterSkins[selectGender][skinselect])
+									end
+								elseif isCursorOverText(screenW * 0.3153, screenH * 0.3244, screenW * 0.3222, screenH * 0.3500) then
+									if skinspawns < #characterSpawns then
+										skinspawns = skinspawns + 1
+									end
+								elseif isCursorOverText(screenW * 0.2007, screenH * 0.3244, screenW * 0.2083, screenH * 0.3522) then
+									if skinspawns ~= 1 then
+										skinspawns = skinspawns - 1
+									end
+								elseif isCursorOverText(screenW * 0.3167, screenH * 0.4800, screenW * 0.3236, screenH * 0.5056) then
+									if skinselect < #characterSkins[selectGender] then
+										skinselect = skinselect + 1
+										setElementModel(skinped,characterSkins[selectGender][skinselect])
+									end
+								elseif isCursorOverText(screenW * 0.2021, screenH * 0.4800, screenW * 0.2097, screenH * 0.5078) then
+									if skinselect ~= 1 then
+										skinselect = skinselect - 1
+										setElementModel(skinped,characterSkins[selectGender][skinselect])
+									end
+								end
 							end
 						end
-					end
-				end)
+					end)
+				end
+				
 			end
 		end
 		ypos = ypos + 37
@@ -354,8 +396,22 @@ end
 
 function renderCreateCharacters()
 	dxDrawImage( screenW * 0.1153, screenH * 0.1822, screenW * 0.2993, screenH * 0.6378, loginTexture, 0, 190, 43 )
-	dxDrawRectangle(screenW * 0.1326, screenH * 0.3500, screenW * 0.2625, screenH * 0.0022, tocolor(123, 168, 44, 255), true, nil, tocolor(0,0,0,0))
-	dxDrawRectangle(screenW * 0.1326, screenH * 0.4633, screenW * 0.2625, screenH * 0.0022, tocolor(123, 168, 44, 255), true, nil, tocolor(0,0,0,0))
+	
+	dxDrawText("Место появления", screenW * 0.1826, screenH * 0.2844, screenW * 0.3396, screenH * 0.3133, tocolor(255, 255, 255, 255), 1.00, "default", "center", "bottom", false, false, false, false, false)
+	dxDrawRectangle(screenW * 0.2160, screenH * 0.3500, screenW * 0.0924, screenH * 0.0022, tocolor(255, 255, 255, 255), false)
+    dxDrawText(characterSpawns[skinspawns][1], screenW * 0.2153, screenH * 0.3244, screenW * 0.3083, screenH * 0.3500, tocolor(255, 255, 255, 255), 1.00, "default", "center", "center", false, false, false, false, false)
+    dxDrawText(">", screenW * 0.3153, screenH * 0.3244, screenW * 0.3222, screenH * 0.3500, tocolor(255, 255, 255, 255), 1.00, "default", "left", "center", false, false, false, false, false)
+    dxDrawText("<", screenW * 0.2007, screenH * 0.3244, screenW * 0.2083, screenH * 0.3522, tocolor(255, 255, 255, 255), 1.00, "default", "right", "center", false, false, false, false, false)
+    dxDrawText("Пол персонажа", screenW * 0.1826, screenH * 0.3611, screenW * 0.3396, screenH * 0.3900, tocolor(255, 255, 255, 255), 1.00, "default", "center", "bottom", false, false, false, false, false)
+    dxDrawRectangle(screenW * 0.2167, screenH * 0.4267, screenW * 0.0924, screenH * 0.0022, tocolor(255, 255, 255, 255), false)
+    dxDrawText(selectGender, screenW * 0.2160, screenH * 0.4011, screenW * 0.3090, screenH * 0.4267, tocolor(255, 255, 255, 255), 1.00, "default", "center", "center", false, false, false, false, false)
+    dxDrawText(">", screenW * 0.3160, screenH * 0.4033, screenW * 0.3229, screenH * 0.4289, tocolor(255, 255, 255, 255), 1.00, "default", "left", "center", false, false, false, false, false)
+    dxDrawText("<", screenW * 0.2014, screenH * 0.4011, screenW * 0.2090, screenH * 0.4289, tocolor(255, 255, 255, 255), 1.00, "default", "right", "center", false, false, false, false, false)
+    dxDrawText("Внешний вид", screenW * 0.1854, screenH * 0.4400, screenW * 0.3424, screenH * 0.4689, tocolor(255, 255, 255, 255), 1.00, "default", "center", "bottom", false, false, false, false, false)
+    dxDrawText(skinselect, screenW * 0.2167, screenH * 0.4800, screenW * 0.3097, screenH * 0.5056, tocolor(255, 255, 255, 255), 1.00, "default", "center", "center", false, false, false, false, false)
+    dxDrawText(">", screenW * 0.3167, screenH * 0.4800, screenW * 0.3236, screenH * 0.5056, tocolor(255, 255, 255, 255), 1.00, "default", "left", "center", false, false, false, false, false)
+    dxDrawText("<", screenW * 0.2021, screenH * 0.4800, screenW * 0.2097, screenH * 0.5078, tocolor(255, 255, 255, 255), 1.00, "default", "right", "center", false, false, false, false, false)
+    dxDrawRectangle(screenW * 0.2167, screenH * 0.5056, screenW * 0.0924, screenH * 0.0022, tocolor(255, 255, 255, 255), false)
 end
 
 function returnCharacters(result)
