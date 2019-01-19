@@ -3,6 +3,7 @@
 --]]
 
 screenW, screenH = guiGetScreenSize() -- get player`s screen size
+sX,sY = 1440,900
 global_rendertarget = dxCreateRenderTarget( screenW, screenH, true )
 api_key = "uRDWClUg73pUDRyrAqtS_5WYczuS7lDF"
 DGS = exports.dgs -- exports from dgs
@@ -42,6 +43,12 @@ font_montlight = dxCreateFont("Fonts/Montserrat-ExtraLight.ttf",9)
 font_montlightX = dxCreateFont("Fonts/Montserrat-ExtraLight.ttf",12)
 
 guiColor = tocolor(21,185,25)
+
+Colors = {
+	["general"] = tocolor(21,185,25),
+	["grey"] = tocolor(234,234,234)
+}
+
 function timestamp( )
 	time = getRealTime()
 	hours = time.hour
