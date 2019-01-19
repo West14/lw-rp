@@ -1,6 +1,24 @@
+Faction = {
+	[1] ={["name"] = ""}
+}
+
 function FactionSendMessage(player,msg)
 	if getElementData(player,"faction") ~= 0 then
-		local query = dbQuery(factionChatCallback,dbHandle)
+		local query = dbQuery(factionChatCallback,{player,msg},dbHandle,"SELECT * FROM `online` WHERE fr_id='"..getElementData(player,"faction").."'")
+	end
+end
+
+function factionChatCallback(qh,player,msg)
+	local result = dbPoll(qh,0)
+	if result then
+		local rank = getElementData(player,"rank")
+		local name = getElementData(player,"nick")
+		local faction = getElementData(player,"faction")
+		local rankname = Faction[faction]["rank_names"][rank]
+		for col,row in ipairs(result) do
+			local playersend = ids[row.id]
+			triggerClientEvent(playersend,"outputChatMessage",playersend,rankname.." "..name..": "..msg)
+		end
 	end
 end
 
@@ -31,3 +49,37 @@ function FactionSetRankName(pl,rank,name)
 		
 	end
 end	
+
+function FactionGetRankNames()
+	local qh = dbQuery(parseFactionRanks,dbHandle,"SELECT * FROM `faction`")
+end
+addEventHandler("onResourceStart",root,FactionGetRankNames)
+
+function parseFactionRanks(qh)
+	local result = dbPoll(qh,0)
+	if result then
+		for i,row in ipairs(result) do
+			local id = row.id
+			Faction[id]["name"] = row.name
+			Faction[id]["budget"] = row.budget
+			Faction[id]["salary"] = row.salary
+			Faction[id]["rank_names"] = fromJSON(row.rank_names)
+			Faction[id]["spawns"] = row.spawns
+		end
+	end
+end
+
+function FactionUpdateRank()
+	if frid ~= 0 then
+		local qh = dbQuery(parseFactionRank,{frid},dbHandle,"SELECT `rank_names` FROM `faction` WHERE id='"..frid.."'")
+	end
+end
+
+function parseFactionRank(qh,frid)
+	local result = dbPoll(qh,0)
+	if result then
+		for col,row in ipairs(result) do
+			Faction[frid] = fromJSON(row.rank_names)
+		end
+	end
+end
