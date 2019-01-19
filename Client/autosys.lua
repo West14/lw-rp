@@ -53,3 +53,28 @@ function vehicleRemoveFuel()
     end
 end
 addEventHandler( "onClientRender",root, vehicleRemoveFuel )
+
+function onVehDamage(attacker,weap,loss,atx,aty,atz)
+    local speedx, speedy, speedz = getElementVelocity ( source )
+    local actualspeed = (speedx^2 + speedy^2 + speedz^2)^(0.5)
+    local localkmh = actualspeed * 180
+    if loss > 50 then
+        local x,y,z = getElementPosition(lp)
+        createExplosion(x,y,z-8,11,false,-1,false)
+        fadeCamera(false,1)
+        local phealth = getElementHealth(lp)
+        setElementHealth(lp,phealth-loss/25)
+        toggleControl ( "accelerate", false ) -- disable the accelerate key
+        toggleControl ( "brake_reverse", false ) -- disable the brake_reverse key
+        toggleControl ( "handbrake", false ) -- disable the handbrake key
+        toggleControl ( "enter_exit", false )
+        setTimer(function()
+            fadeCamera(true)
+            toggleControl ( "accelerate", true ) -- disable the accelerate key
+            toggleControl ( "brake_reverse", true ) -- disable the brake_reverse key
+            toggleControl ( "handbrake", true ) -- disable the handbrake key
+            toggleControl ( "enter_exit", true )
+        end,5000,1)
+    end
+end
+addEventHandler("onClientVehicleDamage",root,onVehDamage)
