@@ -1,6 +1,6 @@
 MaxFuel = 100
 decreasing = 0.000005 -- per frame
-local speedometerTexture = dxCreateRoundedTexture(screenW * 0.8194, screenH * 0.7100, screenW * 0.1590, screenH * 0.2467, 1, "Images/speedbg.png")
+local speedometerTexture = dxCreateRoundedTexture(screenW * 0.8194, screenH * 0.7100, screenW * 0.1590, screenH * 0.2467, 10, "Images/speedbg.png")
 
 function onVehicleEngineOn(btn,press)
 	if press then
@@ -36,7 +36,7 @@ function vehicleRemoveFuel()
         dxDrawImage(screenW * 0.7514, screenH * 0.7744, screenW * 0.0458, screenH * 0.0700, "Images/avatar-mask.png", 0, 0, 0, tocolor(34, 37, 42, 172), false)
         dxDrawImage(screenW * 0.7292, screenH * 0.8700, screenW * 0.0681, screenH * 0.1022, "Images/avatar-mask.png", 0, 0, 0, tocolor(34, 37, 42, 172), false)
 
-        dxDrawImage(screenW * 0.8194, screenH * 0.7100, screenW * 0.1590, screenH * 0.2467, speedometerTexture)
+        dxDrawImage(screenW * 0.8194, screenH * 0.7100, screenW * 0.1590, screenH * 0.2467, "Images/speedbg.png")
 
         if getVehicleEngineState(veh) then
             local speedx, speedy, speedz = getElementVelocity ( veh )

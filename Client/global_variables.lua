@@ -42,6 +42,12 @@ font_montlight = dxCreateFont("Fonts/Montserrat-ExtraLight.ttf",9)
 font_montlightX = dxCreateFont("Fonts/Montserrat-ExtraLight.ttf",12)
 
 guiColor = tocolor(21,185,25)
+
+Colors = {
+	["general"] = tocolor(21,185,25),
+	["grey"] = tocolor(234,234,234)
+}
+
 function timestamp( )
 	time = getRealTime()
 	hours = time.hour
