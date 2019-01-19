@@ -17,8 +17,15 @@ function onPlayerPressKey( btn,press )
 			if btn == "F6" then
 				chatCheck()
 			elseif btn == "y" then
-				if chat_focus == 1 then -- если чат в фокусе(курсор стоит в нём)
-					chatCheck()
+				if chat_opened == 0 then
+					addEventHandler("onClientRender",root,openChat) -- отрисовка обводки
+					chat_opened = 1 
+					DGS:dgsSetVisible(chatBox,true) -- показываем чатбокс
+					DGS:dgsBringToFront( chatBox ) -- переместить на передний фон
+					DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
+					chat_focus = 1
+					showCursor(true)
+					alpha = 0
 				end
 			end
 		end

@@ -3,6 +3,7 @@
 --]]
 
 screenW, screenH = guiGetScreenSize() -- get player`s screen size
+sX,sY = 1440,900
 global_rendertarget = dxCreateRenderTarget( screenW, screenH, true )
 api_key = "uRDWClUg73pUDRyrAqtS_5WYczuS7lDF"
 DGS = exports.dgs -- exports from dgs

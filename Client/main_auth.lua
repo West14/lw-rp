@@ -19,7 +19,7 @@ local regBtn = DGS:dgsCreateButton( 0.5111, 0.6800, 0.1104, 0.0578, "РЕГИС�
 local logEdit = DGS:dgsCreateEdit(0.3826,0.4878,0.2292,0.0322,"",true,nil,Colors["grey"],1,1,nil,tocolor(0,0,0,0))
 local passEdit = DGS:dgsCreateEdit(0.3826,0.6022,0.2292,0.0322,"",true,nil,Colors["grey"],1,1,nil,tocolor(0,0,0,0))
 local emailEdit = DGS:dgsCreateEdit(0.3722,0.6356,0.2542,0.0378,"",true,nil,Colors["grey"],1,1,nil,tocolor(0,0,0,0))
-
+--643, 631, 160, 55
 local lastChangeText = 0 -- последнее изменение логинедит
 local remember_checkbox = false -- чекбокс "Запомнить меня"
 local avatar = dxCreateTexture("Images/davatar.jpg") -- стандартная аватарка
@@ -126,7 +126,8 @@ end
 
 function renderLogInPanel( )
 	Blur.render()
-	dxDrawImage( screenW * 0.3507, screenH * 0.1811, screenW * 0.2993, screenH * 0.6378, loginTexture )
+	--, , 431, 575
+	dxDrawImage( screenW * (sX/505), screenH * (sY/162), 431, 575, loginTexture )
 	if activewindow == "menu" then
 		dxDrawImage(screenW * 0.3715, screenH * 0.2922, screenW * 0.2583, screenH * 0.2789, "Images/auth-logo.png", 0, 0, 0, tocolor(255, 255, 255, 255), true)
 		DGS:dgsSetVisible(logBtn,true)
@@ -382,7 +383,12 @@ function renderSelectCharacters()
 					setElementData(lp, "walkstyle", playerCharacters[i].walkstyle )
 				end
 			end
-		elseif isMouseInPosition(screenW * 0.4764, screenH * 0.2233 + 37 * #playerCharacters, screenW * 0.0181, screenH * 0.0289) and #playerCharacters < 3 then
+		end
+		ypos = ypos + 37
+	end
+	if #playerCharacters < 3 then
+		dxDrawImage(screenW * 0.4764, ypos, screenW * 0.0181, screenH * 0.0289,addicon)
+		if isMouseInPosition(screenW * 0.4764, screenH * 0.2233 + 37 * #playerCharacters, screenW * 0.0181, screenH * 0.0289) then
 			if getKeyState("mouse1") then
 				if not(isEventHandlerAdded("onClientRender",root,renderCreateCharacters)) then
 
@@ -410,10 +416,6 @@ function renderSelectCharacters()
 				end
 			end
 		end
-		ypos = ypos + 37
-	end
-	if #playerCharacters < 3 then
-		dxDrawImage(screenW * 0.4764, ypos, screenW * 0.0181, screenH * 0.0289,addicon)
 	end
 end
 
