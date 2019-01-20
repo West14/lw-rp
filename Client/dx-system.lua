@@ -153,28 +153,3 @@ function onDxMouseEnter()
 
 end
 addEventHandler("onDxMouseEnter",root,onDxMouseEnter)
-
-function dxDrawImage3D( x, y, z, width, height, material, color, rotation, ... )
-    return dxDrawMaterialLine3D( x, y, z, x + width, y + height, z + tonumber( rotation or 0 ), material, height, color or 0xFFFFFFFF, ... )
-end
-
-function dxDrawImageOnElement(TheElement,Image,height,width,R,G,B,alpha)
-    local x, y, z = getElementPosition(TheElement)
-    local x2, y2, z2 = getElementPosition(localPlayer)
-    local height = height or 1
-    local width = width or 1
-                    local checkBuildings = checkBuildings or true
-                    local checkVehicles = checkVehicles or false
-                    local checkPeds = checkPeds or false
-                    local checkObjects = checkObjects or true
-                    local checkDummies = checkDummies or true
-                    local seeThroughStuff = seeThroughStuff or false
-                    local ignoreSomeObjectsForCamera = ignoreSomeObjectsForCamera or false
-                    local ignoredElement = ignoredElement or nil
-    if (isLineOfSightClear(x, y, z, x2, y2, z2, checkBuildings, checkVehicles, checkPeds , checkObjects,checkDummies,seeThroughStuff,ignoreSomeObjectsForCamera,ignoredElement)) then
-        local sx, sy = getScreenFromWorldPosition(x, y, z+height)
-        if(sx) and (sy) then
-            dxDrawMaterialLine3D(x, y, z+1+height-(distanceBetweenPoints/distance), x, y, z+height, Image, width-(distanceBetweenPoints/distance), tocolor(R or 255, G or 255, B or 255, alpha or 255))
-        end
-end
-end

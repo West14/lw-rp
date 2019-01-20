@@ -10,7 +10,6 @@ function openChat( )
 	dxDrawRectangle(10, 265, 479, 34, tocolor(55, 55, 55, 255), false)
 end
 
-
 function onPlayerPressKey( btn,press )
 	if isLogged(lp) then
 		if (press) then

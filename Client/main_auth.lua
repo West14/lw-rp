@@ -127,7 +127,7 @@ end
 function renderLogInPanel( )
 	Blur.render()
 	--, , 431, 575
-	dxDrawImage( screenW * (sX/505), screenH * (sY/162), 431, 575, loginTexture )
+	dxDrawImage( screenW * (505/sX), screenH * (162/sY), 431, 575, loginTexture )
 	if activewindow == "menu" then
 		dxDrawImage(screenW * 0.3715, screenH * 0.2922, screenW * 0.2583, screenH * 0.2789, "Images/auth-logo.png", 0, 0, 0, tocolor(255, 255, 255, 255), true)
 		DGS:dgsSetVisible(logBtn,true)

@@ -110,3 +110,30 @@ function onVehicleEngineOn(btn,press)
 	end
 end
 addEventHandler( "onClientKey", root, onVehicleEngineOn)
+
+
+function startAudio(path,volume)
+	local volume = volume or 1.0
+	if fileExists(path) then
+		playAudio = playSound(path)
+	else
+		downloadFile(":jabka-rp/"..path)
+		addEventHandler("onClientFileDownloadComplete",root,function(fileName,success)
+			if success then
+				if source == root then
+					if (fileName == path) then
+						playAudio = playSound(path,true)
+						setSoundVolume(playAudio,volume)
+					end
+				end
+			end
+		end)
+	end
+end
+
+function stopAudio(path)
+	local pause = isSoundPaused(path)
+	if not(pause) then
+		stopSound(path)
+	end
+end
