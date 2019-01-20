@@ -21,7 +21,11 @@
 	<file src="Images/wallet-mask.png" type="client" />
 	<file src="Images/icons.png" type="client" />
 	<file src="Images/shaderpallete.png" type="client" />
+
+	<file src="Images/mask-btnshadow.png" type="client" />
+
 	<file src="Images/speedbg.png" type="client" />
+	<file src="Images/indicator.png" type="client" />
 
 	<file src="Fonts/Montserrat-Light.ttf" />
 	<file src="Fonts/Montserrat-ExtraLight.ttf" />
@@ -69,6 +73,11 @@
 	<file src="Shaders/mask.fx" type="client" />
 	<file src="Shaders/smooth.fx" type="client" />
 	<file src="Shaders/login_blur.c" type="client" />
+
+	<file src="Audio/lesden.mp3" type="server" />
+	<file src="Audio/lesnoch.mp3" type="server" />
+	<file src="Audio/serdce.mp3" type="server" />
+	<file src="Audio/zvonvushax.mp3" type="server" />
 
 	<oop>true</oop>
 </meta>
