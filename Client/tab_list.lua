@@ -11,10 +11,10 @@ function dxDrawTabList()
 			local x,y,z = getElementPosition(lp)
 			ypos = screenH * (268/sY)
 			count = 0
-			dxDrawRectangle(screenW * (472/sX), screenH * (212/sY), 517, 56, tocolor(57, 139, 31, 255), false)
+			dxDrawRectangle(screenW * (472/sX), screenH * (212/sY), 517, 56, Colors["general"], false)
 			dxDrawRectangle(screenW * (472/sX), screenH * (268/sY), 517, 464, tocolor(0, 0, 0, 154), false)
-			dxDrawImage(screenW * (482/sX), screenH * (143/sY), 188, 192, tabShadowBtn, 0, 0, 0, tocolor(255, 255, 255, 255))
-			dxDrawImage(screenW * (848/sX), screenH * (143/sY), 112, 192, tabShadowBtn, 0, 0, 0, tocolor(255, 255, 255, 255))
+			dxDrawImage(screenW * (482/sX), screenH * (143/sY), 188, 192, tabShadowBtn, 0, 0, 0, Colors["general"])
+			dxDrawImage(screenW * (848/sX), screenH * (143/sY), 112, 192, tabShadowBtn, 0, 0, 0, Colors["general"])
 			dxDrawText(getZoneName(x,y,z), screenW * (483/sX), screenH * (222/sY), 668, 253, tocolor(255, 255, 255, 255), 1.00, "default", "center", "center")
 			for i,player in pairs(players) do
 				if getElementData(player,"logged") then

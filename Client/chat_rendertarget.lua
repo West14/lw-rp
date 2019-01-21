@@ -43,28 +43,25 @@ function TextScroll(ypos) -- скролл чата
     dxSetRenderTarget()
 end
 
-function chatKey( btn, press ) -- когда игрок нажал кнопку
-    if chat_opened == 1 then -- если чат виден
-         if press then -- если нажал
-            if btn == "mouse_wheel_up" then -- если кнопка = колёсико вверх
-                if not(chat_index == 1) then
-                    yposition = yposition + 17 -- скроллим позицию вверх
-                    TextScroll(yposition) -- функция скролла чата
-                    chat_index = chat_index - 1
-                    outputDebugString( chat_index )
-                end
-            elseif btn == "mouse_wheel_down" then -- если кнопка = колёсико вниз
-                if not(chat_index >= #chat_messages) then
-                    yposition = yposition - 17 -- скроллим позицию вниз
-                    TextScroll(yposition) -- функция скролла чата
-                    chat_index = chat_index + 1
-                    outputDebugString( chat_index )
-                end
-			end
+function chatKey( btn, press )
+    if chat_opened == 1 then
+        if press then
+            if btn == "mouse_wheel_up" then
+                updateScroll(1,17)
+            elseif btn == "mouse_wheel_down" then
+                updateScroll(-1,-17)
+            end
         end
     end
 end
 addEventHandler("onClientKey", root, chatKey)
+
+function updateScroll(delta,yposminus)
+    local newScroll = chat_index + delta
+    yposition = yposition + yposminus
+    chat_index = chat_index + delta
+    TextScroll(yposition)
+end
 
 
 function dxRenderMainTarget()
@@ -76,6 +73,5 @@ addEventHandler("onClientRender", root, dxRenderMainTarget)
 
 function handleRestore()
     TextFuel() 
-
 end
 addEventHandler("onClientRestore",root,handleRestore)
