@@ -8,7 +8,7 @@ function dxDrawChatScrollBar( )
 			local scrollwidth = 2
 			local scrollheight = 75
 			local scrollx = 0
-			local ScrollValue = math.min(TotalMessagesNum-ChatLinesNum, CurrentLine) / (TotalMessagesNum-ChatLinesNum) -- спасибо TEDERIs за код
+			local ScrollValue = math.min(TotalMessagesNum-ChatLinesNum, CurrentLine)-- спасибо TEDERIs за код
 			local ScrollY = ScrollValue * (chatH - scrollheight)
 			dxDrawRectangle( scrollx, ScrollY, scrollwidth, scrollheight, tocolor( 111, 168, 252 ) )
 		end

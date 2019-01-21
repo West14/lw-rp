@@ -116,8 +116,9 @@ function startAudio(path,volume)
 	local volume = volume or 1.0
 	if fileExists(path) then
 		playAudio = playSound(path)
+		setSoundVolume(playAudio,volume)
 	else
-		downloadFile(":jabka-rp/"..path)
+		downloadFile(path)
 		addEventHandler("onClientFileDownloadComplete",root,function(fileName,success)
 			if success then
 				if source == root then

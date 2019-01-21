@@ -54,6 +54,7 @@ function onPlayerEnterMessage( )
 	local text = removeHex(DGS:dgsGetText( chatBox )) -- текст из эдитбокса
 	local iftext = string.gsub(text,"%s+", "") -- проверка не пустой ли текст без пробелов
 	if string.len(iftext) > 0 then
+		table.insert(chat_entries,text)
 		if (text:sub(1,1) == "/") then -- если текст команда
 			local cmd = split(text:sub(2), " ")
 			triggerServerEvent("sendCommand", lp, cmd)
