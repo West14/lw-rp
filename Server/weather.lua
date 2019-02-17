@@ -5,12 +5,12 @@ end
 function changeWeather()
 	local time = getRealTime()
 	math.randomseed(time.timestamp)
-	local weatherId = math.random(0, 20)
+	local weatherId = math.random(0, 18)
 	local w = setWeatherBlended(weatherId)
 	if not(w) then
-		outputServerLog('An error occurred when changing weather')
+		outputDebugString('An error occurred when changing weather',1)
 	else
-		outputDebugString('Weather succesfully changed to ' .. tostring(weatherId))
+		outputServerLog('Weather succesfully changed to ' .. tostring(weatherId))
 	end
 end
 

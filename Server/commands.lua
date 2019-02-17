@@ -13,7 +13,17 @@ addEventHandler("sendCommand",root, onCommand)
 
 
 function cmd_a(args)
-	local qh = dbQuery(doAchat, {source,args}, dbHandle, "SELECT `nick`, `admin` FROM `accounts` WHERE `admin` > 0")
+	local qh = dbQuery(function(qh,sourcePlayer,args)
+		local result = dbPoll(qh,0)
+		if result then
+			admins_table = {}
+			for k,row in ipairs(result) do
+				if row.alevel > 0 then
+					triggerClientEvent( {getPlayerByNick(row.nick)}, "outputAdminChatMessage", sourcePlayer, getElementData(sourcePlayer,"nick")..": ", args )
+				end
+			end
+		end
+	end,{source,args},dbHandle,"SELECT `alevel`,`id` FROM `online`")
 end
 
 function doAchat(qh,source,args)
@@ -21,7 +31,7 @@ function doAchat(qh,source,args)
 	if result then
 		for _,row in ipairs(result) do
 			if getElementData( source, "nick") == row["nick"] then
-				triggerClientEvent( table_admins, "outputAdminChatMessage", source, getElementData(source,"nick").."( "..row["admin"].." ): ", args )
+				
 			end
 		end
 	end
@@ -161,7 +171,11 @@ end
 
 function cmd_r(args)
 	if args[1] ~= nil then
-		FactionSendMessage(source,args)
+		local msg = ""
+		for i=1,#args do
+			msg = msg.." "..args[i]
+		end
+		FactionSendMessage(source,msg)
 	end
 end
 
@@ -172,6 +186,10 @@ end
 function cmd_uninvite(args)
 
 end
+
+function cmd_setrank(args)
+	FactionSetRankName(source,args[1],args[2])
+end	
 
 function cmd_members()
 	if getElementData(source,"faction") ~= 0 then
@@ -189,21 +207,71 @@ function cmd_members()
 	end
 end
 
-function cmd_pesc()
-
+function cmd_pesc(args)
+	if getElementFaction(source) == 1 then
+		local player = getPlayer(args[1])
+		if player and player ~= source then
+			if not(getElementFaction(player) == 1) then
+				setElementData(player,"pesc",true)
+			end
+		end
+	end
 end
 
 function cmd_pbase()
 
 end
 
-function cmd_dc()
+function cmd_dc(args)
+	if getElementFaction(source) == 1 then
 
+	end
 end
 
-function cmd_cuff()
-
+function cmd_cuff(args)
+	local cop = source
+	if getElementFaction(source) == 1 then
+		local arrested = getPlayerByIdOrNick(args[1])
+		if arrested and arrested ~= cop then
+			local x,y,z = getElementPosition(cop)
+			local x1,y1,z1 = getElementPosition(arrested)
+			if getDistanceBetweenPoints3D(x,y,z,x1,y1,z1) < 5 then
+				setTimer(function()
+					local idle = getPlayerIdleTime(arrested)
+					if idle >= 3000 then
+						local arrestedtoggles = {"left","right","forwards","backwards","jump","sprint"}
+						for i=1,#arrestedtoggles do
+							toggleControl(arrested,arrestedtoggles[i],false)
+						end
+					end
+				end,3000,1)
+			end
+		end
+	end
 end
+
+function cmd_uncuff(args)
+	local cop = source
+	if getElementFaction(source) == 1 then
+		local unarrested = getPlayerByIdOrNick(args[1])
+		if unarrested then
+			local x,y,z = getElementPosition(cop)
+			local x1,y1,z1 = getElementPosition(unarrested)
+			if getDistanceBetweenPoints3D(x,y,z,x1,y1,z1) < 5 then
+				setTimer(function()
+					local idle = getPlayerIdleTime(unarrested)
+					if idle >= 3000 then
+						local arrestedtoggles = {"left","right","forwards","backwards","jump","sprint"}
+						for i=1,#arrestedtoggles do
+							toggleControl(unarrested,arrestedtoggles[i],true)
+						end
+					end
+				end,3000,1)
+			end
+		end
+	end
+end
+
 
 function cmd_search()
 
@@ -232,7 +300,6 @@ function cmd_addcar(args)
 			if result then
 				for k,row in ipairs(result) do
 					if row.alevel > 0 then
-						outputDebugString(row.id)
 						dbExec(dbHandle,"INSERT INTO `vehicles` (`carid`, `playerid`, `modelid`, `number`, `sx`, `sy`, `sz`, `rx`, `ry`, `rz`, `r`, `g`, `b`) VALUES (NULL, '"..row.id.."', '"..args[1].."', 'POSJ', '0', '0', '10', '0', '0', '0', '"..args[2].."', '"..args[3].."', '"..args[4].."');")
 						local veh = createVehicle(args[1],0,0,10,0,0,0,'POSJ')
 						setElementData(veh,"pid",row.id)
@@ -254,4 +321,14 @@ function cmd_park()
 	else
 		triggerClientEvent("outputChatMessage",source,"Это не ваше ТС!")
 	end
+end
+
+function cmd_getpos()
+	triggerClientEvent(client,"copyPosToClipboard",client)
+end
+
+function cmd_startlayout()
+	--if isHaveBuildingAccept(source) then
+		triggerClientEvent(client,"startBuilding",client)
+	--end
 end

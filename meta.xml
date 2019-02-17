@@ -21,6 +21,14 @@
 	<file src="Images/wallet-mask.png" type="client" />
 	<file src="Images/icons.png" type="client" />
 	<file src="Images/shaderpallete.png" type="client" />
+	<file src="Images/tablist/tabmask.png" type="client" />
+
+	<file src="Images/mask-btnshadow.png" type="client" />
+
+	<file src="Images/disc.png" type="client" />
+	<file src="Images/needle.png" type="client" />
+
+	<file src="Images/biglogo.png" type="client" />
 
 	<file src="Fonts/Montserrat-Light.ttf" />
 	<file src="Fonts/Montserrat-ExtraLight.ttf" />
@@ -35,24 +43,31 @@
 	<script src="Client/chat_general.lua" type="client" />
 	<script src="Client/chat_scroll.lua" type="client" />
 	<script src="Client/chat_rendertarget.lua" type="client" />
-	<script src="Client/radar.lua" type="client" />
+	<script src="Client/map.lua" type="client" />
 	<script src="Client/player_tag.lua" type="client" />
 	<script src="Client/afk_system.lua" type="client" />
 	<script src="Client/main_auth.lua" type="client" />
 	<script src="Client/login_blur.lua" type="client" />
 	<script src="Client/colorcorrection.lua" type="client" />
 	<script src="Client/hud.lua" type="client" />
-
+	<script src="Client/autosys.lua" type="client" />
 	<script src="Client/tab_list.lua" type="client" />
+	<script src="Client/audio_sys.lua" type="client" />
+	<script src="Client/house_building.lua" type="client" />
 
 	<script src="Shared/fractions.lua" type="shared" />
 
+	<script src="Server/main.lua" type="server"/>
+	<script src="Server/idsys.lua" type="server"/>
+	<script src="Server/paydaysys.lua" type="server"/>
+	<script src="Server/database.lua" type="server"/>
 	<script src="Server/commands.lua" type="server" />
 	<script src="Server/functions.lua" type="server" />
 	<script src="Server/login.lua" type="server" />
-	<script src="Server/main.lua" type="server"/>
+	<script src="Server/faction.lua" type="server"/>
 	<script src="Server/chat_functions.lua" type="shared" />
 	<script src="Server/weather.lua" type="server" />
+	<script src="Server/autosys.lua" type="server" />
 
 	<map src="Maps/derevyshka.map" dimension="0"></map>
 
@@ -67,5 +82,17 @@
 	<file src="Shaders/smooth.fx" type="client" />
 	<file src="Shaders/login_blur.c" type="client" />
 
+	<file src="Audio/lesden.mp3" type="server" />
+	<file src="Audio/lesnoch.mp3" type="server" />
+	<file src="Audio/serdce.mp3" type="server" />
+	<file src="Audio/zvonvushax.mp3" type="server" />
+
+	<file src="CEF/index.html" type="client" />
+	<file src="CEF/css/style.css" type="client" />
+	<file src="CEF/images/1.png" type="client" />
+	<file src="CEF/images/error.png" type="client" />
+	<file src="CEF/images/font.png" type="client" />
+	<file src="CEF/images/logo.png" type="client" />
+	<file src="CEF/images/menu.png" type="client" />
 	<oop>true</oop>
 </meta>

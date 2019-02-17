@@ -1,4 +1,5 @@
 hud_visible = true
+
 function showHud(btn, press)
 	if (press) then
 		if btn == "F7" then
@@ -92,3 +93,32 @@ function _dxDrawRectangle( posX, posY, width, height, radius, color, postGUI )
 	dxDrawCorner( posX + width - radius, posY + radius, radius, color, 3, postGUI )
 	dxDrawCorner( posX + width - radius, posY + height - radius, radius, color, 4, postGUI )
 end
+
+
+colshape = {}
+markers = {}
+
+function colshape:create(func,onEnter,onExit,...)
+	local col = func(...)
+	if onEnter and onExit then
+		addEventHandler("onClientColShapeHit",col,onEnter)
+		addEventHandler("onClientColShapeLeave",col,onExit)
+	end
+	return col
+end
+
+function markers:create(x,y,z,onEnter,onExit,...)
+	local marker = createMarker(x,y,z,...)
+	if onEnter and onExit then
+		addEventHandler("onClientMarkerHit",marker,onEnter)
+		addEventHandler("onClientMarkerLeave",marker,onExit)
+	end
+	return marker
+end
+
+function copyToClipboard()
+	local x,y,z = getElementPosition(lp)
+	setClipboard(x..", "..y..", "..z)
+end
+addEvent("copyPosToClipboard",true)
+addEventHandler("copyPosToClipboard",root,copyToClipboard)

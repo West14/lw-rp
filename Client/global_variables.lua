@@ -3,8 +3,10 @@
 --]]
 
 screenW, screenH = guiGetScreenSize() -- get player`s screen size
+sX,sY = 1440,900
 global_rendertarget = dxCreateRenderTarget( screenW, screenH, true )
 api_key = "uRDWClUg73pUDRyrAqtS_5WYczuS7lDF"
+resetAmbientSounds()
 DGS = exports.dgs -- exports from dgs
 lp = getLocalPlayer() -- локальный игрок
 clp = getCamera()
@@ -41,7 +43,17 @@ font_montregular = dxCreateFont("Fonts/Montserrat-Regular.ttf",10)
 font_montlight = dxCreateFont("Fonts/Montserrat-ExtraLight.ttf",9)
 font_montlightX = dxCreateFont("Fonts/Montserrat-ExtraLight.ttf",12)
 
-guiColor = tocolor(105, 158, 14, 255)
+Colors = {
+	["general"] = tocolor(21,185,25),
+	["grey"] = tocolor(234,234,234)
+}
+
+controlTable = { "fire", "aim_weapon", "next_weapon", "previous_weapon", "forwards", "backwards", "left", "right", "zoom_in", "zoom_out",
+ "change_camera", "jump", "sprint", "look_behind", "crouch", "action", "walk", "conversation_yes", "conversation_no",
+ "group_control_forwards", "group_control_back", "enter_exit", "vehicle_fire", "vehicle_secondary_fire", "vehicle_left", "vehicle_right",
+ "steer_forward", "steer_back", "accelerate", "brake_reverse", "radio_next", "radio_previous", "radio_user_track_skip", "horn", "sub_mission",
+ "handbrake", "vehicle_look_left", "vehicle_look_right", "vehicle_look_behind", "vehicle_mouse_look", "special_control_left", "special_control_right",
+ "special_control_down", "special_control_up" }
 
 function timestamp( )
 	time = getRealTime()
@@ -60,7 +72,3 @@ function timestamp( )
 	end
 end
 addEventHandler("onClientRender",root,timestamp)
-
-function dxDrawImage3D( x, y, z, width, height, material, color, rotation, ... )
-    return dxDrawMaterialLine3D( x, y, z, x + width, y + height, z + tonumber( rotation or 0 ), material, height, color or 0xFFFFFFFF, ... )
-end

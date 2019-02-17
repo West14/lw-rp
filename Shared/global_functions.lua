@@ -60,3 +60,8 @@ function getPlayerCount()
     -- The next line returns the result of the original function if it's defined. If not, it counts the number of player elements (to also work clientside).
     return originalGetPlayerCount and originalGetPlayerCount() or #getElementsByType("player")
 end
+
+function table.clear(t)
+    count = #t
+    for i=0, count do t[i]=nil end
+end
