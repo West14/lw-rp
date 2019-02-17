@@ -81,6 +81,8 @@ local vehBtnFunctions = {
 
 
 function onPlayerInVehKey(btn,press)
+
+function onVehicleEngineOn(btn,press)
     if press then
         local theVehicle = getPedOccupiedVehicle ( lp )
 	    if theVehicle then
@@ -92,19 +94,22 @@ function onPlayerInVehKey(btn,press)
         end
 	end
 end
-addEventHandler( "onClientKey", root, onPlayerInVehKey)
+addEventHandler( "onClientKey", root, onVehicleEngineOn)
 
 function vehicleRemoveFuel()
     local veh = getPedOccupiedVehicle(lp)
     if veh then
+        --radar dxDrawImage(screenW * 0.0083, screenH * 0.6978, screenW * 0.1792, screenH * 0.2733, "Images/avatar-mask.png", 0, 0, 0, tocolor(34, 37, 42, 172), false)
+        dxDrawImage(screenW * (1169/sX), screenH * (627/sY), 252, 246, "Images/avatar-mask.png", 0, 0, 0, tocolor(34, 37, 42, 172), false)
+        dxDrawImage(screenW * 0.7514, screenH * 0.7744, screenW * 0.0458, screenH * 0.0700, "Images/avatar-mask.png", 0, 0, 0, tocolor(34, 37, 42, 172), false)
+        dxDrawImage(screenW * 0.7292, screenH * 0.8700, screenW * 0.0681, screenH * 0.1022, "Images/avatar-mask.png", 0, 0, 0, tocolor(34, 37, 42, 172), false)
+        dxDrawImage(screenW * (1184/sX), screenH * (629/sY), 218, 218, "Images/speedbg.png")
         if getVehicleEngineState(veh) then
             local speedx, speedy, speedz = getElementVelocity ( veh )
             local actualspeed = (speedx^2 + speedy^2 + speedz^2)^(0.5)
             local localkmh = actualspeed * 180
             local newFuel = getElementData(veh,"fuel")-decreasing*localkmh
             setElementData(veh,"fuel",newFuel)
-            local odometer = localkmh/newFuel/180 + getElementData(veh,"odometer")
-            setElementData(veh,"odometer",odometer)
         end
         if getElementData(veh,"fuel") <= 0 then
             setVehicleEngineState(veh, false)
@@ -115,40 +120,26 @@ function vehicleRemoveFuel()
 end
 addEventHandler( "onClientRender",root, vehicleRemoveFuel )
 
-
 function onVehDamage(attacker,weap,loss,atx,aty,atz)
     local speedx, speedy, speedz = getElementVelocity ( source )
-    local player = getVehicleOccupant(source)
     local actualspeed = (speedx^2 + speedy^2 + speedz^2)^(0.5)
     local localkmh = actualspeed * 180
-    if player == lp then
-        if loss > 100 then
-            local x,y,z = getElementPosition(player)
-            fadeCamera(false,0)
-            local phealth = getElementHealth(player)
-            setElementHealth(player,phealth-loss/25)
-            toggleControl ( "accelerate", false ) -- disable the accelerate key
-            toggleControl ( "brake_reverse", false ) -- disable the brake_reverse key
-            toggleControl ( "handbrake", false ) -- disable the handbrake key
-            toggleControl ( "enter_exit", false )
-            startLoad("Audio/zvonvushax.mp3")
-            startLoad("Audio/serdce.mp3")
-            zvon = playSound("Audio/zvonvushax.mp3")
-            sedce = playSound("Audio/serdce.mp3")
-            setSoundVolume(zvon,0.3)
-            setSoundVolume(sedce,1)
-            if getElementData(source,"belt") then
-                createVehTimer(5000)
-            else
-                createVehTimer(2000)
-            end
-            if bgmusic ~= nil then stopSound(bgmusic) end
+    if loss > 100 then
+        local x,y,z = getElementPosition(lp)
+        fadeCamera(false,0)
+        local phealth = getElementHealth(lp)
+        setElementHealth(lp,phealth-loss/25)
+        toggleControl ( "accelerate", false ) -- disable the accelerate key
+        toggleControl ( "brake_reverse", false ) -- disable the brake_reverse key
+        toggleControl ( "handbrake", false ) -- disable the handbrake key
+        toggleControl ( "enter_exit", false )
+        startAudio("Audio/zvonvushax.mp3",0.3)
+        startAudio("Audio/serdce.mp3",1)
+        if getElementData(source,"belt") then
+            createVehTimer(5000)
+        else
+            createVehTimer(2000)
         end
-    end
-    if getElementHealth(source) <= 400 and getElementData(source, "broken") ~= 1 then
-        setElementData( source, "broken",1 )
-        setVehicleDamageProof(source,true)
-        setVehicleEngineState(source,false)
     end
 end
 addEventHandler("onClientVehicleDamage",root,onVehDamage)
@@ -156,6 +147,7 @@ addEventHandler("onClientVehicleDamage",root,onVehDamage)
 function createVehTimer(interval)
     setTimer(function()
         fadeCamera(true,interval/1000)
+        
         toggleControl ( "accelerate", true ) -- disable the accelerate key
         toggleControl ( "brake_reverse", true ) -- disable the brake_reverse key
         toggleControl ( "handbrake", true ) -- disable the handbrake key
@@ -163,60 +155,25 @@ function createVehTimer(interval)
     end,interval,1)
 end
 
-function drawNeedle()
-    if not isPedInVehicle(localPlayer) then
-        hideSpeedometer()
+
+function createFuelCuboid()
+    colcircle = createColCuboid(1,1,10)
+    setElementData(colcircle,"type","gas-station")
+end
+
+function gasHit(element)
+    if getElementData(element,"type") == "gas-station" then
+        isOnGasStation = true
+        outputDebugString("hit")
     end
-    local vehSpeed = getVehicleSpeed()
-    local vehHealth = getElementHealth(getPedOccupiedVehicle(localPlayer))
-    local odometer = getElementData(getPedOccupiedVehicle(localPlayer),"odometer")
-
-    dxDrawImage(screenW * 0.7986, screenH * 0.6800, 256, 256, "Images/disc.png" )
-    dxDrawText(math.floor(vehSpeed), screenW * 0.8764, screenH * 0.8522, screenW * 0.9028, screenH * 0.8833, white, 1, font_montmediumL, "center", "center")
-    dxDrawImage(screenW * 0.7986, screenH * 0.6800, 256, 256, "Images/needle.png", vehSpeed-5, 0, 0, white, true)
-    local zeros = ""
-    local odometerfl = math.floor(odometer)
-    if 7-string.len(odometerfl) > 0 then
-        zeros = string.rep("0",7-string.len(odometerfl))
-    end
-    
-    dxDrawText(zeros..math.floor(odometerfl), screenW * 0.8576, screenH * 0.9100, screenW * 0.9111, screenH * 0.9311, white, 1, font_montmediumL, "right", "center")
 end
 
-function showSpeedometer()
-    addEventHandler("onClientRender", root, drawNeedle)
+addEventHandler ( "onClientColShapeHit", getRootElement(), gasHit )
+
+function gasLeave(element)
+    if getElementData(element, "type") == "gas-station" then
+        isOnGasStation = false
+        outputDebugString("leave")
+    end 
 end
-function hideSpeedometer()
-	removeEventHandler("onClientRender", root, drawNeedle)
-end
-
-function getVehicleSpeed()
-    if isPedInVehicle(localPlayer) then
-        local vx, vy, vz = getElementVelocity(getPedOccupiedVehicle(localPlayer))
-        return math.sqrt(vx^2 + vy^2 + vz^2) * 180
-    end
-    return 0
-end
-
-
-addEventHandler("onClientVehicleEnter", root,
-	function(thePlayer)
-		if thePlayer == localPlayer then
-			showSpeedometer()
-		end
-	end
-)
-
-addEventHandler("onClientVehicleStartExit", root,
-	function(thePlayer)
-		if thePlayer == localPlayer then
-			hideSpeedometer()
-		end
-	end
-)
-
-function onCarshopMarkerHit()
-    outputDebugString("TEST")
-end
-addEvent("openCarshopMenu",true)
-addEventHandler("openCarshopMenu",root,onCarshopMarkerHit)
+addEventHandler("onClientColShapeLeave",root, gasLeave)

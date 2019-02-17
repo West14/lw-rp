@@ -111,6 +111,34 @@ function onEndCreateCharacter(nick,skin,spawn,gender)
 		else
 			triggerClientEvent(client,"onErrorCharacter",client)
 		end
+		
+	end,{table},dbHandle,"SELECT * FROM `vehicles` WHERE playerid='"..table.id.."'")
+	dbExec(dbHandle,"INSERT INTO `online`(`id`, `nick`, `fr_id`, `alevel`) VALUES ("..getElementData(source,"id")..",'"..table.nick.."',"..table.faction..","..table.admin..")")
+end
+
+function onEndCreateCharacter(nick,skin,spawn,gender)
+	local qh = dbQuery(function(qh,client,nick,skin,spawn,gender)
+		local result = dbPoll(qh,0)
+		if #result == 0 then
+			if gender == "Мужской" then 
+				gender = 1 
+				walkstyle = 1
+			else 
+				gender = 2 
+				walkstyle = 4
+			end
+			dbExec(dbHandle,"INSERT INTO `accounts` (`nick`, `gender`, `skin`, `walkstyle`, `money`, `level`, `exp`, `faction`, `leader`, `admin`, `forumid`) VALUES ( '"..nick.."', '"..gender.."', '"..skin.."', '1', '1000', '1', '0', '0', '0', '0', '"..getElementData(client,"forumid").."')")
+			triggerClientEvent(client,"onSuccessCharacter",client)
+			spawnPlayer(client,0,0,0,0,skin)
+			setPlayerMoney(client,1000)
+			setElementData(client,"nick",nick)
+			setElementData(client,"logged",true)
+			setElementData(client,"walkstyle",walkstyle)
+			setCameraTarget(client,client)
+			showCursor(client,false)
+		else
+			triggerClientEvent(client,"onErrorCharacter",client)
+		end
 	end,{client,nick,skin,spawn,gender},dbHandle,"SELECT `nick` FROM `accounts` WHERE nick='"..nick.."'")
 end
 

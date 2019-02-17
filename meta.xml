@@ -30,6 +30,11 @@
 
 	<file src="Images/biglogo.png" type="client" />
 
+	<file src="Images/mask-btnshadow.png" type="client" />
+
+	<file src="Images/speedbg.png" type="client" />
+	<file src="Images/indicator.png" type="client" />
+
 	<file src="Fonts/Montserrat-Light.ttf" />
 	<file src="Fonts/Montserrat-ExtraLight.ttf" />
 	<file src="Fonts/Montserrat-Bold.ttf" />
@@ -64,10 +69,11 @@
 	<script src="Server/commands.lua" type="server" />
 	<script src="Server/functions.lua" type="server" />
 	<script src="Server/login.lua" type="server" />
+	<script src="Server/main.lua" type="server"/>
 	<script src="Server/faction.lua" type="server"/>
 	<script src="Server/chat_functions.lua" type="shared" />
 	<script src="Server/weather.lua" type="server" />
-	<script src="Server/autosys.lua" type="server" />
+	<script src="Server/autosys.lua" type="client" />
 
 	<map src="Maps/derevyshka.map" dimension="0"></map>
 
@@ -86,13 +92,5 @@
 	<file src="Audio/lesnoch.mp3" type="server" />
 	<file src="Audio/serdce.mp3" type="server" />
 	<file src="Audio/zvonvushax.mp3" type="server" />
-
-	<file src="CEF/index.html" type="client" />
-	<file src="CEF/css/style.css" type="client" />
-	<file src="CEF/images/1.png" type="client" />
-	<file src="CEF/images/error.png" type="client" />
-	<file src="CEF/images/font.png" type="client" />
-	<file src="CEF/images/logo.png" type="client" />
-	<file src="CEF/images/menu.png" type="client" />
 	<oop>true</oop>
 </meta>

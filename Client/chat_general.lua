@@ -8,61 +8,21 @@ chat_entries = {}
 chat_entries_index = 1
 chat_index = 0
 
-function chatCheck( )
+function onPlayerPressKey( btn,press )
 	if isLogged(lp) then
-		if chat_opened == 0 then -- если чат не открыт
-			addEventHandler("onClientRender",root,openChat) -- отрисовка обводки
-			chat_opened = 1 
-			DGS:dgsSetVisible(chatBox,true) -- показываем чатбокс
-			DGS:dgsBringToFront( chatBox ) -- переместить на передний фон
-			DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
-			chat_focus = 1
-			showCursor(true)
-		elseif chat_opened == 1 then -- если чат открыт
-			removeEventHandler("onClientRender",root,openChat) -- убираем отрисовку обводки
-			chat_opened = 0
-			chat_focus = 0
-			DGS:dgsSetVisible(chatBox,false) -- убираем чатбокс
-			showCursor(false)
-		end
-	end
-end
-
-function ChatYcheck()
-	if isLogged(lp) then
-		if chat_opened == 0 then
-			addEventHandler("onClientRender",root,openChat) -- отрисовка обводки
-			chat_opened = 1 
-			DGS:dgsSetVisible(chatBox,true) -- показываем чатбокс
-			DGS:dgsBringToFront( chatBox ) -- переместить на передний фон
-			DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
-			chat_focus = 1
-			showCursor(true)
-		end
-	end
-end
-
-bindKey("F6","down",chatCheck)
-bindKey("y","up",ChatYcheck)
-
-function selectMessage(btn,press)
-	if press and chat_opened then
-		if btn == "arrow_u" then
-			local text = DGS:dgsGetText( chatBox ) -- текст из эдитбокса
-			if chat_entries_index > 1 then
-				if string.len(text) > 0 then
-					chat_entries[chat_entries_index+1] = text
-				end
-				chat_entries_index = chat_entries_index-1
-				DGS:dgsSetText(chatBox, chat_entries[chat_entries_index])
-			end
-		elseif btn == "arrow_d" then
-			if chat_entries_index+1 ~= #chat_entries+2 then
-				chat_entries_index = chat_entries_index+1
-				if chat_entries[chat_entries_index] == nil then
-					DGS:dgsSetText(chatBox, "")
-				else
-					DGS:dgsSetText(chatBox, chat_entries[chat_entries_index])
+		if (press) then
+			if btn == "F6" then
+				chatCheck()
+			elseif btn == "y" then
+				if chat_opened == 0 then
+					addEventHandler("onClientRender",root,openChat) -- отрисовка обводки
+					chat_opened = 1 
+					DGS:dgsSetVisible(chatBox,true) -- показываем чатбокс
+					DGS:dgsBringToFront( chatBox ) -- переместить на передний фон
+					DGS:dgsEditSetCaretPosition( chatBox, 1 ) -- установить курсор на 1 символ
+					chat_focus = 1
+					showCursor(true)
+					alpha = 0
 				end
 			end
 		end
@@ -79,8 +39,7 @@ function onPlayerEnterMessage( )
 	local text = removeHex(DGS:dgsGetText( chatBox )) -- текст из эдитбокса
 	local iftext = string.gsub(text,"%s+", "") -- проверка не пустой ли текст без пробелов
 	if string.len(iftext) > 0 then
-		chat_entries[#chat_entries+1] = text
-		chat_entries_index = chat_entries_index+1
+		table.insert(chat_entries,text)
 		if (text:sub(1,1) == "/") then -- если текст команда
 			local cmd = split(text:sub(2), " ")
 			triggerServerEvent("sendCommand", lp, cmd)

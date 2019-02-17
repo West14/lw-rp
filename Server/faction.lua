@@ -1,7 +1,10 @@
+Faction = {
+	[1] ={["name"] = ""}
+}
 
 function FactionSendMessage(player,msg)
 	if getElementData(player,"faction") ~= 0 then
-		local query = dbQuery(factionChatCallback,{player,msg},dbHandle,"SELECT id FROM `online` WHERE fr_id='"..getElementData(player,"faction").."'")
+		local query = dbQuery(factionChatCallback,{player,msg},dbHandle,"SELECT * FROM `online` WHERE fr_id='"..getElementData(player,"faction").."'")
 	end
 end
 
@@ -11,26 +14,44 @@ function factionChatCallback(qh,player,msg)
 		local rank = getElementData(player,"rank")
 		local name = getElementData(player,"nick")
 		local faction = getElementData(player,"faction")
-		local rankname = Faction_list[faction]["ranks"][tostring(rank)]
-		local playersend = {}
+		local rankname = Faction[faction]["rank_names"][rank]
 		for col,row in ipairs(result) do
-			playersend[#playersend+1] = ids[row.id]
+			local playersend = ids[row.id]
+			triggerClientEvent(playersend,"outputChatMessage",playersend,rankname.." "..name..": "..msg)
 		end
-		triggerClientEvent(playersend,"outputChatMessage",player,rankname.." "..name..": "..msg)
 	end
 end
 
+function parseFactionVehicles()
+	local query = dbQuery(parseFactionCallback,dbHandle,"SELECT * FROM `vehicles` WHERE `faction`")
+	outputServerLog("Parsing vehicles...")
+end
+addEventHandler("onResourceStart", root, parseFactionVehicles)
+
+function parseFactionCallback(qh)
+	local result = dbPoll(qh, 0)
+	if result then
+		for _,row in ipairs(result) do
+			local veh = createVehicle(row.modelid,row.sx,row.sy,row.sz,row.rx,row.ry,row.rz,row.number)
+			setVehicleEngineState(veh, false)
+			setElementData(veh,"frid",row.faction)
+			setElementData(veh,"fuel",row.fuel)
+			setElementData(veh,"id",row.carid)
+			setVehicleColor(veh,row.r,row.g,row.b)
+		end
+	end
+	outputServerLog("Vehicles parsed!")
+	dbFree(qh)
+end
+
 function FactionSetRankName(pl,rank,name)
-	if getElementData(pl,"leader") == 1 then
+	if getElementData(pl,"leader") then
 		
 	end
-	outputDebugString("test")
 end	
 
-function FactionGetRankNames(res)
-	if res == resource then
-		local qh = dbQuery(parseFactionRanks,dbHandle,"SELECT * FROM `faction`")
-	end
+function FactionGetRankNames()
+	local qh = dbQuery(parseFactionRanks,dbHandle,"SELECT * FROM `faction`")
 end
 addEventHandler("onResourceStart",root,FactionGetRankNames)
 
